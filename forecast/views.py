@@ -6,7 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.db.models import Count
+from django.db.models import Count, Avg
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.request import QueryDict
 from django.utils.translation import ugettext_lazy as _
@@ -194,7 +194,7 @@ class IndividualForecastView(View):
     def get(self, request, id):
         user = request.user
         forecast = Forecast.objects.get(pk=id)
-        analysis_set = forecast.forecastanalysis_set.all()
+        analysis_set = forecast.forecastanalysis_set.all().annotate(avg_votes=Avg('analysis_votes__vote'))
         media_set = forecast.forecastmedia_set.all()
         vote_form = ForecastVoteForm(forecast=forecast, user=request.user)
 

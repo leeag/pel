@@ -186,3 +186,9 @@ class GroupAdmin(ModelAdmin):
 @admin.register(models.Membership)
 class MembershipAdmin(ModelAdmin):
     list_display = ('user', 'group')
+
+
+@admin.register(models.ForecastAnalysisVote)
+class AnalysisVoteAdmin(ModelAdmin):
+    list_display = ('vote', 'user', 'analysis')
+    list_filter = ('vote',)

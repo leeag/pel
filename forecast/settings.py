@@ -32,6 +32,12 @@ REGIONS = (('1', "Europe"),
 STATUS_CHOICES = (('u', "Unpublished"),
                   ('p', "Published"))
 
+ANALYSIS_VOTE_CHOICES = ((1, "Not Useful"),
+                         (2, "Somewhat Useful"),
+                         (3, "Useful"),
+                         (4, "Very Useful"),
+                         (5, "Highly Useful"))
+
 FORECAST_FILTER = "filter"
 FORECAST_FILTER_MOST_ACTIVE = "mostactive"
 FORECAST_FILTER_NEWEST = "newest"

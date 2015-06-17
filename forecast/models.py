@@ -141,6 +141,12 @@ class ForecastAnalysis(models.Model):
         return self.title
 
 
+class ForecastAnalysisVote(models.Model):
+    user = models.ForeignKey(User)
+    analysis = models.ForeignKey('ForecastAnalysis', related_name='analysis_votes')
+    vote = models.IntegerField(choices=settings.ANALYSIS_VOTE_CHOICES)
+
+
 class ForecastMedia(models.Model):
     forecast = models.ForeignKey('Forecast')
     name = models.CharField(max_length=100, blank=True, null=True)

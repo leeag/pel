@@ -4,14 +4,21 @@
     <div class="panel panel-default peleus-scrollable-block">
         <div class="panel-heading">Community analysis</div>
         {% for analysis in analysis_set %}
-        <div class="panel-body">
+        <div class="panel-body" id="analysis-{{ analysis.id }}">
             <div class="well well-sm">
                 {{ analysis.title }}
             </div>
             <div class="analysis-text">
                 {{ analysis.body }}
             </div>
-            <p class="pull-right">by {{ analysis.user }}</p>
+{#            <p class="pull-right">#}
+                by <a href="{% url 'profile' id=analysis.user.id %}" >{{ analysis.user }}</a>
+{#            </p>#}
+            {% if analysis.avg_votes %}
+            <p class="pull-right">
+                rate: {{ analysis.avg_votes|floatformat }} / 5
+            </p>
+            {% endif %}
         </div>
         {% endfor %}
         {% if forecast.is_active and user.is_authenticated %}
