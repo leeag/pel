@@ -10,10 +10,9 @@
     <div class="container">
     {% for group in object_list %}
         <ul class="list-group">
-        <li class="list-group-item" >
+        <li class="list-group-item">
             <a href="{% url 'group' id=group.id %}"/>
             <span>{{ group.name }}</span>
-            <span>{{ group.description }}</span>
         </li>
         </ul>
         {% empty %}
