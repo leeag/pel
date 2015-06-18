@@ -1,6 +1,8 @@
 function drawChart(selector, data) {
     if(data.forecastType === 'Finite Event') {
         drawFiniteEventChart(selector, data.votes);
+    } else if(data.forecastType === 'Magnitude') {
+        drawMagnitudeChart(selector, data.votes);
     } else {
         drawProbabilityChart(selector, data.votes);
     }
@@ -45,6 +47,36 @@ function drawProbabilityChart(selector, data) {
                 padding: {
                     top: 0,
                     bottom: 0
+                }
+            }
+        }
+    });
+}
+
+function drawMagnitudeChart(selector, data) {
+    var chart = c3.generate({
+        bindto: selector,
+        data: {
+            json: data,
+            keys: {
+                x: 'date',
+                value: ['avgVotes']
+            },
+            type: 'spline'
+        },
+        axis: {
+            x: {
+                type: 'timeseries',
+                tick: {
+                    format: '%Y-%m-%d',
+                    rotate: 80,
+                    multiline: false
+                }
+            },
+            y: {
+                padding: {
+                    top: 10,
+                    bottom: 10
                 }
             }
         }
