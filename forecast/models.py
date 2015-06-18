@@ -85,6 +85,12 @@ class Forecast(models.Model):
         return votes
     votes_count.admin_order_field = 'votes_count'
 
+    def save(self, *args, **kwargs):
+        if not self.forecast_type == settings.FORECAST_TYPE_MAGNITUDE:
+            self.min = 0
+            self.max = 100
+        super(Forecast, self).save(*args, **kwargs)
+
     def to_json(self):
         response = {
             'id': self.id,
