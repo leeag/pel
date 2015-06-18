@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="jumbotron">
+        <h1>Page not found</h1>
+        <h2>Looks like it's nothing here...</h2>
+        <div id="container">
+
+        </div>
+    </div>
+    <script type="text/javascript">
+    var chart = c3.generate({
+        bindto: '#container',
+        data: {
+            columns: [
+                ['page not found', 0]
+            ],
+            type: 'gauge'
+        },
+        gauge: {
+            label: {
+                format: function (value, ratio) {
+                    return value;
+                },
+                show: false
+            },
+            min: 0,
+            max: 600
+        },
+        color: {
+            pattern: ['#F97600'],
+            threshold: {
+                values: [30, 60, 90, 100]
+            }
+        },
+        size: {
+            height: 180
+        }
+    });
+
+    setTimeout(function () {
+        chart.load({
+            columns: [['page not found', 404]]
+        });
+    }, 1000);
+    </script>
+{% endblock %}

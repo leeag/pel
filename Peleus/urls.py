@@ -31,5 +31,7 @@ urlpatterns = patterns(
     url(r'^forecasts/$', views.ForecastsJsonView.as_view(), name='forecasts'),
     url(r'^forecast_vote/$', views.ActiveForecastVoteView.as_view(), name='forecast_vote'),
     url(r'^forecast_analysis/(?P<id>\d+)/$', views.CommunityAnalysisPostView.as_view(), name='forecast_analysis'),
-    url(r'^messages/', include('postman.urls'))
+    url(r'^messages/', include('postman.urls')),
+    # TODO remove
+    url(r'^404/$', TemplateView.as_view(template_name='404.html'))
 ) + static.static(settings.MEDIA_URL, document_root=MEDIA_ROOT)

@@ -11,6 +11,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http.request import QueryDict
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, DetailView, ListView
+from django.views.defaults import page_not_found
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
     ForecastVoteForm
@@ -193,7 +194,8 @@ class IndividualForecastView(View):
 
     def get(self, request, id):
         user = request.user
-        forecast = Forecast.objects.get(pk=id)
+        # forecast = Forecast.objects.get(pk=id)
+        forecast = get_object_or_404(Forecast, pk=id)
         analysis_set = forecast.forecastanalysis_set.all().annotate(avg_votes=Avg('analysis_votes__vote'))
         media_set = forecast.forecastmedia_set.all()
         vote_form = ForecastVoteForm(forecast=forecast, user=request.user)
