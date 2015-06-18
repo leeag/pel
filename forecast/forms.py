@@ -67,9 +67,9 @@ class ForecastVoteForm(forms.Form):
                 widget=forms.Select(attrs={'class': 'form-control', 'required': 'true'}))
         elif self.forecast.forecast_type == FORECAST_TYPE_MAGNITUDE:
             self.fields['vote'] = forms.IntegerField(
-                required=True, label='from', widget=forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}))
+                required=True, label='from', widget=forms.NumberInput(attrs={'required': 'required', 'min': self.forecast.min}))
             self.fields['vote2'] = forms.IntegerField(
-                required=True, label='to', widget=forms.NumberInput(attrs={'class': 'form-control', 'required': 'required'}))
+                required=True, label='to', widget=forms.NumberInput(attrs={'required': 'required', 'max': self.forecast.max}))
         else:
             self.fields['vote'] = forms.IntegerField(
                 required=True, widget=forms.NumberInput(
