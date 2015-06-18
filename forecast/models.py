@@ -63,9 +63,9 @@ class Forecast(models.Model):
     end_date = models.DateField()
     tags = TaggableManager()
 
+    objects = models.Manager()
     active = ForecastsManager(forecasts_type=ForecastsManager.TYPE_ACTIVE)
     archived = ForecastsManager(forecasts_type=ForecastsManager.TYPE_ARCHIVED)
-    objects = models.Manager()
 
     class Meta:
         db_table = 'forecasts'
