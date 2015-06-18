@@ -9,11 +9,11 @@
         <div class="row">
             <div class="col-md-6">
                 {% if owner %}
-                <h4>Hello, {{ user.username }}</h4>
+                <h4>Hello, {{ user.custom.full_name }}</h4>
                     {% elif not user.is_authenticated %}
-                <h4>{{ profile.username }}'s profile</h4>
+                <h4>{{ profile.full_name }}'s profile</h4>
                     {% else %}
-                <h4>{{ profile.username }}'s profile</h4>
+                <h4>{{ profile.full_name }}'s profile</h4>
                 <div class="btn-group btn-group-sm">
                     <button type="button" class="btn btn-default" data-toggle="modal" data-target="#SendMessage">
                         Send Message</button>
@@ -204,12 +204,12 @@
             <p></p>
             <p><strong>
                 {%if owner %} My {% else %}
-                    {{ profile.username }}'s
+                    {{ profile.full_name }}'s
                 {%endif%}
              Active Forecasts
-            {% if forecasts.count == 5 %}
-                <a href="#" data-toggle="modal" data-target="#active_forecasts">(See Full Set)</a>
-            {% endif %}
+{#            {% if forecasts.count == 5 %}#}
+                <a href="#" data-toggle="modal" data-target="#active_forecasts" class="pull-right">[See Full Set]</a>
+{#            {% endif %}#}
             </strong></p>
         </div>
                   <table class="table">
@@ -227,12 +227,12 @@
             <p></p>
             <p><strong>
             {%if owner %} My {% else %}
-                    {{ profile.username }}'s
+                    {{ profile.full_name }}'s
                 {%endif%}
              Archived Forecasts
-            {% if forecasts_archived == 5 %}
-                <a href="#" data-toggle="modal" data-target="#archived_forecasts">(See Full Set)</a>
-            {% endif %}
+{#            {% if forecasts_archived == 5 %}#}
+                <a href="#" data-toggle="modal" data-target="#archived_forecasts" class="pull-right">[See Full Set]</a>
+{#            {% endif %}#}
             </strong></p>
                 <table class="table">
                         {% for forecast in forecasts_archived %}

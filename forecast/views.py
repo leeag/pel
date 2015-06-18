@@ -128,7 +128,7 @@ class EmailConfirmationView(View):
         except User.DoesNotExist as ex:
             res_dict['error'] = ex
             return render(request, self.template_name, res_dict)
-        if token == user.customuserprofile.activation_token and datetime.now() <= user.customuserprofile.expires_at:
+        if token == user.custom.activation_token and datetime.now() <= user.custom.expires_at:
             user.email_verified = True
             res_dict['success'] = _('Email was verified!')
             user.save()
@@ -225,7 +225,7 @@ class LoginView(View):
         if user is not None:  # and user.is_active:
             login(request, user)
             try:
-                if not user.customuserprofile.conditions_accepted:
+                if not user.custom.conditions_accepted:
                     return HttpResponseRedirect(reverse('signup2'))
             except Exception:
                 pass
@@ -268,13 +268,11 @@ class ProfileView(View):
         profile = get_object_or_404(User, pk=id)
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
-        analysis = ForecastAnalysis.objects.filter(user=profile)
-        info = CustomUserProfile.objects.filter(user=profile)
+        analysis = profile.forecastanalysis_set.all()[:5]
         return render(request, self.template_name, {'owner': owner, 'profile': profile,
                                                     'forecasts': forecasts,
                                                     'forecasts_archived': forecasts_archived,
-                                                    'analysis': analysis,
-                                                    'info': info})
+                                                    'analysis': analysis,})
 
 
 class ProfileForecastView(View):

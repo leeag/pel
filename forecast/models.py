@@ -8,6 +8,15 @@ from taggit.managers import TaggableManager
 import forecast.settings as settings
 from forecast.settings import ORGANIZATION_TYPE, FORECAST_TYPE, STATUS_CHOICES, GROUP_TYPES, REGIONS
 
+def full_name(self):
+    try:
+        name = self.username if self.custom.display_only_username else self.first_name + ' ' + self.last_name
+    except:
+        name = self.username
+
+    return name
+
+User.full_name = full_name
 
 def _votes_by_forecast_type(forecast):
     if forecast.forecast_type == settings.FORECAST_TYPE_FINITE:
@@ -39,7 +48,7 @@ class ForecastsManager(models.Manager):
 
 
 class CustomUserProfile(models.Model):
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name='custom')
     display_only_username = models.BooleanField(default=False)
     country = CountryField(blank=False)
     city = models.CharField(max_length=50, blank=True)
@@ -54,6 +63,9 @@ class CustomUserProfile(models.Model):
     expires_at = models.DateTimeField(blank=True, null=True)
     email_verified = models.BooleanField(default=False)
     conditions_accepted = models.BooleanField(default=False)
+
+    def full_name(self):
+        return self.user.username if self.display_only_username else self.user.first_name + ' ' + self.user.last_name
 
 
 class Forecast(models.Model):

@@ -1,25 +1,24 @@
  {% load staticfiles %}
-{#    <link href="{% static '1p/main.css' %}" rel="stylesheet">#}
-<div id="profile_sidebar" class=" col-md-offset-1 col-md-3 ">
+<div id="profile_sidebar" class="col-md-4">
         <div class="row">
             <div class="panel" id="performance">
             <h4><strong>
             {%if owner %}
                 My Performance
                 {% else %}
-                {{ profile.username }}'s Performance </a>
+                {{ profile.full_name }}'s Performance
 
             {%endif%}
             </strong></h4>
 
-                <p><span class="label label-info">{{app_name}} Score:</span></p>
-                <p><span class="label label-info">General Accuracy:</span> XX.X%</p>
-                <p><span class="label label-info">Number of Forecasts:</span> {{len_predictions}}</p>
+                <p>{{app_name}} Score:</p>
+                <p>General Accuracy: XX.X%</p>
+                <p>Number of Forecasts: {{len_predictions}}</p>
                 <p>
 {#                {%if owner %}#}
 {#                See My Archived Forecasts</p>#}
 {#                {% else %}#}
-{#                See {{ profile.username }}'s Archived Forecasts#}
+{#                See {{ profile.full_name }}'s Archived Forecasts#}
 {#                            {%endif%}#}
 {#                </p>#}
 
@@ -38,12 +37,12 @@
                  {% endif %}
                 <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">2</span></a></p>
                 <p><a href="#" data-toggle="modal" data-target="#FolUsers">
-                    {% if owner %} My {% else %} {{ profile.username }}'s {% endif %} Followed Users
+                    {% if owner %} My {% else %} {{ profile.full_name }}'s {% endif %} Followed Users
                     <span class="badge">3</span>
                   </a>
                 </p>
                 <p><a href="#" data-toggle="modal" data-target="#MyGroups">
-                    {% if owner %} My {% else %} {{ profile.username }}'s {% endif %} Groups
+                    {% if owner %} My {% else %} {{ profile.full_name }}'s {% endif %} Groups
                     <span class="badge">4</span>
                    </a>
                 </p>
@@ -106,15 +105,13 @@
                 <h5 id="edit_right"><a href="#">Edit</a></h5>
                 <div style="clear:left"></div>
                 {% else %}
-                <h4><strong>{{profile.username}}'s Info</strong></h4>
+                <h4><strong>{{profile.full_name}}'s Info</strong></h4>
 
             {%endif%}
-            {% for i in info %}
-                <p><span class="label label-info">Profession:</span> {{i.profession}}</p>
-                <p><span class="label label-info">Organization:</span> {{i.organization_name}}</p>
-                <p><span class="label label-info">Position:</span> {{ i.position }}</p>
-                <p><span class="label label-info">Location:</span> {{i.country}}</p>
-            {% endfor %}
+                <p>Profession: {{profile.custom.profession}}</p>
+                <p>Organization: {{profile.custom.organization_name}}</p>
+                <p>Position: {{ profile.custom.position }}</p>
+                <p>Location: {{profile.custom.country}}</p>
             </div>
 
             </div>
