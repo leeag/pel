@@ -59,6 +59,8 @@ class CustomUserProfile(models.Model):
 class Forecast(models.Model):
     forecast_type = models.CharField(max_length=2, choices=FORECAST_TYPE)
     forecast_question = models.TextField(max_length=1000)
+    min = models.IntegerField(blank=True, default=0)
+    max = models.IntegerField(blank=True, default=100)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
     tags = TaggableManager()

@@ -64,6 +64,12 @@ class ForecastVoteChoicesInline(TabularInline):
     extra = 2
 
 
+# class ForecastVoteRangeInline(TabularInline):
+#     model = models.Forecast
+#     verbose_name = 'vote range'
+#     verbose_name_plural = 'votes range slider'
+#     extra = 2
+
 class PublishedProposeFilter(admin.SimpleListFilter):
     title = 'status'
     parameter_name = 'publication_status'
