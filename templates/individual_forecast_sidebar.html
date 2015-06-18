@@ -14,29 +14,16 @@
 {#                           class="form-control"#}
 {#                           placeholder="{% if last_vote == None %}Initial#}
 {#                           {% else %}Adjust{% endif %} prediction" name="forecast-vote" id="forecast-vote" required>#}
+                <div id="range_vote">
                 {% for field in vote_form %}
                     <div class="form-group">
                     {{ field }}
                     </div>
                 {% endfor %}
+                </div>
 
 
-{#                <script type="text/javascript">#}
-{#                                   $(function () {#}
-{#                        $("#slider-range").slider({#}
-{#                            range: true,#}
-{#                            min: 0,#}
-{#                            max: 500,#}
-{#                            values: [10, 100],#}
-{#                            slide: function (event, ui) {#}
-{#                                $("#amount").val(ui.values[0] + " - " + ui.values[1]);#}
-{#                            }#}
-{#                        });#}
-{#                        $("#amount").val($("#slider-range").slider("values", 0) +#}
-{#                        " - " + $("#slider-range").slider("values", 1));#}
-{#                    });#}
-{#                </script>#}
-{##}
+
 {#                <p>#}
 {#                    <input type="text" id="amount" readonly style="border:0; color:#f6931f; font-weight:bold;">#}
 {#                </p>#}
