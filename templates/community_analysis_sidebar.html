@@ -100,6 +100,11 @@
     <script type="text/javascript" src="{% static '3p/jquery.jtruncate.min.js' %}"></script>
     <script type="text/javascript">
         $(document).ready(function () {
+            $(location.hash).addClass('selected-analysis');
+            setTimeout(function () {
+                $(location.hash).addClass('highlight-analysis');
+            },1010);
+
             $('.analysis-text').jTruncate({
                 length: 100,
                 ellipsisText: ' ...'

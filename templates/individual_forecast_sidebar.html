@@ -10,10 +10,6 @@
                     <span>
                         {% if last_vote == None %}Input initial prediction
                         {% else %}Adjust your prediction{% endif %}</span>
-{#                    <input type="number" min="0" max="100" value="{{ last_vote|default_if_none:"" }}"#}
-{#                           class="form-control"#}
-{#                           placeholder="{% if last_vote == None %}Initial#}
-{#                           {% else %}Adjust{% endif %} prediction" name="forecast-vote" id="forecast-vote" required>#}
                 <div id="range_vote">
                 {% for field in vote_form %}
                     <div class="form-group">
@@ -65,6 +61,7 @@
     </div>
     <script type="text/javascript">
         $(document).ready(function () {
+
             var voteInput = $('#id_vote').get(0);
             var form = $('#forecast-vote-form');
             var name = $('#forecast-question').html();
