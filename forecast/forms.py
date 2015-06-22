@@ -18,29 +18,29 @@ from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, 
 from utils.different import generate_activation_key
 
 
-class RangeWidget(MultiWidget):
-    def __init__(self, attrs=None, *args, **kwargs):
-
-        _widgets = (
-            forms.HiddenInput(attrs=attrs),
-            forms.HiddenInput(attrs=attrs),
-        )
-        super(RangeWidget, self).__init__(_widgets, *args, **kwargs)
-
-    def decompress(self, value):
-        if value:
-            return [value.min(), value.max()]
-        return [min, max]
-
-    def format_output(self, rendered_widgets):
-        return u''.join(rendered_widgets) + unicode(self.media)
-
-    class Media:
-        css = {
-            'all': ('/static/3p/jquery-ui.min.css',)
-        }
-        js = ('/static/3p/jquery-ui.mis.js',
-              '/static/1p/range_votes.js')
+# class RangeWidget(MultiWidget):
+#     def __init__(self, attrs=None, *args, **kwargs):
+#
+#         _widgets = (
+#             forms.HiddenInput(attrs=attrs),
+#             forms.HiddenInput(attrs=attrs),
+#         )
+#         super(RangeWidget, self).__init__(_widgets, *args, **kwargs)
+#
+#     def decompress(self, value):
+#         if value:
+#             return [value.min(), value.max()]
+#         return [min, max]
+#
+#     def format_output(self, rendered_widgets):
+#         return u''.join(rendered_widgets) + unicode(self.media)
+#
+#     class Media:
+#         css = {
+#             'all': ('/static/3p/jquery-ui.min.css',)
+#         }
+#         js = ('/static/3p/jquery-ui.mis.js',
+#               '/static/1p/range_votes.js')
 
 
 class CommunityAnalysisForm(Form):
@@ -92,12 +92,12 @@ class ForecastVoteForm(forms.Form):
                 required=True, choices=[(str(choice.num), choice.choice) for choice in self.forecast.choices.all()],
                 widget=forms.Select(attrs={'class': 'form-control', 'required': 'true'}))
         elif self.forecast.forecast_type == FORECAST_TYPE_MAGNITUDE:
-            # self.fields['vote'] = forms.IntegerField(
-            #     required=True, label='from', widget=forms.NumberInput(attrs={'required': 'required', 'min': self.forecast.min}))
-            # self.fields['vote2'] = forms.IntegerField(
-            #     required=True, label='to', widget=forms.NumberInput(attrs={'required': 'required', 'max': self.forecast.max}))
-            self.fields['vote'] = forms.MultiValueField(widget=RangeWidget(attrs={'required': 'required', 'min': self.forecast.min,
-                                                                                  'max': self.forecast.max}))
+            self.fields['vote'] = forms.IntegerField(
+                required=True, label='from', widget=forms.NumberInput(attrs={'class': 'form-control input-sm', 'required': 'required', 'min': self.forecast.min}))
+            self.fields['vote2'] = forms.IntegerField(
+                required=True, label='to', widget=forms.NumberInput(attrs={'class': 'form-control input-sm', 'required': 'required', 'max': self.forecast.max}))
+            # self.fields['vote'] = forms.MultiValueField(widget=RangeWidget(attrs={'required': 'required', 'min': self.forecast.min,
+            #                                                                       'max': self.forecast.max}))
         else:
             self.fields['vote'] = forms.IntegerField(
                 required=True, widget=forms.NumberInput(
