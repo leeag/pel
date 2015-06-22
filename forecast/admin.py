@@ -4,10 +4,12 @@ from django.contrib import admin
 from django.contrib.admin import ModelAdmin, StackedInline, TabularInline
 from django.contrib.auth.admin import UserAdmin
 from django.db.models import Count
+from django import forms
 
 from django_object_actions import DjangoObjectActions
 
 import models
+from forecast import settings
 
 admin.site.site_header = 'Peleus administration'
 admin.site.site_title = 'Peleus site admin'
@@ -57,18 +59,31 @@ class ForecastAnalysisInline(StackedInline):
     extra = 1
 
 
+class ForecastVoteChoicesInlineFormset(forms.models.BaseInlineFormSet):
+    def clean(self):
+        # get forms that actually have valid data
+        forecast_type = self.forms[0].data.get('forecast_type')
+        if forecast_type == settings.FORECAST_TYPE_FINITE:
+            count = 0
+            for form in self.forms:
+                try:
+                    if form.cleaned_data:
+                        count += 1
+                except AttributeError:
+                    # annoyingly, if a subform is invalid Django explicity raises
+                    # an AttributeError for cleaned_data
+                    pass
+            if count < 2:
+                raise forms.ValidationError('You must have at least two orders')
+
+
 class ForecastVoteChoicesInline(TabularInline):
-    model = models.ForecastVoteChoice
+    formset = ForecastVoteChoicesInlineFormset
     verbose_name = 'vote choice'
     verbose_name_plural = 'vote choices (for finite events only)'
     extra = 2
+    model = models.ForecastVoteChoice
 
-
-# class ForecastVoteRangeInline(TabularInline):
-#     model = models.Forecast
-#     verbose_name = 'vote range'
-#     verbose_name_plural = 'votes range slider'
-#     extra = 2
 
 class PublishedProposeFilter(admin.SimpleListFilter):
     title = 'status'
