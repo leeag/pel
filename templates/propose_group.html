@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div class="row">
+        <form class="propose form-horizontal" role="form">
+            <h3>
+                Propose new group
+            </h3>
+            {% csrf_token %}
+            <div class="center-block form-center-block">
+                <div class="form-group">
+                    {% for field in form %}
+                        <label for="{{ field.name }}" class="control-label col-sm-4">{{ field.label }}</label>
+                        <div class="col-sm-8">
+                            <p>{{ field }}</p>
+                        </div>
+                    {% endfor %}
+                </div>
+            <a href="#" class="form-control btn btn-primary group-propose">Propose new group</a>
+            </div>
+        </form>
+
+    </div>
+{% endblock %}
+
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/create_group.js' %}"></script>
+{% endblock %}

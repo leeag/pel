@@ -10,9 +10,9 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from taggit.forms import TagWidget
 from django.forms import MultiWidget
 
-from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DEFAULT_EMAIL, DOMAIN_NAME
+from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DEFAULT_EMAIL, DOMAIN_NAME, GROUP_TYPES
 
-from forecast.models import CustomUserProfile, ForecastVotes, ForecastPropose, ForecastAnalysis, Forecast
+from forecast.models import CustomUserProfile, ForecastVotes, ForecastPropose, ForecastAnalysis, Forecast, Group
 from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, FORECAST_TYPE_FINITE, \
     FORECAST_TYPE_MAGNITUDE, FORECAST_TYPE_PROBABILITY, FORECAST_TYPE_TIME_HORIZON
 from utils.different import generate_activation_key
@@ -58,6 +58,22 @@ class CommunityAnalysisForm(Form):
 
         analysis = ForecastAnalysis(forecast_id=self.id, user=self.user, **data)
         analysis.save()
+
+
+class CreateGroupForm(forms.ModelForm):
+
+    class Meta:
+        model = Group
+        default_attrs = {'class': "form-control input-sm"}
+
+        fields = '__all__'
+
+        widgets = {'name': forms.TextInput(attrs=default_attrs),
+                   'description': forms.Textarea(attrs=default_attrs),
+                   'type': forms.Select(attrs=default_attrs),
+                   'organization_type': forms.Select(attrs=default_attrs),
+                   'region': forms.Select(attrs=default_attrs)
+                   }
 
 
 class ForecastForm(ModelForm):

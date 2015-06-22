@@ -14,7 +14,7 @@ from django.views.generic import View, DetailView, ListView
 from django.views.defaults import page_not_found
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
-    ForecastVoteForm
+    ForecastVoteForm, CreateGroupForm
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
@@ -75,6 +75,7 @@ class ActiveForecastsView(ForecastFilterMixin, View):
 
 class ActiveForecastVoteView(View):
     Form = ForecastVoteForm
+
     def post(self, request):
         data = request.POST
         forecast_id = data.get('forecast-id', None)
@@ -167,7 +168,6 @@ class GroupView(DetailView):
         context = super(GroupView, self).get_context_data(**kwargs)
         return context
 
-
 class MyGroupsView(ListView):
     template_name = "groups_view.html"
     model = Group
@@ -175,6 +175,7 @@ class MyGroupsView(ListView):
     def get_queryset(self):
         queryset = Group.objects.filter(membership__user=self.request.user)
         return queryset
+
 
 
 class IndexPageView(ForecastFilterMixin, View):
