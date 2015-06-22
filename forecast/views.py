@@ -167,6 +167,7 @@ class GroupView(DetailView):
         context = super(GroupView, self).get_context_data(**kwargs)
         return context
 
+
 class MyGroupsView(ListView):
     template_name = "groups_view.html"
     model = Group
@@ -174,7 +175,6 @@ class MyGroupsView(ListView):
     def get_queryset(self):
         queryset = Group.objects.filter(membership__user=self.request.user)
         return queryset
-
 
 
 class IndexPageView(ForecastFilterMixin, View):
@@ -272,7 +272,7 @@ class ProfileView(View):
         return render(request, self.template_name, {'owner': owner, 'profile': profile,
                                                     'forecasts': forecasts,
                                                     'forecasts_archived': forecasts_archived,
-                                                    'analysis': analysis,})
+                                                    'analysis': analysis, })
 
 
 class ProfileForecastView(View):
@@ -288,7 +288,6 @@ class ProfileForecastView(View):
 
         return render(request, self.template_name,
                       {'is_active': True, 'data': forecasts, 'disable_tags': True})
-
 
 
 class ProposeForecastView(View):
@@ -320,7 +319,7 @@ class SignUpView(View):
 
     def get(self, request):
         form = self.form()
-        return render(request, self.template_name, {'form': form, 'app_name': APP_NAME })
+        return render(request, self.template_name, {'form': form, 'app_name': APP_NAME})
 
     def post(self, request):
         signup_form = UserRegistrationForm(request.POST)

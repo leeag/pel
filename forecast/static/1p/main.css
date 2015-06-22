@@ -86,14 +86,6 @@
 #profile_sidebar {
      overflow: auto;
 }
-#a_left {
-    width: 70%;
-    float: left;
-}
-#a_right {
-    width: 20%;
-    float: right;
-}
 
 .selected-analysis {
     background-color: orange;

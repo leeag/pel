@@ -1,253 +1,275 @@
 {% extends "base.html" %}
-{% load staticfiles%}
+{% load staticfiles %}
 
 {% block content %}
     <script src="{% static '1p/profile.js' %}"></script>
 
-<div class="row">
-    <div class="panel col-md-8">
-        <div class="row">
-            <div class="col-md-6">
-                {% if owner %}
-                <h4>Hello, {{ user.custom.full_name }}</h4>
+    <div class="row">
+        <div class="panel col-md-8">
+            <div class="row">
+                <div class="col-md-6">
+                    {% if owner %}
+                        <h4>Hello, {{ user.custom.full_name }}</h4>
                     {% elif not user.is_authenticated %}
-                <h4>{{ profile.full_name }}'s profile</h4>
+                        <h4>{{ profile.full_name }}'s profile</h4>
                     {% else %}
-                <h4>{{ profile.full_name }}'s profile</h4>
-                <div class="btn-group btn-group-sm">
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#SendMessage">
-                        Send Message</button>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#Follow">
-                        Follow</button>
-                    <button type="button" class="btn btn-default" data-toggle="modal" data-target="#Invite">
-                        Invite to Group</button>
-                </div>
-        <div class="row">
-            <div class="modal fade" id="SendMessage" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Send Message</h4>
-                          </div>
-                          <div class="modal-body" id="message-set-modal">
-                            ...
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
+                        <h4>{{ profile.full_name }}'s profile</h4>
+                        <div class="btn-group btn-group-sm">
+                            <button type="button" class="btn btn-default" data-toggle="modal"
+                                    data-target="#SendMessage">
+                                Send Message
+                            </button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#Follow">
+                                Follow
+                            </button>
+                            <button type="button" class="btn btn-default" data-toggle="modal" data-target="#Invite">
+                                Invite to Group
+                            </button>
                         </div>
-                      </div>
-            </div>
-            <div class="modal fade" id="Invite" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModalLabel">Invite to Group</h4>
-                          </div>
-                          <div class="modal-body">
-                            ...
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-            </div>
-        </div>
-
-                {% endif %}
-
-            </div>
-        </div>
-
-        <div class="row">
-             <div class="col-md-6">
-
-                 <div id="message">
-                     <div class="panel">
-                     <label>INBOX</label>
-                     <p>Some messages</p>
-                     </div>
-                 </div>
-
-                 <script type="text/javascript">
-
-
-                 $('#edit_foo').on('click', function () {
-    $.ajax({
-        type: 'POST',
-        url: '/echo/html/',
-        data: {
-            html: '<form id="form_foo"><textarea></textarea><input type="submit"></input></form>',
-            delay: 1,
-        },
-        success: function (data, textStatus, jqXHR) {
-            $('#foo_modal').find('.modal-body').html(data);
-            $('#foo_modal').modal('show');
-        },
-    });
-});
-
-                 </script>
-
-             </div>
-        </div>
-
-        <div class="modal fade bs-example-modal-lg" id="active_forecasts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" id="myModaLabel">Active Forecasts</h4>
-                          </div>
-                          <div class="modal-body" id="active-set-modal">
-                            ...
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
-                        </div>
-                      </div>
-        </div>
-        <div class="modal fade" id="archived_forecasts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                          <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                <h4 class="modal-title" id="myModaLabel">Archived Forecasts</h4>
-                              </div>
-                              <div class="modal-body" id="archived-set-modal">
-                                ...
-                              </div>
-                              <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                              </div>
+                        <div class="row">
+                            <div class="modal fade" id="SendMessage" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Send Message</h4>
+                                        </div>
+                                        <div class="modal-body" id="message-set-modal">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
+                            <div class="modal fade" id="Invite" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">Invite to Group</h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            ...
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endif %}
+
+                </div>
             </div>
-    <script type="text/javascript">
-        $('#active_forecasts').on('shown.bs.modal', function() {
-            $.ajax({
-                url: "/profile_forecasts/{{ profile.id }}/",
-                method: 'GET',
-                data: {
-                    filter: 'active'
-                }
-            }).done(function(data) {
-                $('#active-set-modal').html(data);
-                 $.ajax({
-                    url: "/forecasts/",
-                    method: 'GET',
-                    data: {
-                        uid: {{ profile.id }},
-                        type: 'active'
-                    }
 
-                }).done(function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        (function (i) {
-                            $('#collapseOne-' + data[i].id).on('shown.bs.collapse', function () {
-                                drawChart('#peleus-forecast-' + data[i].id, data[i]);
-                            }).on('hidden.bs.collapse', function () {
-                                $('#peleus-forecast-' + data[i].id).empty();
+            <div class="row">
+                <div class="col-md-6">
+
+                    <div id="message">
+                        <div class="panel">
+                            <label>INBOX</label>
+
+                            <p>Some messages</p>
+                        </div>
+                    </div>
+
+                    <script type="text/javascript">
+
+
+                        $('#edit_foo').on('click', function () {
+                            $.ajax({
+                                type: 'POST',
+                                url: '/echo/html/',
+                                data: {
+                                    html: '<form id="form_foo"><textarea></textarea><input type="submit"></input></form>',
+                                    delay: 1,
+                                },
+                                success: function (data, textStatus, jqXHR) {
+                                    $('#foo_modal').find('.modal-body').html(data);
+                                    $('#foo_modal').modal('show');
+                                },
                             });
-                        })(i);
-                    }
+                        });
+
+                    </script>
+
+                </div>
+            </div>
+
+            <div class="modal fade bs-example-modal-lg" id="active_forecasts" tabindex="-1" role="dialog"
+                 aria-labelledby="myModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModaLabel">Active Forecasts</h4>
+                        </div>
+                        <div class="modal-body" id="active-set-modal">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal fade" id="archived_forecasts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModaLabel">Archived Forecasts</h4>
+                        </div>
+                        <div class="modal-body" id="archived-set-modal">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <script type="text/javascript">
+                $('#active_forecasts').on('shown.bs.modal', function () {
+                    $.ajax({
+                        url: "/profile_forecasts/{{ profile.id }}/",
+                        method: 'GET',
+                        data: {
+                            filter: 'active'
+                        }
+                    }).done(function (data) {
+                        $('#active-set-modal').html(data);
+                        $.ajax({
+                            url: "/forecasts/",
+                            method: 'GET',
+                            data: {
+                                uid: {{ profile.id }},
+                                type: 'active'
+                            }
+
+                        }).done(function (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                (function (i) {
+                                    $('#collapseOne-' + data[i].id).on('shown.bs.collapse', function () {
+                                        drawChart('#peleus-forecast-' + data[i].id, data[i]);
+                                    }).on('hidden.bs.collapse', function () {
+                                        $('#peleus-forecast-' + data[i].id).empty();
+                                    });
+                                })(i);
+                            }
+                        });
+                    });
+                }).on('hidden.bs.modal', function () {
+                    $('#active-set-modal').empty()
                 });
-            });
-        }).on('hidden.bs.modal', function() {
-            $('#active-set-modal').empty()
-        });
 
-        $('#archived_forecasts').on('shown.bs.modal', function() {
+                $('#archived_forecasts').on('shown.bs.modal', function () {
 
-            $.ajax({
-                url: "/profile_forecasts/{{ profile.id }}/",
-                method: 'GET',
-                data: {
-                    filter: 'archived'
-                }
-            }).done(function(data) {
-                $('#archived-set-modal').html(data);
+                    $.ajax({
+                        url: "/profile_forecasts/{{ profile.id }}/",
+                        method: 'GET',
+                        data: {
+                            filter: 'archived'
+                        }
+                    }).done(function (data) {
+                        $('#archived-set-modal').html(data);
 
-                $.ajax({
-                    url: "/forecasts/",
-                    method: 'GET',
-                    data: {
-                        uid: {{ profile.id }},
-                        type: 'archived'
-                    }
+                        $.ajax({
+                            url: "/forecasts/",
+                            method: 'GET',
+                            data: {
+                                uid: {{ profile.id }},
+                                type: 'archived'
+                            }
 
-                }).done(function (data) {
-                    for (var i = 0; i < data.length; i++) {
-                        (function (i) {
-                            $('#collapseOne-' + data[i].id).on('shown.bs.collapse', function () {
-                                drawChart('#peleus-forecast-' + data[i].id, data[i]);
-                            }).on('hidden.bs.collapse', function () {
-                                $('#peleus-forecast-' + data[i].id).empty();
-                            });
-                        })(i);
-                    }
+                        }).done(function (data) {
+                            for (var i = 0; i < data.length; i++) {
+                                (function (i) {
+                                    $('#collapseOne-' + data[i].id).on('shown.bs.collapse', function () {
+                                        drawChart('#peleus-forecast-' + data[i].id, data[i]);
+                                    }).on('hidden.bs.collapse', function () {
+                                        $('#peleus-forecast-' + data[i].id).empty();
+                                    });
+                                })(i);
+                            }
+                        });
+                    });
+
+                }).on('hidden.bs.modal', function () {
+                    $('#archived-set-modal').empty()
                 });
-            });
+            </script>
 
-        }).on('hidden.bs.modal', function() {
-            $('#archived-set-modal').empty()
-        });
-    </script>
+            <div class="col-md-6">
 
-        <div class="col-md-6">
+                <div class="row">
+                    <p></p>
 
-        <div class="row">
-            <p></p>
-            <p><strong>
-                {%if owner %} My {% else %}
-                    {{ profile.full_name }}'s
-                {%endif%}
-             Active Forecasts
-{#            {% if forecasts.count == 5 %}#}
-                <a href="#" data-toggle="modal" data-target="#active_forecasts" class="pull-right">[See Full Set]</a>
-{#            {% endif %}#}
-            </strong></p>
-        </div>
-                  <table class="table">
-                      {% for forecast in forecasts %}
-                       <tr>
-                           <td><a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a></td>
-                       </tr>
-
-                      {% endfor %}
-                  </table>
-    </div>
-
-    <div class="col-md-6">
-        <div class="row">
-            <p></p>
-            <p><strong>
-            {%if owner %} My {% else %}
-                    {{ profile.full_name }}'s
-                {%endif%}
-             Archived Forecasts
-{#            {% if forecasts_archived == 5 %}#}
-                <a href="#" data-toggle="modal" data-target="#archived_forecasts" class="pull-right">[See Full Set]</a>
-{#            {% endif %}#}
-            </strong></p>
+                    <p><strong>
+                        {% if owner %} My {% else %}
+                            {{ profile.full_name }}'s
+                        {% endif %}
+                        Active Forecasts
+                        {#            {% if forecasts.count == 5 %}#}
+                        <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
+                        {#            {% endif %}#}
+                    </strong></p>
+                </div>
                 <table class="table">
-                        {% for forecast in forecasts_archived %}
-                       <tr>
-                           <td><a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a></td>
-                       </tr>
-                      {% endfor %}
+                    {% for forecast in forecasts %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                            </td>
+                        </tr>
+
+                    {% endfor %}
                 </table>
+            </div>
+
+            <div class="col-md-6">
+                <div class="row">
+                    <p></p>
+
+                    <p><strong>
+                        {% if owner %} My {% else %}
+                            {{ profile.full_name }}'s
+                        {% endif %}
+                        Archived Forecasts
+                        {#            {% if forecasts_archived == 5 %}#}
+                        <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
+                        {#            {% endif %}#}
+                    </strong></p>
+                    <table class="table">
+                        {% for forecast in forecasts_archived %}
+                            <tr>
+                                <td>
+                                    <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
         </div>
+        {% include 'profile_page_sidebar.html' %}
     </div>
-    </div>
-    {%  include 'profile_page_sidebar.html' %}
-</div>
-{% block postbodyscripts %}
-    {% load staticfiles %}
-    <script src="{% if is_active %}{% static '1p/active_forecast_page_charts.js' %}{% else %}{% static '1p/archived_forecast_page_charts.js' %}{% endif %}"></script>
-{% endblock %}
+    {% block postbodyscripts %}
+        {% load staticfiles %}
+        <script src="
+                {% if is_active %}{% static '1p/active_forecast_page_charts.js' %}{% else %}{% static '1p/archived_forecast_page_charts.js' %}{% endif %}"></script>
+    {% endblock %}
 {% endblock %}

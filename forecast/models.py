@@ -8,6 +8,7 @@ from taggit.managers import TaggableManager
 import forecast.settings as settings
 from forecast.settings import ORGANIZATION_TYPE, FORECAST_TYPE, STATUS_CHOICES, GROUP_TYPES, REGIONS
 
+
 def full_name(self):
     try:
         name = self.username if self.custom.display_only_username else self.first_name + ' ' + self.last_name
@@ -17,6 +18,7 @@ def full_name(self):
     return name
 
 User.full_name = full_name
+
 
 def _votes_by_forecast_type(forecast):
     if forecast.forecast_type == settings.FORECAST_TYPE_FINITE:

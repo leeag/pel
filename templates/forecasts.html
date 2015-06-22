@@ -64,7 +64,6 @@
             $(el).click(function () {
                 var clickedLink = $(el);
                 console.log('clicked', clickedLink);
-                window.clickedLink = clickedLink;
                 if ($(clickedLink).find('span').hasClass('glyphicon-chevron-down')) {
                     console.log('collapse');
                     $(clickedLink).html('Collapse <span class="glyphicon glyphicon-chevron-up"></span>');

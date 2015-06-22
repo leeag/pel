@@ -7,8 +7,8 @@
     <p><strong>Published Analysis:</strong></p>
     {% for element in analysis %}
         <div>
-        <a href="#" data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title }}</a>
-        <a id="a_right" href="#">Expand</a>
+            <a href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}" target="_blank"
+               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title }}</a>
         </div>
 
         <div class="modal fade" id="id{{ element.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
