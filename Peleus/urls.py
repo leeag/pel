@@ -15,6 +15,7 @@ urlpatterns = patterns(
     url(r'about/$', TemplateView.as_view(template_name='about_page.html'), name='about'),
     url(r'^$', views.IndexPageView.as_view(), name='home'),
     url(r'^profile/(?P<id>\d+)/$', views.ProfileView.as_view(), name='profile'),
+    url(r'^profile/(?P<id>\d+)/analysis/$', views.ProfileForecastAnalysisView.as_view(), name='profile_forecast_analysis'),
     url(r'^group/(?P<id>\d+)/$', views.GroupView.as_view(), name='group'),
     url(r'^my_groups/$', views.MyGroupsView.as_view(), name='my_groups'),
     url(r'signup/$', views.SignUpView.as_view(), name='signup'),

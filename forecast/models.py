@@ -153,11 +153,18 @@ class ForecastVotes(models.Model):
         return self.vote
 
 
+class ForecastAnalysisManager(models.Manager):
+    def get_queryset(self):
+        return super(ForecastAnalysisManager, self).get_queryset().annotate(avg_votes=Avg('analysis_votes__vote'))
+
+
 class ForecastAnalysis(models.Model):
     user = models.ForeignKey(User)
     forecast = models.ForeignKey('Forecast')
     title = models.CharField(max_length=100, blank=True, null=True)
     body = models.TextField(max_length=1000, blank=True, null=True)
+
+    objects = ForecastAnalysisManager()
 
     def __unicode__(self):
         return self.title

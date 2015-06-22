@@ -197,7 +197,7 @@ class IndividualForecastView(View):
         user = request.user
         # forecast = Forecast.objects.get(pk=id)
         forecast = get_object_or_404(Forecast, pk=id)
-        analysis_set = forecast.forecastanalysis_set.all().annotate(avg_votes=Avg('analysis_votes__vote'))
+        analysis_set = forecast.forecastanalysis_set.all()#.annotate(avg_votes=Avg('analysis_votes__vote'))
         media_set = forecast.forecastmedia_set.all()
         vote_form = ForecastVoteForm(forecast=forecast, user=request.user)
 
@@ -261,6 +261,21 @@ class PlaceVoteView(View):
         return HttpResponse('ok')
 
 
+class ProfileForecastAnalysisView(ListView):
+    template_name = 'profile_forecast_analysis_page.html'
+    context_object_name = 'analysis'
+    paginate_by = 3
+
+    def get_queryset(self):
+        profile = get_object_or_404(User, pk=self.kwargs.get('id'))
+        self.profile = profile
+        return ForecastAnalysis.objects.filter(user=profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileForecastAnalysisView, self).get_context_data(**kwargs)
+        context['profile'] = self.profile
+        return context
+
 class ProfileView(View):
     template_name = 'profile_page.html'
 
@@ -269,7 +284,7 @@ class ProfileView(View):
         profile = get_object_or_404(User, pk=id)
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
-        analysis = profile.forecastanalysis_set.all()[:5]
+        analysis = profile.forecastanalysis_set.all()[:3]
         return render(request, self.template_name, {'owner': owner, 'profile': profile,
                                                     'forecasts': forecasts,
                                                     'forecasts_archived': forecasts_archived,
