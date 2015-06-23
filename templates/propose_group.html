@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="row">
-        <form class="propose form-horizontal" role="form">
+        <form class="propose form-horizontal" action="{% url 'propose_group' %}" method="post" role="form">
             <h3>
                 Propose new group
             </h3>
@@ -16,7 +16,7 @@
                         </div>
                     {% endfor %}
                 </div>
-            <a href="#" class="form-control btn btn-primary group-propose">Propose new group</a>
+            <button type="submit" class="form-control btn btn-primary group-propose">Propose new group</button>
             </div>
         </form>
 

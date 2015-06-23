@@ -185,8 +185,11 @@ class ProposeNewGroup(View):
         user = request.user
         return render(request, self.template_name, {'form': self.form(), 'user': user})
 
-    def post(self):
-        pass
+    def post(self, request):
+        if request.method == 'POST':
+            form = self.form(request.POST)
+            if form.is_valid():
+                return HttpResponse('Thanks')
 
 
 class IndexPageView(ForecastFilterMixin, View):
