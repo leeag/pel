@@ -213,7 +213,7 @@ class GroupAdmin(DjangoObjectActions, ModelAdmin):
         obj.save()
 
     approved_admin.label = 'Approve'
-    approved_admin.attrs = {'class': 'btn btn-info'}
+    approved_admin.attrs = {'class': 'btn btn-primary'}
 
     def get_object_actions(self, request, context, **kwargs):
         if not context['original'].admin_approved:
