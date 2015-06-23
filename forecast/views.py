@@ -280,10 +280,22 @@ class PlaceVoteView(View):
         return HttpResponse('ok')
 
 
+class ProfileViewMixin(object):
+    def get_context_data(self, **kwargs):
+        context = super(ProfileViewMixin, self).get_context_data(**kwargs)
+        if 'profile' not in context:
+            pk = self.kwargs.get('id')
+            owner = self.request.user.id == pk
+            profile = get_object_or_404(User, pk=pk)
+            context['owner'] = owner
+            context['profile'] = profile
+
+        return context
+
+
 class ProfileForecastAnalysisView(ListView):
     template_name = 'profile_forecast_analysis_page.html'
     context_object_name = 'analysis'
-    paginate_by = 3
 
     def get_queryset(self):
         profile = get_object_or_404(User, pk=self.kwargs.get('id'))
@@ -295,19 +307,34 @@ class ProfileForecastAnalysisView(ListView):
         context['profile'] = self.profile
         return context
 
-class ProfileView(View):
-    template_name = 'profile_page.html'
 
-    def get(self, request, id):
-        owner = request.user.id == int(id)
-        profile = get_object_or_404(User, pk=id)
+class ProfileView(ProfileViewMixin, DetailView):
+    template_name = 'profile_page.html'
+    model = User
+    pk_url_kwarg = 'id'
+    context_object_name = 'profile'
+
+    # def get(self, request, id):
+    #     owner = request.user.id == int(id)
+    #     profile = get_object_or_404(User, pk=id)
+    #     forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
+    #     forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
+    #     analysis = profile.forecastanalysis_set.all()[:3]
+    #     return render(request, self.template_name, {'owner': owner, 'profile': profile,
+    #                                                 'forecasts': forecasts,
+    #                                                 'forecasts_archived': forecasts_archived,
+    #                                                 'analysis': analysis, })
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileView, self).get_context_data(**kwargs)
+        profile = context.get('profile')
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
-        analysis = profile.forecastanalysis_set.all()[:3]
-        return render(request, self.template_name, {'owner': owner, 'profile': profile,
-                                                    'forecasts': forecasts,
-                                                    'forecasts_archived': forecasts_archived,
-                                                    'analysis': analysis, })
+        analysis = profile.forecastanalysis_set.all()[:5]
+
+        context['forecasts'], context['forecasts_archived'], context['analysis'] = forecasts, forecasts_archived, analysis
+
+        return context
 
 
 class ProfileForecastView(View):
