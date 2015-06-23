@@ -192,6 +192,7 @@ class Group(models.Model):
     type = models.CharField(max_length=1, choices=GROUP_TYPES)
     organization_type = models.CharField(max_length=1, choices=ORGANIZATION_TYPE, blank=True, null=True)
     region = models.CharField(max_length=1, choices=REGIONS, blank=True, null=True)
+    admin_approved = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.name
