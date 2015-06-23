@@ -200,9 +200,25 @@ class ForecastVotesAdmin(ModelAdmin):
 
 
 @admin.register(models.Group)
-class GroupAdmin(ModelAdmin):
+class GroupAdmin(DjangoObjectActions, ModelAdmin):
     list_display = ('name', 'type')
+    list_filter = ('admin_approved',)
 
+    exclude = ('admin_approved',)
+
+    objectactions = ['approved_admin']
+
+    def approved_admin(self, request, obj):
+        obj.admin_approved = True
+        obj.save()
+
+    approved_admin.label = 'Approve'
+    approved_admin.attrs = {'class': 'btn btn-info'}
+
+    def get_object_actions(self, request, context, **kwargs):
+        if not context['original'].admin_approved:
+            return ['approved_admin']
+        return []
 
 @admin.register(models.Membership)
 class MembershipAdmin(ModelAdmin):
