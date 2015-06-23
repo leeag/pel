@@ -66,8 +66,8 @@ class CreateGroupForm(forms.ModelForm):
         model = Group
         default_attrs_req = {'class': "form-control input-sm", 'required': 'required'}
         default_attrs = {'class': "form-control input-sm"}
-
-        fields = '__all__'
+        exclude = ('admin_approved',)
+        # fields = '__all__'
 
         widgets = {'name': forms.TextInput(attrs=default_attrs_req),
                    'description': forms.Textarea(attrs=default_attrs),
