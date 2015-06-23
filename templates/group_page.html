@@ -1,13 +1,26 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h1>{{ group.name }}</h1>
+    <h3 class="well well">{{ group.name }}</h3>
     <div class="row">
+        <div class="">{{ group.description }}</div>
         <div class="col-sm-8"></div>
         <div class="col-sm-4">
         <ul class="nav nav-stacked">
+            {% for el in data %}
+                <li>
+                    <p>el</p>
+                </li>
+            {% empty %}
+                <div class="well well-lg">There are no forecasts</div>
+            {% endfor %}
         </ul>
     </div>
     </div>
 
+{% endblock %}
+
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/home_page_charts.js' %}"></script>
 {% endblock %}
