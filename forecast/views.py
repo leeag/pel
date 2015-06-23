@@ -15,7 +15,7 @@ from django.views.defaults import page_not_found
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
     ForecastVoteForm, CreateGroupForm
-from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group
+from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
 # from postman.models import Message
@@ -179,6 +179,7 @@ class MyGroupsView(ListView):
 
 class ProposeNewGroup(View):
     template_name = "propose_group.html"
+    template_group_access = "propose_group_access.html"
     form = CreateGroupForm
 
     def get(self, request):
@@ -189,7 +190,11 @@ class ProposeNewGroup(View):
         if request.method == 'POST':
             form = self.form(request.POST)
             if form.is_valid():
-                return HttpResponse('Thanks')
+                propose = Group(**form.cleaned_data)
+                propose.admin_approved = False
+                propose.user_set = request.user
+                propose.save()
+                return render(request, self.template_group_access, {})
 
 
 class IndexPageView(ForecastFilterMixin, View):
