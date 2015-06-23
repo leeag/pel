@@ -177,6 +177,17 @@ class MyGroupsView(ListView):
         return queryset
 
 
+class ProposeNewGroup(View):
+    template_name = "propose_group.html"
+    form = CreateGroupForm
+
+    def get(self, request):
+        user = request.user
+        return render(request, self.template_name, {'form': self.form(), 'user': user})
+
+    def post(self):
+        pass
+
 
 class IndexPageView(ForecastFilterMixin, View):
     template_name = 'index_page.html'

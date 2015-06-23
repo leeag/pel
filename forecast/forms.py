@@ -64,13 +64,14 @@ class CreateGroupForm(forms.ModelForm):
 
     class Meta:
         model = Group
+        default_attrs_req = {'class': "form-control input-sm", 'required': 'required'}
         default_attrs = {'class': "form-control input-sm"}
 
         fields = '__all__'
 
-        widgets = {'name': forms.TextInput(attrs=default_attrs),
+        widgets = {'name': forms.TextInput(attrs=default_attrs_req),
                    'description': forms.Textarea(attrs=default_attrs),
-                   'type': forms.Select(attrs=default_attrs),
+                   'type': forms.Select(attrs=default_attrs_req),
                    'organization_type': forms.Select(attrs=default_attrs),
                    'region': forms.Select(attrs=default_attrs)
                    }
