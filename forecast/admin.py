@@ -150,7 +150,7 @@ class ForecastAdmin(ModelAdmin):
 
 @admin.register(models.ForecastAnalysis)
 class ForecastAnalysisAdmin(ModelAdmin):
-    list_display = ('user', 'title')
+    list_display = ('title', 'user', 'forecast')
 
 
 @admin.register(models.ForecastPropose)
