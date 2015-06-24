@@ -7,24 +7,9 @@
                 <h1>{{ profile.full_name }}'s analysis</h1>
             {% endif %}
             {% for item in analysis %}
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        {% if item.post_link %}
-                            <a href="{{ item.post_link }}" target="_blank">{{ item.title }} <span
-                                    class="glyphicon glyphicon-new-window"></span></a>
-                        {% else %}
-                            {{ item.title }}
-                        {% endif %}
-                    </div>
-                    <div class="panel-body">
-                        {{ item.body }}
-                        <a href="{% url 'individual_forecast' id=item.forecast.id %}#analysis-{{ item.id }}"
-                           class="pull-right">{{ item.forecast.forecast_question }}</a>
-                        {% if item.avg_votes %}
-                            <span class="pull-right">{{ item.avg_votes|floatformat }} / 5</span>
-                        {% endif %}
-                    </div>
-                </div>
+                {% with disable_user_link=True %}
+                    {% include 'analysis_block.html' %}
+                {% endwith %}
             {% empty %}
                 <h1>There are no posted analysis</h1>
             {% endfor %}

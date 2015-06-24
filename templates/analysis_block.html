@@ -1,0 +1,22 @@
+<div class="panel panel-default">
+    <div class="panel-heading">
+        {% if item.post_link %}
+            <a href="{{ item.post_link }}" target="_blank">{{ item.title }} <span
+                    class="glyphicon glyphicon-new-window"></span></a>
+        {% else %}
+            {{ item.title }}
+        {% endif %}
+        <div>on <a href="{% url 'individual_forecast' id=item.forecast.id %}#analysis-{{ item.id }}">
+            {{ item.forecast.forecast_question }}</a>
+        </div>
+    </div>
+    <div class="panel-body">
+        {{ item.body }}
+        {% if item.avg_votes %}
+            <span class="pull-right">{{ item.avg_votes|floatformat }} / 5</span>
+        {% endif %}
+    </div>
+    {% if not disable_user_link %}
+        by <a href="{% url 'profile' id=item.user.id %}">{{ item.user.full_name }}</a>
+    {% endif %}
+</div>
