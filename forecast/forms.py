@@ -44,7 +44,6 @@ from utils.different import generate_activation_key
 
 
 class CommunityAnalysisForm(Form):
-
     title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
     body = forms.CharField(max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control'}))
 
@@ -61,7 +60,6 @@ class CommunityAnalysisForm(Form):
 
 
 class CreateGroupForm(forms.ModelForm):
-
     class Meta:
         model = Group
         default_attrs_req = {'class': "form-control input-sm", 'required': 'required'}
@@ -89,7 +87,6 @@ class ForecastForm(ModelForm):
 
 
 class ForecastVoteForm(forms.Form):
-
     class InitException(Exception):
         def __init__(self, forecast, user, *args, **kwargs):
             msg = "forecast" if forecast is None else "user"
@@ -108,17 +105,11 @@ class ForecastVoteForm(forms.Form):
             self.fields['vote'] = forms.ChoiceField(
                 required=True, choices=[(str(choice.id), choice.choice) for choice in self.forecast.choices.all()],
                 widget=forms.Select(attrs={'class': 'form-control', 'required': 'true'}))
-        elif self.forecast.forecast_type == FORECAST_TYPE_MAGNITUDE:
-            self.fields['vote'] = forms.IntegerField(
-                required=True, label='from', widget=forms.NumberInput(attrs={'class': 'form-control input-sm', 'required': 'required', 'min': self.forecast.min}))
-            self.fields['vote2'] = forms.IntegerField(
-                required=True, label='to', widget=forms.NumberInput(attrs={'class': 'form-control input-sm', 'required': 'required', 'max': self.forecast.max}))
-            # self.fields['vote'] = forms.MultiValueField(widget=RangeWidget(attrs={'required': 'required', 'min': self.forecast.min,
-            #                                                                       'max': self.forecast.max}))
         else:
             self.fields['vote'] = forms.IntegerField(
                 required=True, widget=forms.NumberInput(
-                    attrs={'class': 'form-control', 'required': 'required', 'min': '0', 'max': '100'}))
+                    attrs={'class': 'form-control', 'required': 'required', 'min': self.forecast.min,
+                           'max': self.forecast.max}))
 
     def save(self):
         if self.forecast.forecast_type == FORECAST_TYPE_FINITE:
@@ -135,7 +126,6 @@ class ForecastVoteForm(forms.Form):
                 self.forecast.votes.create(user=self.user, date=date.today(), **self.cleaned_data)
             else:
                 todays_vote.update(**self.cleaned_data)
-
 
 
 class SignupCompleteForm(forms.Form):
@@ -188,7 +178,7 @@ class UserRegistrationForm(ModelForm):
                    'city': forms.TextInput(attrs={'class': "form-control input-sm"}),
                    'profession': forms.TextInput(attrs={'class': "form-control input-sm"}),
                    'position': forms.TextInput(attrs={'class': "form-control input-sm"}),
-        }
+                   }
 
     def clean_password2(self):
         password1 = self.cleaned_data.get("password")
