@@ -155,6 +155,7 @@ class ForecastAnalysisManager(models.Manager):
 class ForecastAnalysis(models.Model):
     user = models.ForeignKey(User)
     forecast = models.ForeignKey('Forecast')
+    post_link = models.URLField(blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     body = models.TextField(max_length=1000, blank=True, null=True)
 

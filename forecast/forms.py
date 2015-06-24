@@ -44,8 +44,12 @@ from utils.different import generate_activation_key
 
 
 class CommunityAnalysisForm(Form):
-    title = forms.CharField(max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
-    body = forms.CharField(max_length=1000, widget=forms.Textarea(attrs={'class': 'form-control'}))
+    post_link = forms.URLField(required=False, label="Link to post", widget=forms.URLInput(
+        attrs={'class': 'form-control', 'placeholder': 'Link to post (optional)'}))
+    title = forms.CharField(required=True, max_length=100, widget=forms.TextInput(
+        attrs={'class': 'form-control', 'placeholder': 'Title'}))
+    body = forms.CharField(required=True, max_length=1000, widget=forms.Textarea(
+        attrs={'class': 'form-control', 'placeholder': 'Your post', 'rows': '4'}))
 
     def __init__(self, *args, **kwargs):
         self.id = kwargs.pop('id')

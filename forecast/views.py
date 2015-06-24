@@ -219,6 +219,7 @@ class IndividualForecastView(View):
         analysis_set = forecast.forecastanalysis_set.all()#.annotate(avg_votes=Avg('analysis_votes__vote'))
         media_set = forecast.forecastmedia_set.all()
         vote_form = ForecastVoteForm(forecast=forecast, user=request.user)
+        analysis_form = CommunityAnalysisForm(id=id, user=request.user)
 
         try:
             last_vote = forecast.votes.filter(user=user).order_by('-date')[0].get_vote()
@@ -227,6 +228,7 @@ class IndividualForecastView(View):
         return render(request, self.template_name,
                       {'forecast': forecast,
                        'vote_form': vote_form,
+                       'analysis_form': analysis_form,
                        'analysis_set': analysis_set,
                        'media_set': media_set,
                        'last_vote': last_vote,})

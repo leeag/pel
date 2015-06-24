@@ -4,36 +4,45 @@
     <div class="panel panel-default peleus-scrollable-block">
         <div class="panel-heading">Community analysis</div>
         {% for analysis in analysis_set %}
-        <div class="panel-body" id="analysis-{{ analysis.id }}">
-            <div class="well well-sm">
-                {{ analysis.title }}
+            <div class="panel-body" id="analysis-{{ analysis.id }}">
+                <div class="well well-sm">
+                    {% if analysis.post_link %}
+                        <a href="{{ analysis.post_link }}" target="_blank">{{ analysis.title }} <span
+                                class="glyphicon glyphicon-new-window"></span></a>
+                    {% else %}
+                        {{ analysis.title }}
+                    {% endif %}
+                </div>
+                <div class="analysis-text">
+                    {{ analysis.body }}
+                </div>
+                {#            <p class="pull-right">#}
+                by <a href="{% url 'profile' id=analysis.user.id %}">{{ analysis.user }}</a>
+                {#            </p>#}
+                {% if analysis.avg_votes %}
+                    <p class="pull-right">
+                        rate: {{ analysis.avg_votes|floatformat }} / 5
+                    </p>
+                {% endif %}
             </div>
-            <div class="analysis-text">
-                {{ analysis.body }}
-            </div>
-{#            <p class="pull-right">#}
-                by <a href="{% url 'profile' id=analysis.user.id %}" >{{ analysis.user }}</a>
-{#            </p>#}
-            {% if analysis.avg_votes %}
-            <p class="pull-right">
-                rate: {{ analysis.avg_votes|floatformat }} / 5
-            </p>
-            {% endif %}
-        </div>
         {% endfor %}
         {% if forecast.is_active and user.is_authenticated %}
             <div id="peleus-right-toggle-wrap">
                 <div class="peleus-right-toggle collapse">
                     <form id="post-analysis-form" action="{% url 'forecast_analysis' id=forecast.id %}" method="post">
                         {% csrf_token %}
-                        <div class="form-group">
-                            <input class="form-control" name="title" type="text" maxlength="100" placeholder="Title"
-                                   required>
-                        </div>
-                        <div class="form-group">
-                            <textarea class="form-control" name="body" maxlength="1000" placeholder="Your post"
-                                      required></textarea>
-                        </div>
+                        {% for field in analysis_form %}
+                            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                {{ field }}
+                                {% if field.errors %}
+                                    {{ field.errors }}
+                                {% endif %}
+                            </div>
+                            {#                        <div class="form-group">#}
+                            {#                            <textarea class="form-control" name="body" maxlength="1000" placeholder="Your post"#}
+                            {#                                      required></textarea>#}
+                            {#                        </div>#}
+                        {% endfor %}
                         <div class="form-group pull-right">
                             <a class="btn btn-danger" data-toggle="collapse"
                                data-target=".peleus-right-toggle" href="#"
@@ -43,7 +52,8 @@
                     </form>
                 </div>
                 <div class="peleus-right-toggle collapse in">
-                    <button class="form-control btn btn-primary" data-toggle="collapse" data-target=".peleus-right-toggle"
+                    <button class="form-control btn btn-primary" data-toggle="collapse"
+                            data-target=".peleus-right-toggle"
                             data-parent="#peleus-right-toggle-wrap">
                         <span class="glyphicon glyphicon-plus"></span>
                         Post Analysis
@@ -103,7 +113,7 @@
             $(location.hash).addClass('selected-analysis');
             setTimeout(function () {
                 $(location.hash).addClass('highlight-analysis');
-            },1010);
+            }, 1010);
 
             $('.analysis-text').jTruncate({
                 length: 100,
@@ -112,7 +122,7 @@
         })
     </script>
 
-{# TODO move related media to another template or rename this #}
+    {# TODO move related media to another template or rename this #}
     <div class="panel panel-default peleus-scrollable-block">
         <div class="panel-heading">
             <h3 class="panel-title">Related Media</h3>
@@ -120,12 +130,12 @@
         <div class="panel-body">
             <div class="row">
                 {% for media in media_set %}
-                <div class="col-sm-12">
-                    <a href="{{ media.url }}" target="_blank" class="thumbnail">
-                        <img src="{{ media.image.url }}" alt="{{ media.name }}">
-                    </a>
-                    <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>
-                </div>
+                    <div class="col-sm-12">
+                        <a href="{{ media.url }}" target="_blank" class="thumbnail">
+                            <img src="{{ media.image.url }}" alt="{{ media.name }}">
+                        </a>
+                        <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>
+                    </div>
                 {% endfor %}
             </div>
         </div>
