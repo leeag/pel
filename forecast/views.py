@@ -180,6 +180,7 @@ class MyGroupsView(ListView):
 class ProposeNewGroup(View):
     template_name = "propose_group.html"
     template_group_access = "propose_group_access.html"
+
     form = CreateGroupForm
 
     def get(self, request):
@@ -187,14 +188,13 @@ class ProposeNewGroup(View):
         return render(request, self.template_name, {'form': self.form(), 'user': user})
 
     def post(self, request):
-        if request.method == 'POST':
-            form = self.form(request.POST)
-            if form.is_valid():
-                propose = Group(**form.cleaned_data)
-                propose.admin_approved = False
-                propose.user_set = request.user
-                propose.save()
-                return render(request, self.template_group_access, {})
+        form = self.form(request.POST)
+        if form.is_valid():
+            propose = Group(**form.cleaned_data)
+            propose.admin_approved = False
+            propose.save()
+            Membership(user=request.user, group=propose, admin_rights=True).save()
+            return render(request, self.template_group_access, {})
 
 
 class IndexPageView(ForecastFilterMixin, View):

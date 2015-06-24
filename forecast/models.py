@@ -197,8 +197,8 @@ class Membership(models.Model):
     user = models.ForeignKey(User)
     group = models.ForeignKey('Group')
     date_joined = models.DateTimeField(auto_now_add=True)
-    admin_rights = models.BooleanField()
-    track_forecasts = models.BooleanField()
+    admin_rights = models.BooleanField(default=False)
+    track_forecasts = models.BooleanField(default=False)
 
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name
