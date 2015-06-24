@@ -206,12 +206,11 @@ class Membership(models.Model):
     track_forecasts = models.BooleanField()
 
     def __unicode__(self):
-        return self.user.username + ' in ' + self.group.name
+        return self.user.full_name() + ' in ' + self.group.name
 
 
 class ForecastVoteChoice(models.Model):
     forecast = models.ForeignKey('Forecast', related_name='choices')
-    num = models.IntegerField(unique=True)
     choice = models.CharField(max_length=150)
 
     def __unicode__(self):

@@ -106,7 +106,7 @@ class ForecastVoteForm(forms.Form):
 
         if self.forecast.forecast_type == FORECAST_TYPE_FINITE:
             self.fields['vote'] = forms.ChoiceField(
-                required=True, choices=[(str(choice.num), choice.choice) for choice in self.forecast.choices.all()],
+                required=True, choices=[(str(choice.id), choice.choice) for choice in self.forecast.choices.all()],
                 widget=forms.Select(attrs={'class': 'form-control', 'required': 'true'}))
         elif self.forecast.forecast_type == FORECAST_TYPE_MAGNITUDE:
             self.fields['vote'] = forms.IntegerField(
@@ -122,7 +122,7 @@ class ForecastVoteForm(forms.Form):
 
     def save(self):
         if self.forecast.forecast_type == FORECAST_TYPE_FINITE:
-            choice = self.forecast.choices.get(num=self.cleaned_data['vote'])
+            choice = self.forecast.choices.get(pk=self.cleaned_data['vote'])
             last_vote = self.forecast.votes.filter(user=self.user)
             if last_vote.count() == 0:
                 self.forecast.votes.create(user=self.user, choice=choice, date=date.today())
