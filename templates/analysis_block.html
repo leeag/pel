@@ -1,7 +1,7 @@
 <div class="panel panel-default">
     <div class="panel-heading">
         {% if item.post_link %}
-            <a href="{{ item.post_link }}" target="_blank">{{ item.title }} <span
+            <a href="{{ item.post_link }}" target="_blank" title="Click to see original post">{{ item.title }} <span
                     class="glyphicon glyphicon-new-window"></span></a>
         {% else %}
             {{ item.title }}

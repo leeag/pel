@@ -7,7 +7,8 @@
             <div class="panel-body" id="analysis-{{ analysis.id }}">
                 <div class="well well-sm">
                     {% if analysis.post_link %}
-                        <a href="{{ analysis.post_link }}" target="_blank">{{ analysis.title }} <span
+                        <a href="{{ analysis.post_link }}" target="_blank"
+                           title="Click to see original post">{{ analysis.title }} <span
                                 class="glyphicon glyphicon-new-window"></span></a>
                     {% else %}
                         {{ analysis.title }}
