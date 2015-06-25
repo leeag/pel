@@ -294,6 +294,7 @@ class ProfileViewMixin(object):
         owner = self.request.user.id == profile.id
         context['owner'] = owner
         context['uname'] = 'My' if owner else profile.full_name() + "'s"
+        context['predictions_count'] = ForecastVotes.objects.filter(user=profile).count()
 
         return context
 
