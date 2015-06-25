@@ -12,7 +12,9 @@
 
         </div>
 
-        {% include 'profile_page_myanalysis.html' %}
+        {% if not hide_analysis_box %}
+            {% include 'profile_page_myanalysis.html' %}
+        {% endif %}
 
         <div class="panel">
             <h4><strong>Connection Center</strong></h4>

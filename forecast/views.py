@@ -311,6 +311,7 @@ class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(ProfileForecastAnalysisView, self).get_context_data(**kwargs)
         context['profile'] = self.profile
+        context['hide_analysis_box'] = True
         return context
 
 
