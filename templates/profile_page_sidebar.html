@@ -1,102 +1,118 @@
- {% load staticfiles %}
+{% load staticfiles %}
 <div id="profile_sidebar" class="col-md-4">
-        <div class="row">
-            <div class="panel" id="performance">
+    <div class="row">
+        <div class="panel" id="performance">
             <h4><strong>
-            {{ uname }} Performance
+                {{ uname }} Performance
             </strong></h4>
 
-                <p>{{app_name}} Score:</p>
-                <p>General Accuracy: XX.X%</p>
-                <p>Number of Forecasts: {{len_predictions}}</p>
-                <p>
+            <p>{{ app_name }} Score:</p>
 
-            </div>
+            <p>General Accuracy: XX.X%</p>
 
-            {% include 'profile_page_myanalysis.html' %}
+            <p>Number of Forecasts: {{ len_predictions }}</p>
 
-             <div class="panel">
-                <h4><strong>Connection Center</strong></h4>
-                 {% if owner %}
+            <p>
+
+        </div>
+
+        {% include 'profile_page_myanalysis.html' %}
+
+        <div class="panel">
+            <h4><strong>Connection Center</strong></h4>
+            {% if owner %}
                 <p id="messclick"><a href="#">Inbox <span class="badge">1</span></a></p>
-                 {% elif not user.is_authenticated %}
+            {% elif not user.is_authenticated %}
 
-                 {% else %}
+            {% else %}
                 <p><a href="#" data-toggle="modal" data-target="#SendMessage">Send Message</a></p>
-                 {% endif %}
-                <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">2</span></a></p>
-                <p><a href="#" data-toggle="modal" data-target="#FolUsers">
-                    {{ uname }} Followed Users
-                    <span class="badge">3</span>
-                  </a>
-                </p>
-                <p><a href="#" data-toggle="modal" data-target="#MyGroups">
-                    {{ uname }} Groups
-                    <span class="badge">4</span>
-                   </a>
-                </p>
-                <p>Weekly Profile Views:</p>
+            {% endif %}
+            <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">2</span></a></p>
 
-                <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <p><a href="#" data-toggle="modal" data-target="#FolUsers">
+                {{ uname }} Followed Users
+                <span class="badge">3</span>
+            </a>
+            </p>
+
+            <p><a href="#" data-toggle="modal" data-target="#MyGroups">
+                {{ uname }} Groups
+                <span class="badge">4</span>
+            </a>
+            </p>
+
+            <p>Weekly Profile Views:</p>
+
+            <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Followers</h4>
-                          </div>
-                          <div class="modal-body">
-
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
                         </div>
-                      </div>
+                        <div class="modal-body">
+
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
                     </div>
-                    <div class="modal fade" id="FolUsers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+            </div>
+            <div class="modal fade" id="FolUsers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModalLabel">Followed Users</h4>
-                          </div>
-                          <div class="modal-body">
+                        </div>
+                        <div class="modal-body">
                             ...
-                          </div>
-                          <div class="modal-footer">
+                        </div>
+                        <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
 
-                          </div>
                         </div>
-                      </div>
                     </div>
-                    <div class="modal fade" id="MyGroups" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
-                        <div class="modal-content">
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                </div>
+            </div>
+            <div class="modal fade" id="MyGroups" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" id="myModaLabel">Groups</h4>
-                          </div>
-                          <div class="modal-body">
-                            ...
-                          </div>
-                          <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                          </div>
                         </div>
-                      </div>
+                        <div class="modal-body">
+                            ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="panel" id="info">
-
-
                 <h4><strong>{{ uname }} Info</strong></h4>
 
-                <p>Profession: {{profile.custom.profession}}</p>
-                <p>Organization: {{profile.custom.organization_name}}</p>
-                <p>Position: {{ profile.custom.position }}</p>
-                <p>Location: {{profile.custom.country}}</p>
+                {% if profile.custom.profession %}
+                    <p>Profession: {{ profile.custom.profession }}</p>
+                {% endif %}
+                {% if profile.custom.organization_name %}
+                    <p>Organization: {{ profile.custom.organization_name }}</p>
+                {% endif %}
+                {% if profile.custom.position %}
+                    <p>Position: {{ profile.custom.position }}</p>
+                {% endif %}
+                <p>Location: {{ profile.custom.country }}</p>
             </div>
 
-            </div>
         </div>
+    </div>
 </div>
