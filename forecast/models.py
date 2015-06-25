@@ -45,6 +45,11 @@ class ForecastsManager(models.Manager):
         else:
             return qs.filter(end_date__lt=date.today())
 
+class GroupsManager(models.Manager):
+
+    def get_queryset(self):
+        return super(GroupsManager, self).get_queryset().filter(admin_approved=True)
+
 
 class CustomUserProfile(models.Model):
     user = models.OneToOneField(User, related_name='custom')
@@ -188,6 +193,10 @@ class Group(models.Model):
     organization_type = models.CharField(max_length=1, choices=ORGANIZATION_TYPE, blank=True, null=True)
     region = models.CharField(max_length=1, choices=REGIONS, blank=True, null=True)
     admin_approved = models.BooleanField(default=True)
+
+    # objects = models.Manager()
+    all_objects = models.Manager()
+    objects = GroupsManager()
 
     def __unicode__(self):
         return self.name

@@ -216,9 +216,17 @@ class GroupAdmin(DjangoObjectActions, ModelAdmin):
     approved_admin.attrs = {'class': 'btn btn-primary'}
 
     def get_object_actions(self, request, context, **kwargs):
-        if not context['original'].admin_approved:
+        if context['original'] is not None and not context['original'].admin_approved:
             return ['approved_admin']
         return []
+
+    # def get_queryset(self, request):
+    #     qs = models.Group.all_objects.get_queryset()
+    #     ordering = self.get_ordering(request)
+    #     if ordering:
+    #         qs = qs.order_by(*ordering)
+    #     return qs
+
 
 @admin.register(models.Membership)
 class MembershipAdmin(ModelAdmin):
