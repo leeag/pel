@@ -10,13 +10,18 @@
             <div class="center-block form-center-block">
                 <div class="form-group">
                     {% for field in form %}
-                        <label for="{{ field.name }}" class="control-label col-sm-4">{{ field.label }}</label>
+                        {% if field.field.required %}
+                            <label for="{{ field.name }}" class="control-label col-sm-4">{{ field.label }}</label>
+                        {% else %}
+                            <span class="control-label col-sm-4">{{ field.label }}</span>
+                        {% endif %}
+
                         <div class="col-sm-8">
                             <p>{{ field }}</p>
                         </div>
                     {% endfor %}
                 </div>
-            <button type="submit" class="center-block btn btn-primary group-propose">Propose new group</button>
+                <button type="submit" class="center-block btn btn-primary group-propose">Propose new group</button>
             </div>
         </form>
 
