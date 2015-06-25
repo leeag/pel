@@ -3,6 +3,11 @@
 
     <div class="row">
         <div class="col-md-8">
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'profile' id=profile.id %}">Profile</a></li>
+            <li class="active">Analysis</li>
+        </ol>
             {% if analysis %}
                 <h1>{{ uname }} analysis</h1>
             {% endif %}
