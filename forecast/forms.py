@@ -1,7 +1,7 @@
 import django.forms as forms
 from captcha.fields import ReCaptchaField
 from datetime import date, datetime, timedelta
-from django.core.mail import send_mail
+from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.models import User
 from django.forms import ModelForm, Form
 from django.forms.extras import SelectDateWidget
@@ -10,7 +10,7 @@ from django.utils.translation import ugettext, ugettext_lazy as _
 from taggit.forms import TagWidget
 from django.forms import MultiWidget
 
-from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DEFAULT_EMAIL, DOMAIN_NAME, GROUP_TYPES
+from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DOMAIN_NAME, GROUP_TYPES
 
 from forecast.models import CustomUserProfile, ForecastVotes, ForecastPropose, ForecastAnalysis, Forecast, Group
 from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, FORECAST_TYPE_FINITE, \
@@ -211,8 +211,7 @@ class UserRegistrationForm(ModelForm):
                                          expires_at=expire_date)
         user_profile.save()
         try:
-            send_mail('Confirm your email', '%s/confirm_email?token=%s' % (DOMAIN_NAME, token), DEFAULT_EMAIL,
-                      [user.email])
+            EmailMessage('Confirm your email', '%s/confirm_email?token=%s' % (DOMAIN_NAME, token), to=[user.email]).send()
         except Exception as ex:
             print ex
 

@@ -143,12 +143,24 @@ TOKEN_LENGTH = 64
 # EMAIL_HOST = 'localhost'
 # EMAIL_PORT = 1025
 
-DEFAULT_EMAIL = 'no-reply@peleus.com'
-EMAIL_SERVER = 'smtp.gmail.com:587'
-EMAIL_USER = 'Peleus.key@gmail.com'
-EMAIL_PASSWORD = 'Castle12!21'
+EMAIL_HOST = 'smtp.gmail.com'
+
+# EMAIL_HOST_USER = 'Peleus.key@gmail.com'
+EMAIL_HOST_USER = 'peleus.noreply@gmail.com'
+# EMAIL_HOST_PASSWORD = 'Castle12!21'
+EMAIL_HOST_PASSWORD = 'laserunicorns'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+
+
+# DEFAULT_EMAIL = 'no-reply@peleus.com'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_USER = 'Peleus.key@gmail.com'
+# EMAIL_PASSWORD = 'Castle12!21'
 _EMAIL_TEMPLATE_FILE = 'email.html'
 EMAIL_TEMPLATE_PATH = os.path.join(BASE_DIR, 'templates', 'email', _EMAIL_TEMPLATE_FILE)
+MAIL_USE_TLS = True
 
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
