@@ -287,15 +287,18 @@ class ProfileViewMixin(object):
         context = super(ProfileViewMixin, self).get_context_data(**kwargs)
         if 'profile' not in context:
             pk = self.kwargs.get('id')
-            owner = self.request.user.id == pk
             profile = get_object_or_404(User, pk=pk)
-            context['owner'] = owner
             context['profile'] = profile
+        else:
+            profile = context['profile']
+        owner = self.request.user.id == profile.id
+        context['owner'] = owner
+        context['uname'] = 'My' if owner else profile.full_name() + "'s"
 
         return context
 
 
-class ProfileForecastAnalysisView(ListView):
+class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
     template_name = 'profile_forecast_analysis_page.html'
     context_object_name = 'analysis'
 

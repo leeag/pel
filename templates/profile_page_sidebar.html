@@ -3,24 +3,13 @@
         <div class="row">
             <div class="panel" id="performance">
             <h4><strong>
-            {%if owner %}
-                My Performance
-                {% else %}
-                {{ profile.full_name }}'s Performance
-
-            {%endif%}
+            {{ uname }} Performance
             </strong></h4>
 
                 <p>{{app_name}} Score:</p>
                 <p>General Accuracy: XX.X%</p>
                 <p>Number of Forecasts: {{len_predictions}}</p>
                 <p>
-{#                {%if owner %}#}
-{#                See My Archived Forecasts</p>#}
-{#                {% else %}#}
-{#                See {{ profile.full_name }}'s Archived Forecasts#}
-{#                            {%endif%}#}
-{#                </p>#}
 
             </div>
 
@@ -37,12 +26,12 @@
                  {% endif %}
                 <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">2</span></a></p>
                 <p><a href="#" data-toggle="modal" data-target="#FolUsers">
-                    {% if owner %} My {% else %} {{ profile.full_name }}'s {% endif %} Followed Users
+                    {{ uname }} Followed Users
                     <span class="badge">3</span>
                   </a>
                 </p>
                 <p><a href="#" data-toggle="modal" data-target="#MyGroups">
-                    {% if owner %} My {% else %} {{ profile.full_name }}'s {% endif %} Groups
+                    {{ uname }} Groups
                     <span class="badge">4</span>
                    </a>
                 </p>
@@ -99,14 +88,9 @@
             </div>
             <div class="panel" id="info">
 
-            {%if owner %}
 
-                <h4><strong>My Info</strong> <a href="#" class="pull-right">Edit</a></h4>
-                <div style="clear:left"></div>
-                {% else %}
-                <h4><strong>{{profile.full_name}}'s Info</strong></h4>
+                <h4><strong>{{ uname }} Info</strong></h4>
 
-            {%endif%}
                 <p>Profession: {{profile.custom.profession}}</p>
                 <p>Organization: {{profile.custom.organization_name}}</p>
                 <p>Position: {{ profile.custom.position }}</p>
