@@ -211,8 +211,7 @@ class UserRegistrationForm(ModelForm):
                                          expires_at=expire_date)
         user_profile.save()
         try:
-            EmailMessage('Confirm your email', '%s/confirm_email?token=%s' % (DOMAIN_NAME, token), to=[user.email]).send()
+            EmailMessage('Confirm your email', '%s/confirm_email/%s' % (DOMAIN_NAME, token), to=[user.email]).send()
         except Exception as ex:
             print ex
-
         return user

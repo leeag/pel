@@ -121,15 +121,16 @@ class CommunityAnalysisPostView(View):
 class EmailConfirmationView(View):
     template_name = 'email_confirm_page.html'
 
-    def get(self, request):
-        token = request.GET.get('token')
+    def get(self, request, token):
+        # token = request.GET.get('token')
         res_dict = dict()
         try:
             user = CustomUserProfile.objects.get(activation_token=token)
         except User.DoesNotExist as ex:
             res_dict['error'] = ex
             return render(request, self.template_name, res_dict)
-        if token == user.custom.activation_token and datetime.now() <= user.custom.expires_at:
+        # if token == user.custom.activation_token and datetime.now() <= user.custom.expires_at:
+        if token == user.activation_token:
             user.email_verified = True
             res_dict['success'] = _('Email was verified!')
             user.save()
@@ -244,7 +245,7 @@ class LoginView(View):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
-        if user is not None:  # and user.is_active:
+        if user is not None and user.custom.email_verified:  # and user.is_active:
             login(request, user)
             try:
                 if not user.custom.conditions_accepted:
@@ -383,6 +384,7 @@ class ProposeForecastView(View):
 
 class SignUpView(View):
     template_name = 'sign_up_page.html'
+    template_name_confirm = 'sing_up_confirm.html'
     error_template = 'error_login_page.html'
     form = UserRegistrationForm
 
@@ -395,7 +397,7 @@ class SignUpView(View):
         if signup_form.is_valid():
             user = signup_form.save()
             request.session['uid'] = user.id
-            return HttpResponseRedirect(reverse('signup2'))
+            return render(request, self.template_name_confirm, {})
         else:
             return render(request, self.error_template, {'errors': signup_form.errors})
 

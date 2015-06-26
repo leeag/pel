@@ -1,14 +1,16 @@
 {% extends 'base.html' %}
 {% block content %}
-    {% if email_address %}
+        {% if success %}
+            <div class="jumbotron">
+                <h2>You have confirmed your email address.</h2>
+                <p>{{ success }}</p>
+                <a class="btn btn-default" href="{% url 'home' %}">Home page</a>
+            </div>
+        {% else %}
+            <div class="jumbotron" style="background-color: #a94442">
+                <h2>Invalid confirmation key.</h2>
+                <p>{{ error }}</p>
 
-        <p>You have confirmed your email address'.</p>
-    {% else %}
-
-        <p>Invalid confirmation key.</p>
-
-    {% endif %}
-
-    <p>Go to <a href="{% url 'home' %}">Peleus</a></p>
-
+            </div>
+        {% endif %}
 {% endblock %}
