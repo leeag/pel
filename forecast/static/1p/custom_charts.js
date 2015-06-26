@@ -1,11 +1,20 @@
 function drawChart(selector, data) {
-    if(data.forecastType === 'Finite Event') {
-        drawFiniteEventChart(selector, data.votes);
-    } else if(data.forecastType === 'Magnitude') {
-        drawMagnitudeChart(selector, data.votes);
+    if(data.votes.length !== 0) {
+        if (data.forecastType === 'Finite Event') {
+            drawFiniteEventChart(selector, data.votes);
+        } else if (data.forecastType === 'Magnitude') {
+            drawMagnitudeChart(selector, data.votes);
+        } else {
+            drawProbabilityChart(selector, data.votes);
+        }
     } else {
-        drawProbabilityChart(selector, data.votes);
+        $(selector).html('<div class="text-center"><h4>There are no forecasts<h4></div>')
     }
+}
+
+function urlDataFromIds() {
+    var ids = $('.forecast-chart').map(function() {return $(this).attr('forecast-id') }).get();
+    return ids.map(function (el) { return 'id=' + el}).join('&')
 }
 
 function transformJsonToColumns(json) {

@@ -86,27 +86,6 @@
                             <p>Some messages</p>
                         </div>
                     </div>
-
-                    <script type="text/javascript">
-
-
-                        $('#edit_foo').on('click', function () {
-                            $.ajax({
-                                type: 'POST',
-                                url: '/echo/html/',
-                                data: {
-                                    html: '<form id="form_foo"><textarea></textarea><input type="submit"></input></form>',
-                                    delay: 1,
-                                },
-                                success: function (data, textStatus, jqXHR) {
-                                    $('#foo_modal').find('.modal-body').html(data);
-                                    $('#foo_modal').modal('show');
-                                },
-                            });
-                        });
-
-                    </script>
-
                 </div>
             </div>
 
@@ -274,6 +253,6 @@
     {% block postbodyscripts %}
         {% load staticfiles %}
         <script src="
-                {% if is_active %}{% static '1p/active_forecast_page_charts.js' %}{% else %}{% static '1p/archived_forecast_page_charts.js' %}{% endif %}"></script>
+                {% if is_active %}{% static '1p/forecasts_page_charts.js' %}{% else %}{% static '1p/archived_forecast_page_charts.js' %}{% endif %}"></script>
     {% endblock %}
 {% endblock %}

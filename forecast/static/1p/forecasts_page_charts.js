@@ -1,8 +1,8 @@
 $(document).ready(function (e) {
-     console.log('hello');
     $.ajax({
         url: "/forecasts/",
-        method: 'GET'
+        method: 'GET',
+        data: urlDataFromIds()
 
     }).done(function (data) {
         for (var i=0; i<data.length; i++) {

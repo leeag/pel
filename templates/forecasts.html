@@ -20,7 +20,7 @@
                     <div class="col-sm-9">
                         <div class="panel-body">
 
-                            <div id="peleus-forecast-{{ el.id }}">
+                            <div class="forecast-chart" forecast-id="{{ el.id }}" id="peleus-forecast-{{ el.id }}">
 
                             </div>
                             <span class="label label-default">Tags:</span>
@@ -34,24 +34,28 @@
                         </div>
                     </div>
                     <div class="col-sm-3">
-
-                        <div class="panel panel-default peleus-scrollable-block">
-                            <div class="panel-heading">
-                                <h3 class="panel-title">Related Media</h3>
-                            </div>
-                            <div class="panel-body">
-                                <div class="row">
-                                    {% for media in el.forecastmedia_set.all %}
-                                        <div class="col-sm-12">
-                                            <a href="{{ media.url }}" target="_blank" class="thumbnail">
-                                                <img src="{{ media.image.url }}" alt="{{ media.name }}">
-                                            </a>
-                                            <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>
+                        {% with media_set=el.forecastmedia_set.all %}
+                            {% if media_set %}
+                                <div class="panel panel-default peleus-scrollable-block">
+                                    <div class="panel-heading">
+                                        <h3 class="panel-title">Related Media</h3>
+                                    </div>
+                                    <div class="panel-body">
+                                        <div class="row">
+                                            {% for media in media_set %}
+                                                <div class="col-sm-12">
+                                                    <a href="{{ media.url }}" target="_blank" class="thumbnail">
+                                                        <img src="{{ media.image.url }}" alt="{{ media.name }}">
+                                                    </a>
+                                                    <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a>
+                                                    </h4>
+                                                </div>
+                                            {% endfor %}
                                         </div>
-                                    {% endfor %}
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            {% endif %}
+                        {% endwith %}
 
                     </div>
                 </div>
@@ -63,13 +67,10 @@
         $('.collapse-btn').each(function (i, el) {
             $(el).click(function () {
                 var clickedLink = $(el);
-                console.log('clicked', clickedLink);
                 if ($(clickedLink).find('span').hasClass('glyphicon-chevron-down')) {
-                    console.log('collapse');
                     $(clickedLink).html('Collapse <span class="glyphicon glyphicon-chevron-up"></span>');
                 }
                 else {
-                    console.log('expand');
                     $(clickedLink).html('Expand <span class="glyphicon glyphicon-chevron-down"></span>');
                 }
             });

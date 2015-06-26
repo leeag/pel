@@ -29,7 +29,7 @@
                     </div>
                     <div class="panel-body">
                     <div class="col-sm-9">
-                        <div id="peleus-home-page-chart-{{ el.id }}">
+                        <div class="forecast-chart" forecast-id="{{ el.id }}" id="peleus-home-page-chart-{{ el.id }}">
                             {% if not el.votes %}
                                 <p>No current forecast's votes!</p>
                             {% endif %}
