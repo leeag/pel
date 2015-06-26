@@ -6,6 +6,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.contrib.auth.admin import UserAdmin
 from django.db.models import Count, Avg
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.request import QueryDict
@@ -245,21 +246,26 @@ class LoginView(View):
         username = request.POST.get('username')
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
-        if user is not None and user.custom.email_verified:  # and user.is_active:
-            login(request, user)
-            try:
-                if not user.custom.conditions_accepted:
-                    return HttpResponseRedirect(reverse('home'))
-            except Exception:
-                pass
-            return HttpResponseRedirect(reverse('home'))
 
-        elif user is not None and not user.custom.email_verified:
-            return render(request, "sing_in_invalid.html", {'not_email_confirmed': True})
+        if not user.is_superuser:
+            if user is not None and user.custom.email_verified:  # and user.is_active:
+                login(request, user)
+                try:
+                    if not user.custom.conditions_accepted:
+                        return HttpResponseRedirect(reverse('home'))
+                except Exception:
+                    pass
+                return HttpResponseRedirect(reverse('home'))
 
+            elif user is not None and not user.custom.email_verified:
+                return render(request, "sing_in_invalid.html", {'not_email_confirmed': True})
+
+            else:
+                # return HttpResponse(_('Invalid login or password'), status=400)
+                return render(request, "sing_in_invalid.html", {'invalid_login': True})
         else:
-            # return HttpResponse(_('Invalid login or password'), status=400)
-            return render(request, "sing_in_invalid.html", {'invalid_login': True})
+            login(request, user)
+            return HttpResponseRedirect(reverse('home'))
 
 
 class LogoutView(View):
