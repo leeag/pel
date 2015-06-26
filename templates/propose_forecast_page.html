@@ -17,16 +17,21 @@
                 </div>
             </div>
             {% endfor %}
-        <div>
+            {% for f in formset %}
 
-        </select>
-        </div>
-        <script type="text/javascript">
-                $("#id_tags").select2({
-                 tags: true
-                 })
-        </script>
-            <p></p>
+                    <div class="form-group{% if f.choice.error %} error{% endif %}">
+                        <label for="{{ f.choice.name }}" class="col-sm-4">{{ f.choice.label }}</label>
+
+                        <div class="col-sm-8">
+                            <p>{{ f.choice }}</p>
+                            {% if f.choice.error %}
+                                <label>{{ f.choice.error }}</label>
+                            {% endif %}
+                        </div>
+                    </div>
+
+        {% endfor %}
+
             <button type="submit" class="btn btn-success">Propose!</button>
         </div>
     </form>

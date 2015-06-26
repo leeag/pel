@@ -5,42 +5,18 @@ from django.core.mail import send_mail, EmailMessage
 from django.contrib.auth.models import User
 from django.forms import ModelForm, Form
 from django.forms.extras import SelectDateWidget
+from django.forms.models import BaseInlineFormSet
 from django_countries.widgets import CountrySelectWidget
 from django.utils.translation import ugettext, ugettext_lazy as _
 from taggit.forms import TagWidget
-from django.forms import MultiWidget
+
 
 from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DOMAIN_NAME, GROUP_TYPES
 
-from forecast.models import CustomUserProfile, ForecastVotes, ForecastPropose, ForecastAnalysis, Forecast, Group
+from forecast.models import CustomUserProfile, ForecastPropose, ForecastAnalysis, Forecast, Group
 from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, FORECAST_TYPE_FINITE, \
     FORECAST_TYPE_MAGNITUDE, FORECAST_TYPE_PROBABILITY, FORECAST_TYPE_TIME_HORIZON
 from utils.different import generate_activation_key
-
-
-# class RangeWidget(MultiWidget):
-#     def __init__(self, attrs=None, *args, **kwargs):
-#
-#         _widgets = (
-#             forms.HiddenInput(attrs=attrs),
-#             forms.HiddenInput(attrs=attrs),
-#         )
-#         super(RangeWidget, self).__init__(_widgets, *args, **kwargs)
-#
-#     def decompress(self, value):
-#         if value:
-#             return [value.min(), value.max()]
-#         return [min, max]
-#
-#     def format_output(self, rendered_widgets):
-#         return u''.join(rendered_widgets) + unicode(self.media)
-#
-#     class Media:
-#         css = {
-#             'all': ('/static/3p/jquery-ui.min.css',)
-#         }
-#         js = ('/static/3p/jquery-ui.mis.js',
-#               '/static/1p/range_votes.js')
 
 
 class CommunityAnalysisForm(Form):
@@ -62,6 +38,9 @@ class CommunityAnalysisForm(Form):
         analysis = ForecastAnalysis(forecast_id=self.id, user=self.user, **data)
         analysis.save()
 
+
+class CustomInlineFormSet(BaseInlineFormSet):
+     pass
 
 class CreateGroupForm(forms.ModelForm):
     class Meta:

@@ -14,8 +14,8 @@ from django.views.generic import View, DetailView, ListView
 from django.views.defaults import page_not_found
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
-    ForecastVoteForm, CreateGroupForm
-from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, Membership
+    ForecastVoteForm, CreateGroupForm, CustomInlineFormSet
+from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, ForecastProposeFiniteChoice
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
 # from postman.models import Message
@@ -375,9 +375,15 @@ class ProposeForecastView(View):
 
     def post(self, request):
         form = self.form(request.POST)
+        inst = ForecastPropose()
         if form.is_valid():
             propose = form.save(commit=False)
             propose.user = request.user
+            if request.method == "POST":
+                formset = CustomInlineFormSet(request.POST, request.FILES, instance=inst)
+                if formset.is_valid():
+                    formset.save()
+
             propose.save()
             form.save_m2m()
             username = request.user.username

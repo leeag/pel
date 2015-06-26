@@ -135,6 +135,14 @@ class ForecastPropose(models.Model):
         return self.forecast_question
 
 
+class ForecastProposeFiniteChoice(models.Model):
+    forecast = models.ForeignKey('ForecastPropose')
+    choice = models.CharField(max_length=150)
+
+    def __unicode__(self):
+        return self.choice
+
+
 class ForecastVotes(models.Model):
     user = models.ForeignKey(User)
     forecast = models.ForeignKey('Forecast', related_name='votes')
