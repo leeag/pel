@@ -1,12 +1,22 @@
 {% extends 'base.html' %}
 {% block content %}
         <div class="panel-heading">
+        {% if not_email_confirmed %}
             <h1>
-                Invalid login or password.
+                Sorry, but this account not confirmed yet
             </h1>
             <p>
-                Please check that you have entered your login and password correctly.
+                Please, confirm your account by link in email, or log in with another account
             </p>
+            {% endif %}
+        {% if invalid_login %}
+            <h1>
+                Invalid login or password
+            </h1>
+            <p>
+                Please check that you have entered your login and password correctly
+            </p>
+            {% endif %}
             <form action="{% url 'login' %}" method="post">
                 {% csrf_token %}
 
