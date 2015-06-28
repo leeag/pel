@@ -14,7 +14,7 @@
                     </a>
                 </h4>
             </div>
-            <div id="collapseOne-{{ el.id }}" class="panel-collapse collapse" role="tabpanel"
+            <div id="collapseOne-{{ el.id }}" class="panel-collapse chart-view-collapse collapse" role="tabpanel"
                  aria-labelledby="headingOne">
                 <div class="row">
                     <div class="col-sm-9">
@@ -64,15 +64,13 @@
     {% endfor %}
 
     <script type="text/javascript">
-        $('.collapse-btn').each(function (i, el) {
-            $(el).click(function () {
-                var clickedLink = $(el);
-                if ($(clickedLink).find('span').hasClass('glyphicon-chevron-down')) {
-                    $(clickedLink).html('Collapse <span class="glyphicon glyphicon-chevron-up"></span>');
-                }
-                else {
-                    $(clickedLink).html('Expand <span class="glyphicon glyphicon-chevron-down"></span>');
-                }
+        $('.chart-view-collapse').each(function (i, el) {
+            $(el).on('show.bs.collapse', function () {
+                $(this).closest('.panel-default').find('.collapse-btn')
+                        .html('Collapse <span class="glyphicon glyphicon-chevron-up"></span>')
+            }).on('hide.bs.collapse', function () {
+                $(this).closest('.panel-default').find('.collapse-btn')
+                        .html('Expand <span class="glyphicon glyphicon-chevron-down"></span>')
             });
         });
     </script>

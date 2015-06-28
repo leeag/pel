@@ -138,10 +138,7 @@
                         $.ajax({
                             url: "/forecasts/",
                             method: 'GET',
-                            data: {
-                                uid: {{ profile.id }},
-                                type: 'active'
-                            }
+                            data: urlDataFromIds()
 
                         }).done(function (data) {
                             for (var i = 0; i < data.length; i++) {
@@ -173,10 +170,7 @@
                         $.ajax({
                             url: "/forecasts/",
                             method: 'GET',
-                            data: {
-                                uid: {{ profile.id }},
-                                type: 'archived'
-                            }
+                            data: urlDataFromIds()
 
                         }).done(function (data) {
                             for (var i = 0; i < data.length; i++) {
@@ -252,7 +246,6 @@
     </div>
     {% block postbodyscripts %}
         {% load staticfiles %}
-        <script src="
-                {% if is_active %}{% static '1p/forecasts_page_charts.js' %}{% else %}{% static '1p/archived_forecast_page_charts.js' %}{% endif %}"></script>
+        <script src="{% static '1p/forecasts_page_charts.js' %}"></script>
     {% endblock %}
 {% endblock %}
