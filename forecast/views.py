@@ -16,7 +16,7 @@ from django.views.defaults import page_not_found
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet
-from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, ForecastProposeFiniteChoice
+from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, ForecastProposeFiniteChoice, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
 # from postman.models import Message
@@ -237,25 +237,37 @@ class LoginView(View):
         password = request.POST.get('password')
         user = authenticate(username=username, password=password)
 
-        if not user.is_superuser:
-            if user is not None and user.custom.email_verified:  # and user.is_active:
+        # if not user.is_superuser:
+        #     if user is not None and user.custom.email_verified:  # and user.is_active:
+        #         login(request, user)
+        #         try:
+        #             if not user.custom.conditions_accepted:
+        #                 return HttpResponseRedirect(reverse('home'))
+        #         except Exception:
+        #             pass
+        #         return HttpResponseRedirect(reverse('home'))
+        #
+        #     elif user is not None and not user.custom.email_verified:
+        #         return render(request, "sing_in_invalid.html", {'not_email_confirmed': True})
+        #
+        #     else:
+        #         # return HttpResponse(_('Invalid login or password'), status=400)
+        #         return render(request, "sing_in_invalid.html", {'invalid_login': True})
+        # else:
+        #     login(request, user)
+        #     return HttpResponseRedirect(reverse('home'))
+
+        if user is not None:
+            if user.is_superuser:
                 login(request, user)
-                try:
-                    if not user.custom.conditions_accepted:
-                        return HttpResponseRedirect(reverse('home'))
-                except Exception:
-                    pass
                 return HttpResponseRedirect(reverse('home'))
-
-            elif user is not None and not user.custom.email_verified:
-                return render(request, "sing_in_invalid.html", {'not_email_confirmed': True})
-
+            elif user.custom.email_verified:
+                login(request, user)
+                return HttpResponseRedirect(reverse('home'))
             else:
-                # return HttpResponse(_('Invalid login or password'), status=400)
-                return render(request, "sing_in_invalid.html", {'invalid_login': True})
+                return render(request, "sing_in_invalid.html", {'email_not_confirmed': not user.custom.email_verified})
         else:
-            login(request, user)
-            return HttpResponseRedirect(reverse('home'))
+            return render(request, "sing_in_invalid.html", {'invalid_login': True})
 
 
 class LogoutView(View):
