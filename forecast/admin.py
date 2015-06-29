@@ -10,6 +10,7 @@ from django_object_actions import DjangoObjectActions
 
 import models
 from forecast import settings
+from forecast.forms import CSICheckboxSelectMultiple, CSIMultipleChoiceField
 
 admin.site.site_header = 'Peleus administration'
 admin.site.site_title = 'Peleus site admin'
@@ -19,6 +20,13 @@ class CustomUserProfileInline(StackedInline):
     model = models.CustomUserProfile
     verbose_name = 'forecast user'
     verbose_name_plural = 'forecast users'
+
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'forecast_areas':
+            kwargs['widget'] = CSICheckboxSelectMultiple(choices=settings.AREAS)
+        if db_field.name == 'forecast_regions':
+            kwargs['widget'] = CSICheckboxSelectMultiple(choices=settings.REGIONS)
+        return super(CustomUserProfileInline, self).formfield_for_dbfield(db_field, **kwargs)
 
 UserAdmin.inlines = (CustomUserProfileInline,)
 

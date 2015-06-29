@@ -1,5 +1,3 @@
-import ast
-
 from models import CustomUserProfile
 from forecast.settings import REGIONS, AREAS, FORECAST_FILTER, FORECAST_FILTERS
 
@@ -11,8 +9,8 @@ def forecast_user(request):
     try:
         custom_user = CustomUserProfile.objects.select_related().get(user_id=request.user.id)
 
-        custom_user.forecast_areas = [str(i) for i in ast.literal_eval(custom_user.forecast_areas)]
-        custom_user.forecast_regions = [str(i) for i in ast.literal_eval(custom_user.forecast_regions)]
+        custom_user.forecast_areas = custom_user.forecast_areas.split(',')
+        custom_user.forecast_regions = custom_user.forecast_regions.split(',')
     except (CustomUserProfile.DoesNotExist, ValueError, SyntaxError):
         custom_user = None
 
