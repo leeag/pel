@@ -49,12 +49,6 @@ class ForecastFilterMixin(object):
             forecasts = Forecast.archived.all()
         return forecasts
 
-    def _get_url_without_tag(self, path, querydict):
-        params = QueryDict(querydict.urlencode(), mutable=True)
-        params.pop('tag')
-
-        return path + '?' + params.urlencode()
-
 
 class LoginRequiredMixin(object):
     @classmethod
