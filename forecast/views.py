@@ -148,10 +148,6 @@ class ForecastsJsonView(ForecastFilterMixin, View):
             qs = qs.filter(pk__in=request.GET.getlist('id'))
         elif 'tag' in request.GET:
             qs = self._queryset_by_tag(request.GET, qs)
-        elif 'uid' in request.GET:
-            type = request.GET.get('type', 'archived')
-            qs = Forecast.active.distinct().all() if type == 'active' else Forecast.archived.distinct().all()
-            qs = qs.filter(votes__user_id=request.GET.get('uid'))
         else:
             qs = self._queryset_by_forecast_filter(request.GET)
         return self._respond(qs)
