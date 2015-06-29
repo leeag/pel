@@ -1,6 +1,7 @@
 from datetime import date
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
+from django.core.exceptions import ObjectDoesNotExist
 from django.db import models
 from django.db.models import Count, Avg
 from taggit.managers import TaggableManager
@@ -12,7 +13,7 @@ from forecast.settings import ORGANIZATION_TYPE, FORECAST_TYPE, STATUS_CHOICES, 
 def full_name(self):
     try:
         name = self.username if self.custom.display_only_username else self.first_name + ' ' + self.last_name
-    except:
+    except ObjectDoesNotExist:
         name = self.username
 
     return name
@@ -44,6 +45,7 @@ class ForecastsManager(models.Manager):
             return qs.filter(end_date__gte=date.today())
         else:
             return qs.filter(end_date__lt=date.today())
+
 
 class GroupsManager(models.Manager):
 
