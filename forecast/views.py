@@ -350,9 +350,10 @@ class ProfileView(ProfileViewMixin, DetailView):
         profile = context.get('profile')
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
+        groups = Group.objects.filter(membership__user=self.request.user)
         analysis = profile.forecastanalysis_set.all()[:5]
 
-        context['forecasts'], context['forecasts_archived'], context['analysis'] = forecasts, forecasts_archived, analysis
+        context['groups'], context['forecasts'], context['forecasts_archived'], context['analysis'] = groups, forecasts, forecasts_archived, analysis
 
         return context
 

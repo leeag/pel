@@ -19,23 +19,23 @@
         <div class="panel">
             <h4><strong>Connection Center</strong></h4>
             {% if owner %}
-                <p id="messclick"><a href="#">Inbox <span class="badge">1</span></a></p>
+                <p id="messclick"><a href="#">Inbox <span class="badge"></span></a></p>
             {% elif not user.is_authenticated %}
 
             {% else %}
                 <p><a href="#" data-toggle="modal" data-target="#SendMessage">Send Message</a></p>
             {% endif %}
-            <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">2</span></a></p>
+            <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">0</span></a></p>
 
             <p><a href="#" data-toggle="modal" data-target="#FolUsers">
                 {{ uname }} Followed Users
-                <span class="badge">3</span>
+                <span class="badge">0</span>
             </a>
             </p>
 
             <p><a href="#" data-toggle="modal" data-target="#MyGroups">
                 {{ uname }} Groups
-                <span class="badge">4</span>
+                <span class="badge">{{ groups|length }}</span>
             </a>
             </p>
 
