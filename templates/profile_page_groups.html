@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+{% block content %}
+
+    <div class="row">
+        <div class="col-md-8">
+        <ol class="breadcrumb">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'profile' id=profile.id %}">Profile</a></li>
+            <li class="active">Analysis</li>
+        </ol>
+            {% if analysis %}
+                <h1>{{ uname }} analysis</h1>
+            {% endif %}
+            {% for item in analysis %}
+                {% with disable_user_link=True %}
+                    {% include 'analysis_block.html' %}
+                {% endwith %}
+            {% empty %}
+                <h1>There are no posted analysis</h1>
+            {% endfor %}
+            {% if is_paginated %}
+                <div class="pagination">
+                    {% if page_obj.has_previous %}
+                        <a href="{{ request.path }}?page={{ page_obj.previous_page_number }}">previous</a>
+                    {% endif %}
+                    <span class="page-current">
+                    Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+                </span>
+                    {% if page_obj.has_next %}
+                        <a href="{{ request.path }}?page={{ page_obj.next_page_number }}">next</a>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </div>
+        {% include 'profile_page_sidebar.html' %}
+    </div>
+{% endblock %}

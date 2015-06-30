@@ -350,7 +350,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         profile = context.get('profile')
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
-        groups = Group.objects.filter(membership__user=self.request.user)
+        groups = Group.objects.filter(membership__user=profile).count()
         analysis = profile.forecastanalysis_set.all()[:5]
 
         context['groups'], context['forecasts'], context['forecasts_archived'], context['analysis'] = groups, forecasts, forecasts_archived, analysis
@@ -400,6 +400,20 @@ class ProposeForecastView(View):
         else:
             return render(request, self.template_name, {'form': form})
 
+
+class ProfilePageGroupsView(View):
+    template_name = 'profile_page_groups.html'
+
+    def get_queryset(self):
+        profile = get_object_or_404(User, pk=self.kwargs.get('id'))
+        self.profile = profile
+        return ForecastAnalysis.objects.filter(user=profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(ProfileForecastAnalysisView, self).get_context_data(**kwargs)
+        context['profile'] = self.profile
+        context['hide_analysis_box'] = True
+        return context
 
 class SignUpView(View):
     template_name = 'sign_up_page.html'
