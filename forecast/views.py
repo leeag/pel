@@ -158,6 +158,8 @@ class GroupView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(GroupView, self).get_context_data(**kwargs)
+        forecasts = Forecast.objects.distinct().filter(votes__user=self.request.user, end_date__gte=date.today())
+        context['forecasts'] = forecasts
         return context
 
 class MyGroupsView(ListView):
@@ -388,10 +390,10 @@ class ProposeForecastView(View):
         if form.is_valid():
             propose = form.save(commit=False)
             propose.user = request.user
-            if request.method == "POST":
-                formset = CustomInlineFormSet(request.POST, request.FILES, instance=inst)
-                if formset.is_valid():
-                    formset.save()
+            # if request.method == "POST":
+            #     formset = CustomInlineFormSet(request.POST, request.FILES, instance=inst)
+            #     if formset.is_valid():
+            #         formset.save()
 
             propose.save()
             form.save_m2m()

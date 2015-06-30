@@ -28,7 +28,7 @@
                         <p><strong>Published Analysis:</strong>
                             {#                            <a href="{% url 'profile_forecast_analysis' id=profile.id %}"#}
                             {#                                class="pull-right">[See Full Set]</a></p>#}
-                            <a href="{% url 'home' %}"
+                            <a href="#"
                                class="pull-right">[See Full Set]</a></p>
                         {% for element in analysis %}
                             <div>
@@ -123,10 +123,11 @@
                         {{ group.name }}'s
                     {% endif %}
                     Active Forecasts
-                    {#            {% if forecasts.count == 5 %}#}
-                    <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
-                    {#            {% endif %}#}
-                </strong></p>
+{#                    {% if forecasts.count >= 5 %}#}
+                        <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
+{#                    {% endif %}#}
+                </strong>
+                </p>
             </div>
             <table class="table">
                 {% for forecast in forecasts %}
@@ -152,9 +153,9 @@
                         {{ group.name }}'s
                     {% endif %}
                     Archived Forecasts
-                    {#            {% if forecasts_archived == 5 %}#}
-                    <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
-                    {#            {% endif %}#}
+{#                    {% if forecasts_archived >= 5 %}#}
+                        <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
+{#                    {% endif %}#}
                 </strong></p>
                 <table class="table">
                     {% for forecast in forecasts_archived %}
