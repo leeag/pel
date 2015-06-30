@@ -418,7 +418,7 @@ class SignUpView(View):
             return render(request, self.template_name_confirm, {})
         else:
             # return render(request, self.error_template, {'errors': signup_form.errors})
-            return HttpResponseRedirect(reverse('signup', kwargs={}))
+            return render(request, self.template_name, {'form': self.form})
 
 
 class SignUpSecondView(View):
