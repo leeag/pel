@@ -127,7 +127,7 @@ class EmailConfirmationView(View):
         # if token == user.custom.activation_token and datetime.now() <= user.custom.expires_at:
         if token == user.activation_token:
             user.email_verified = True
-            res_dict['success'] = _('Email was verified!')
+            res_dict['success'] = _('Email has been verified!')
             user.save()
         else:
             res_dict['error'] = _('Provided token is incorrect or expired')
@@ -417,7 +417,8 @@ class SignUpView(View):
             request.session['uid'] = user.id
             return render(request, self.template_name_confirm, {})
         else:
-            return render(request, self.error_template, {'errors': signup_form.errors})
+            # return render(request, self.error_template, {'errors': signup_form.errors})
+            return HttpResponseRedirect(reverse('signup', kwargs={}))
 
 
 class SignUpSecondView(View):

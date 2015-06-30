@@ -3,19 +3,194 @@
 {% block content %}
     <h3 class="well well">{{ group.name }}</h3>
     <div class="row">
-        <div class="">{{ group.description }}</div>
-        <div class="col-sm-8"></div>
-        <div class="col-sm-4">
-        <ul class="nav nav-stacked">
-            {% for el in data %}
-                <li>
-                    <p>el</p>
-                </li>
-            {% empty %}
-                <div class="well well-lg">There are no forecasts</div>
-            {% endfor %}
-        </ul>
-    </div>
+
+        <div id="profile_sidebar" class="col-md-4">
+            <div>
+                <div class="panel" id="performance">
+                    <h4><strong>
+                        {{ uname }} Performance
+                    </strong></h4>
+
+                    <p>Number of Forecasts: {% if predictions_count %} {{ predictions_count }}{% else %}0{% endif %}</p>
+
+                    <p>
+
+                </div>
+
+                {% if not hide_analysis_box %}
+                    <div class="panel" id="analysis">
+                        <h4><strong>
+                            {% if owner %} My {% else %}
+                                {{ profile.full_name }}'s
+                            {% endif %} Analysis
+                        </strong></h4>
+
+                        <p><strong>Published Analysis:</strong>
+                            {#                            <a href="{% url 'profile_forecast_analysis' id=profile.id %}"#}
+                            {#                                class="pull-right">[See Full Set]</a></p>#}
+                            <a href="{% url 'home' %}"
+                               class="pull-right">[See Full Set]</a></p>
+                        {% for element in analysis %}
+                            <div>
+                                <a href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}"
+                                   target="_blank"
+                                   data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title }}</a>
+                            </div>
+
+                            <div class="modal fade" id="id{{ element.id }}" tabindex="-1" role="dialog"
+                                 aria-labelledby="myModalLabel"
+                                 aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                                    aria-hidden="true">&times;</span></button>
+                                            <h4 class="modal-title" id="myModalLabel">
+                                                <strong>{{ element.title }}</strong></h4>
+                                        </div>
+                                        <div class="modal-body">
+                                            {{ element.body }}
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-default" data-dismiss="modal">Close
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+
+                <div class="panel">
+                    <p>Weekly Profile Views:</p>
+
+                    <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Followers</h4>
+                                </div>
+                                <div class="modal-body">
+
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="FolUsers" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Followed Users</h4>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal fade" id="MyGroups" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                         aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                            aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModaLabel">Groups</h4>
+                                </div>
+                                <div class="modal-body">
+                                    ...
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="panel" id="info">
+                        <h4><strong>{{ uname }} Description</strong></h4>
+                        {% if group.description %}
+                            <p>About group: {{ group.description }}</p>
+                        {% else %}
+                            <p>Empty</p>
+                        {% endif %}
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-8">
+            <div>
+                <p><strong>
+                    {% if owner %} My {% else %}
+                        {{ group.name }}'s
+                    {% endif %}
+                    Active Forecasts
+                    {#            {% if forecasts.count == 5 %}#}
+                    <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
+                    {#            {% endif %}#}
+                </strong></p>
+            </div>
+            <table class="table">
+                {% for forecast in forecasts %}
+                    <tr>
+                        <td>
+                            <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                        </td>
+                    </tr>
+                {% empty %}
+                    <tr>
+                        <td>
+                            Empty active forecasts list
+                        </td>
+                    </tr>
+                {% endfor %}
+            </table>
+        </div>
+
+        <div class="col-md-8">
+            <div>
+                <p><strong>
+                    {% if owner %} My {% else %}
+                        {{ group.name }}'s
+                    {% endif %}
+                    Archived Forecasts
+                    {#            {% if forecasts_archived == 5 %}#}
+                    <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
+                    {#            {% endif %}#}
+                </strong></p>
+                <table class="table">
+                    {% for forecast in forecasts_archived %}
+                        <tr>
+                            <td>
+                                <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                            </td>
+                        </tr>
+                        {% empty %}
+                        <tr>
+                            <td>
+                                Empty archived forecasts list
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
     </div>
 
 {% endblock %}
