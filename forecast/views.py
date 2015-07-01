@@ -262,10 +262,10 @@ class LoginView(View):
         if user is not None:
             if user.is_superuser:
                 login(request, user)
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('profile', kwargs={'id': user.id}))
             elif user.custom.email_verified:
                 login(request, user)
-                return HttpResponseRedirect(reverse('home'))
+                return HttpResponseRedirect(reverse('profile', kwargs={'id': user.id}))
             else:
                 return render(request, "sing_in_invalid.html", {'email_not_confirmed': not user.custom.email_verified})
         else:
