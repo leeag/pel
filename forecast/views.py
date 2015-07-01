@@ -159,7 +159,8 @@ class GroupView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GroupView, self).get_context_data(**kwargs)
         forecasts = Forecast.objects.distinct().filter(votes__user=self.request.user, end_date__gte=date.today())
-        context['forecasts'] = forecasts
+        context['forecasts'], context['forecasts_count'], context['user_name'] = \
+            forecasts, forecasts.count(), self.request.user.username.capitalize()
         return context
 
 class MyGroupsView(ListView):
@@ -193,6 +194,19 @@ class ProposeNewGroup(View):
             propose.save()
             Membership(user=request.user, group=propose, admin_rights=True).save()
             return render(request, self.template_group_access, {'is_admin': current_user.is_superuser})
+
+
+class Users_and_Groups(ListView):
+    template_name = 'users_and_groups.html'
+    model = Group
+
+    def get_queryset(self):
+        return Group.objects.exclude(membership__user=self.request.user)
+
+    def get_context_data(self, **kwargs):
+        context = super(Users_and_Groups, self).get_context_data(**kwargs)
+        context['users'] = CustomUserProfile.objects.exclude(id=self.request.user.id)
+        return context
 
 
 class IndexPageView(ForecastFilterMixin, View):
