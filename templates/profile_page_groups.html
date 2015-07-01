@@ -1,23 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
-
     <div class="row">
         <div class="col-md-8">
         <ol class="breadcrumb">
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'profile' id=profile.id %}">Profile</a></li>
-            <li class="active">Analysis</li>
-        </ol>
-            {% if analysis %}
-                <h1>{{ uname }} analysis</h1>
+            <li class="active">Groups</li>
+        {% if object_list %}
+                <h4>
+                    You are follow on {{ object_list|length }} group{{ object_list|pluralize }}
+                </h4>
             {% endif %}
-            {% for item in analysis %}
-                {% with disable_user_link=True %}
-                    {% include 'analysis_block.html' %}
-                {% endwith %}
+        <ul class="groups list-group">
+            {% for group in object_list %}
+                    <li class="list-group-item">
+                        <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                    </li>
             {% empty %}
-                <h1>There are no posted analysis</h1>
+                <h2>
+                    You are not follow on groups yet
+                </h2>
             {% endfor %}
+        </ul>
             {% if is_paginated %}
                 <div class="pagination">
                     {% if page_obj.has_previous %}

@@ -403,19 +403,14 @@ class ProposeForecastView(View):
             return render(request, self.template_name, {'form': form})
 
 
-class ProfilePageGroupsView(View):
-    template_name = 'profile_page_groups.html'
+class ProfilePageGroupsView(ProfileViewMixin, ListView):
+    template_name = "profile_page_groups.html"
+    model = Group
 
     def get_queryset(self):
-        profile = get_object_or_404(User, pk=self.kwargs.get('id'))
-        self.profile = profile
-        return ForecastAnalysis.objects.filter(user=profile)
+        queryset = Group.objects.filter(membership__user=self.request.user)
+        return queryset
 
-    def get_context_data(self, **kwargs):
-        context = super(ProfileForecastAnalysisView, self).get_context_data(**kwargs)
-        context['profile'] = self.profile
-        context['hide_analysis_box'] = True
-        return context
 
 class SignUpView(View):
     template_name = 'sign_up_page.html'
