@@ -164,6 +164,6 @@ MAIL_USE_TLS = True
 
 DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer'
 
-DOMAIN_NAME = 'http://localhost:8000'   # change this in production
+DOMAIN_NAME = 'http://213.174.22.120:8088'   # change this in production
 
 AUTH_PROFILE_MODULE = 'forecast.CustomUserProfile'
