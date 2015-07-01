@@ -183,12 +183,16 @@ class ProposeNewGroup(View):
 
     def post(self, request):
         form = self.form(request.POST)
+        current_user = request.user
         if form.is_valid():
             propose = Group(**form.cleaned_data)
-            propose.admin_approved = False
+            if request.user.is_superuser:
+                propose.admin_approved = True
+            else:
+                propose.admin_approved = False
             propose.save()
             Membership(user=request.user, group=propose, admin_rights=True).save()
-            return render(request, self.template_group_access, {})
+            return render(request, self.template_group_access, {'is_admin': current_user.is_superuser})
 
 
 class IndexPageView(ForecastFilterMixin, View):

@@ -1,12 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="jumbotron">
+    {% if is_admin %}
+        <h2>
+            The group was added
+        </h2>
+    {% else %}
         <h1>
             Thank you for your propose.
         </h1>
         <p>
-             We will consider your group propose
+            We will consider your group propose
         </p>
+    {% endif %}
+
     <a class="btn btn-default" href="{% url 'home' %}">Home page</a>
     <a class="btn btn-default" href="{% url 'propose_group' %}">Propose group again</a>
     </div>
