@@ -1,4 +1,4 @@
-$().ready(function () {
+  $().ready(function () {
   $("#signupForm").validate({
 
     errorClass: "my-error-class",
@@ -6,10 +6,10 @@ $().ready(function () {
     rules: {
       name: "required",
       surname: "required",
-      username: {
-        required: true,
-        minlength: 2
-      },
+      //username: {
+      //  required: true,
+      //  minlength: 2
+      //},
       password: {
         required: true,
         minlength: 5
@@ -23,6 +23,7 @@ $().ready(function () {
         required: true,
         email: true
       },
+      country: "required",
       agree_with_terms: "required",
       captcha: "required",
     },

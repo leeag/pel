@@ -172,7 +172,8 @@ class UserRegistrationForm(ModelForm):
                                                required=False)
     agree_with_terms = forms.BooleanField(widget=forms.CheckboxInput(),
                                           label=_("I agree to {}'s Terms of Use").format(APP_NAME), required=True)
-    username = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Username'))
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm",
+                                                             'humanReadable': 'username'}), label=_('Username'))
     email = forms.EmailField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}))
     password = forms.CharField(widget=forms.PasswordInput(attrs={'class': "form-control input-sm"}),
                                label=_("Password"))
