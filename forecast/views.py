@@ -441,6 +441,15 @@ class ProfilePageGroupsView(ProfileViewMixin, ListView):
         return Group.objects.filter(membership__user=profile)
 
 
+# class ProfilePageSidebarView(ProfileViewMixin, ListView):
+#     template_name = 'profile_page_sidebar.html'
+#
+#     def get_queryset(self):
+#         profile = get_object_or_404(User, pk=self.kwargs.get('id'))
+#         self.profile = profile
+#         return profile
+
+
 class SignUpView(View):
     template_name = 'sign_up_page.html'
     template_name_confirm = 'sing_up_confirm.html'
