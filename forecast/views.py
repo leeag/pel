@@ -201,11 +201,18 @@ class Users_and_Groups(ListView):
     model = Group
 
     def get_queryset(self):
-        return Group.objects.exclude(membership__user=self.request.user)
+        if self.request.user.is_authenticated():
+            return Group.objects.exclude(membership__user=self.request.user)
+        else:
+            return Group.objects.all()
 
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
-        context['users'] = CustomUserProfile.objects.exclude(id=self.request.user.id)
+        if self.request.user.is_authenticated():
+            context['profiles'] = CustomUserProfile.objects.exclude(user=self.request.user)
+        else:
+            context['profiles'] = CustomUserProfile.objects.all()
+            context['user'] = self.request.user
         return context
 
 
