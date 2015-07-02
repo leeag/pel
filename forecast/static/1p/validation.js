@@ -44,6 +44,7 @@
         equalTo: "Please enter the same password as above"
       },
       email: "Please enter a valid email address",
+      country: "Please select a country",
       agree_with_terms: "Please accept our policy"
     }
   });
