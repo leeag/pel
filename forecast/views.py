@@ -211,7 +211,7 @@ class Users_and_Groups(ListView):
         profile = self.kwargs.get('profile')
         if self.request.user.is_authenticated():
             # context['profiles'] = CustomUserProfile.objects.exclude(user=self.request.user)
-            context['profiles'] = User.objects.exclude(id=self.request.user.id)
+            context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(id=1)
         else:
             # context['profiles'] = CustomUserProfile.objects.all()
             context['profiles'] = User.objects.all()
