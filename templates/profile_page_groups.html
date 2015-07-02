@@ -6,6 +6,8 @@
             <li><a href="{% url 'home' %}">Home</a></li>
             <li><a href="{% url 'profile' id=profile.id %}">Profile</a></li>
             <li class="active">Groups</li>
+        </ol>
+
         {% if object_list %}
                 <h4>
                     You are follow on {{ object_list|length }} group{{ object_list|pluralize }}
@@ -17,10 +19,10 @@
                         <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
                     </li>
             {% empty %}
-                <h2>
+                <h1>
                     {% if owner %}
                     You are not follow on groups yet {% else %} This user is not followed any groups {% endif %}
-                </h2>
+                </h1>
             {% endfor %}
         </ul>
             {% if is_paginated %}
@@ -37,6 +39,8 @@
                 </div>
             {% endif %}
         </div>
+
         {% include 'profile_page_sidebar.html' %}
+
     </div>
 {% endblock %}

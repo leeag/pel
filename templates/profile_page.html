@@ -19,7 +19,7 @@
                     {% else %}
                         <h4>{{ profile.full_name }}'s profile</h4>
                         <div class="btn-group btn-group-sm">
-                            <a href="/messages/write/">
+                            <a href="{% url 'postman_write' %}">
                             <button type="submit" class="btn btn-default btn-sm">
                             Send Message
                             </button></a>
