@@ -11,9 +11,9 @@
                         {{ uname }} Performance
                     </strong></h4>
 
-                    <p>Number of Forecasts: {% if predictions_count %} {{ predictions_count }}{% else %}0{% endif %}</p>
+                    <p>{{ user_name }}'s number of Forecasts: {% if forecasts_count %} {{ forecasts_count }}{% else %}0{% endif %}</p>
 
-                    <p>
+                    <p>{{ group.name|capfirst }}'s number of Forecasts: {% if forecasts_group_count %} {{ forecasts_group_count }}{% else %}0{% endif %}</p>
 
                 </div>
 
@@ -133,7 +133,7 @@
                 {% for forecast in forecasts %}
                     <tr>
                         <td>
-                            <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                            <a style="text-decoration: none;" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
                         </td>
                     </tr>
                 {% empty %}

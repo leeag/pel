@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-6">
+        <ul class="groups list-group">
+        <h2>Groups</h2>
+            {% for group in object_list %}
+                    <li class="list-group-item">
+                        <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                        <button class="pull-right btn btn-success">join</button>
+                    </li>
+            {% empty %}
+                <h2>
+                    List is empty... You can propose new group <a href="{% url 'propose_group' %}">here</a>
+                </h2>
+            {% endfor %}
+        </ul>
+        </div>
+        <div class="col-sm-6">
+            <ul class="groups list-group">
+                <h2>Users</h2>
+                {% for user in users %}
+                    <li class="list-group-item">
+                        <a style="text-decoration: none;font-size: large;" href="#">
+                                {% if user.full_name %}
+                                    {{ user.full_name }}
+                                {% else %}
+                                    {{ user }}
+                                {% endif %}
+                        </a>
+
+                        <button class="pull-right btn btn-success">follow</button>
+                    </li>
+                {% empty %}
+                    <h4>
+                        Not fount users...</a>
+                    </h4>
+                {% endfor %}
+            </ul>
+        </div>
+    </div>
+{% endblock %}

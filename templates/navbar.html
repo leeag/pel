@@ -27,7 +27,7 @@
                         <li><a href="{% url 'archived_forecasts' %}">Archived Forecasts</a></li>
                     </ul>
                 </li>
-                <li><a href="#">Users & Groups</a></li>
+                <li><a href="{% url 'users_groups' %}">Users & Groups</a></li>
                 <li><a href="{% url 'about' %}">About {{ app_name }}</a></li>
                 {% if user.is_authenticated %}
                     <li><a href="{% url 'propose_forecast' %}">Propose new forecast</a></li>{% endif %}
