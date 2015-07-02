@@ -18,7 +18,8 @@
                     </li>
             {% empty %}
                 <h2>
-                    You are not follow on groups yet
+                    {% if owner %}
+                    You are not follow on groups yet {% else %} This user is not followed any groups {% endif %}
                 </h2>
             {% endfor %}
         </ul>

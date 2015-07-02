@@ -19,11 +19,13 @@
         <div class="panel">
             <h4><strong>Connection Center</strong></h4>
             {% if owner %}
-                <p id="messclick"><a href="#">Inbox <span class="badge"></span></a></p>
+{#                < id="messclick">#}
+                    <p><a href="/messages/inbox/">Inbox <span class="badge">{{ postman_unread_count }}</span></a></p>
+
             {% elif not user.is_authenticated %}
 
             {% else %}
-                <p><a href="#" data-toggle="modal" data-target="#SendMessage">Send Message</a></p>
+                <p><a href="/messages/write/">Send Message</a></p>
             {% endif %}
             <p><a href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">0</span></a></p>
 

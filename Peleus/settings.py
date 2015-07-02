@@ -123,7 +123,8 @@ TEMPLATES = [
                                            "django.template.context_processors.media",
                                            "django.template.context_processors.static",
                                            "django.template.context_processors.tz",
-                                           "django.contrib.messages.context_processors.messages")},
+                                           "django.contrib.messages.context_processors.messages",
+                                           "postman.context_processors.inbox")},
         'DIRS': (os.path.join(BASE_DIR, 'templates'),)
     },
 ]
@@ -167,3 +168,5 @@ DAB_FIELD_RENDERER = 'django_admin_bootstrapped.renderers.BootstrapFieldRenderer
 DOMAIN_NAME = 'http://213.174.22.120:8088'   # change this in production
 
 AUTH_PROFILE_MODULE = 'forecast.CustomUserProfile'
+
+POSTMAN_AUTO_MODERATE_AS = True
