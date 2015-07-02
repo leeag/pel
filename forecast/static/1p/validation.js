@@ -6,10 +6,10 @@
     rules: {
       name: "required",
       surname: "required",
-      //username: {
-      //  required: true,
-      //  minlength: 2
-      //},
+      username: {
+        required: true,
+        minlength: 2
+      },
       password: {
         required: true,
         minlength: 5

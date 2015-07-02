@@ -426,8 +426,9 @@ class ProfilePageGroupsView(ProfileViewMixin, ListView):
     model = Group
 
     def get_queryset(self):
-        queryset = Group.objects.filter(membership__user=self.request.user)
-        return queryset
+        profile = get_object_or_404(User, pk=self.kwargs.get('id'))
+        self.profile = profile
+        return Group.objects.filter(membership__user=profile)
 
 
 class SignUpView(View):
