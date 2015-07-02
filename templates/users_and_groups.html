@@ -20,7 +20,7 @@
         </div>
         <div class="col-sm-6">
             <ul class="groups list-group">
-                <h2>User{{ users|pluralize }}</h2>
+                <h2>User{{ profiles|pluralize }}</h2>
                 {% for profile in profiles %}
                     <li class="list-group-item">
                         <a style="text-decoration: none;font-size: large;" href="{% url 'profile' id=profile.id %}">
