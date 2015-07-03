@@ -158,10 +158,11 @@ class GroupView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(GroupView, self).get_context_data(**kwargs)
-        forecasts = Forecast.objects.distinct().filter(votes__user=self.request.user, end_date__gte=date.today())
-        context['forecasts'], context['forecasts_count'], context['user_name'] = \
-            forecasts, forecasts.count(), self.request.user.username.capitalize()
+        group = context['group']
+        forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
+        context['forecasts'], context['forecasts_count'] = forecasts, forecasts.count()
         return context
+
 
 class MyGroupsView(ListView):
     template_name = "groups_view.html"
@@ -208,7 +209,6 @@ class Users_and_Groups(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
-        profile = self.kwargs.get('profile')
         if self.request.user.is_authenticated():
             # context['profiles'] = CustomUserProfile.objects.exclude(user=self.request.user)
             context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(id=1)
@@ -217,6 +217,9 @@ class Users_and_Groups(ListView):
             context['profiles'] = User.objects.all()
             context['user'] = self.request.user
         return context
+
+    def post(self, request):
+        pass
 
 
 class IndexPageView(ForecastFilterMixin, View):

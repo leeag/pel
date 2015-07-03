@@ -5,16 +5,20 @@
         <ul class="groups list-group">
         <h2>Group{{ object_list|pluralize }}</h2>
             {% for group in object_list %}
+{#                <form action="{% url 'users_groups' %}" method="post">#}
+                    {% csrf_token %}
                     <li class="list-group-item">
-                        <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                        <a style="text-decoration: none;font-size: large; "
+                           href="{% url 'group' id=group.id %}">{{ group.name }}</a>
                         {% if user.is_authenticated %}
-                            <button class="pull-right btn btn-sm btn-success">join</button>
+                            <a class="join_to_group pull-right btn btn-sm btn-success">join</a>
                         {% endif %}
                     </li>
-            {% empty %}
-                <h4>
-                    List is empty... You can propose new group <a href="{% url 'propose_group' %}">here</a>
-                </h4>
+                    {% empty %}
+                    <h4>
+                        List is empty... You can propose new group <a href="{% url 'propose_group' %}">here</a>
+                    </h4>
+{#                </form>#}
             {% endfor %}
         </ul>
         </div>
