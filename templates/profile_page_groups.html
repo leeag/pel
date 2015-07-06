@@ -10,7 +10,11 @@
 
         {% if object_list %}
                 <h4>
-                    You are follow on {{ object_list|length }} group{{ object_list|pluralize }}
+                    {% if owner %}
+                    You are a member of {{ object_list|length }} group{{ object_list|pluralize }}
+                        {% else %}
+                    This user is a member of {{ object_list|length }} group{{ object_list|pluralize }}
+                    {% endif %}
                 </h4>
             {% endif %}
         <ul class="groups list-group">
@@ -21,7 +25,7 @@
             {% empty %}
                 <h1>
                     {% if owner %}
-                    You are not follow on groups yet {% else %} This user is not followed any groups {% endif %}
+                    You are not subscribed any groups {% else %} This user didn't subscribe any group {% endif %}
                 </h1>
             {% endfor %}
         </ul>

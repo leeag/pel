@@ -9,11 +9,12 @@ from django.forms.models import BaseInlineFormSet
 from django_countries.widgets import CountrySelectWidget
 from django.utils.translation import ugettext, ugettext_lazy as _
 from taggit.forms import TagWidget
+from django.forms.models import inlineformset_factory
 
 
 from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DOMAIN_NAME, GROUP_TYPES
 
-from forecast.models import CustomUserProfile, ForecastPropose, ForecastAnalysis, Forecast, Group
+from forecast.models import CustomUserProfile, ForecastPropose, ForecastAnalysis, Forecast, ForecastVoteChoiceInline, Group
 from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, FORECAST_TYPE_FINITE, \
     FORECAST_TYPE_MAGNITUDE, FORECAST_TYPE_PROBABILITY, FORECAST_TYPE_TIME_HORIZON
 from utils.different import generate_activation_key
@@ -94,7 +95,7 @@ class CreateGroupForm(forms.ModelForm):
                    }
 
 
-class ForecastForm(ModelForm):
+class ForecastProposeForm(ModelForm):
     forecast_type = forms.ChoiceField(required=True, choices=FORECAST_TYPE,
                                       widget=forms.Select(attrs={'class': 'form-control input-sm'}))
     forecast_question = forms.CharField(required=True, widget=forms.Textarea(attrs={'class': 'form-control input-sm'}))
@@ -103,6 +104,28 @@ class ForecastForm(ModelForm):
         model = ForecastPropose
         fields = ('forecast_type', 'forecast_question', 'tags')
         widgets = {'tags': TagWidget(attrs={'class': "form-control input-sm"})}
+
+    def clean(self):
+        # get forms that actually have valid data
+        forecast_type = self.forms[0].data.get('forecast_type')
+        if forecast_type == FORECAST_TYPE_FINITE:
+            count = 0
+            for form in self.forms:
+                try:
+                    if form.cleaned_data:
+                        count += 1
+                except AttributeError:
+                    pass
+            if count < 2:
+                raise forms.ValidationError('You must have at least two orders')
+
+
+class ForecastVoteChoiceInlineForm(ModelForm):
+    class Meta:
+        model = ForecastVoteChoiceInline
+        fields = ('choice',)
+
+ForecastVoteChoiceFormSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceInline, fields={'choice'})
 
 
 class ForecastVoteForm(forms.Form):

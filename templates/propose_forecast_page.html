@@ -1,8 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <link href="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/css/select2.min.css" rel="stylesheet" />
-    <script src="//cdnjs.cloudflare.com/ajax/libs/select2/4.0.0/js/select2.min.js"></script>
     <form class="form-horizontal" action="{% url 'propose_forecast' %}" method="post">
         {% csrf_token %}
         <div class="center-block form-center-block">
@@ -17,7 +15,8 @@
                 </div>
             </div>
             {% endfor %}
-            {% for f in formset %}
+        <p>{{ formset }}</p>
+            {% for f in form %}
 
                     <div class="form-group{% if f.choice.error %} error{% endif %}">
                         <label for="{{ f.choice.name }}" class="col-sm-4">{{ f.choice.label }}</label>

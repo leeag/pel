@@ -14,10 +14,12 @@ from django.http.request import QueryDict
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, DetailView, ListView
 from django.views.defaults import page_not_found
+from django.forms.models import inlineformset_factory
 
-from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastForm, CommunityAnalysisForm, \
+
+from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastProposeForm, CommunityAnalysisForm, \
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet
-from models import Forecast, ForecastPropose, ForecastVotes, ForecastAnalysis, Group, ForecastProposeFiniteChoice, Membership
+from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceInline, ForecastAnalysis, Group, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
 # from postman.models import Message
@@ -326,7 +328,7 @@ class PlaceVoteView(View):
     def post(self, request):
         data = request.POST
         user = request.user
-        form = ForecastForm(data)
+        form = ForecastProposeForm(data)
         if not form.is_valid():
             return HttpResponse(_('Invalid input data!'), status=400)
         forecast = get_object_or_404(Forecast, pk=data.get('fid'))
@@ -422,22 +424,27 @@ class ProposeForecastView(View):
     template_name = 'propose_forecast_page.html'
     template_name_access = 'propose_access.html'
 
-    form = ForecastForm
+    form = ForecastProposeForm
 
     def get(self, request):
         return render(request, self.template_name, {'form': self.form()})
 
     def post(self, request):
         form = self.form(request.POST)
-        inst = ForecastPropose()
+        forecast = ForecastPropose()
+        ForecastVoteChoiceInlineFormset = inlineformset_factory(ForecastPropose, ForecastVoteChoiceInline)
         if form.is_valid():
             propose = form.save(commit=False)
             propose.user = request.user
-            # if request.method == "POST":
-            #     formset = CustomInlineFormSet(request.POST, request.FILES, instance=inst)
-            #     if formset.is_valid():
-            #         formset.save()
-
+            if request.method == 'POST':
+               formset = ForecastVoteChoiceInlineFormset(request.POST, request.FILES, instance=forecast)
+            if formset.is_valid():
+                formset.save()
+                # Do something. Should generally end with a redirect. For example:
+                return HttpResponseRedirect(ForecastPropose.get_absolute_url())
+            else:
+                formset = ForecastVoteChoiceInlineFormset(instance=forecast)
+            return render(request, self.template_name, {"formset": formset})
             propose.save()
             form.save_m2m()
             username = request.user.username
@@ -454,15 +461,6 @@ class ProfilePageGroupsView(ProfileViewMixin, ListView):
         profile = get_object_or_404(User, pk=self.kwargs.get('id'))
         self.profile = profile
         return Group.objects.filter(membership__user=profile)
-
-
-# class ProfilePageSidebarView(ProfileViewMixin, ListView):
-#     template_name = 'profile_page_sidebar.html'
-#
-#     def get_queryset(self):
-#         profile = get_object_or_404(User, pk=self.kwargs.get('id'))
-#         self.profile = profile
-#         return profile
 
 
 class SignUpView(View):

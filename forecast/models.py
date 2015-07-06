@@ -137,8 +137,16 @@ class ForecastPropose(models.Model):
         return self.forecast_question
 
 
-class ForecastProposeFiniteChoice(models.Model):
-    forecast = models.ForeignKey('ForecastPropose')
+class ForecastVoteChoiceInline(models.Model):
+    forecast = models.ForeignKey(ForecastPropose)
+    choice = models.CharField(max_length=150)
+
+    def __unicode__(self):
+        return self.choice
+
+
+class ForecastVoteChoice(models.Model):
+    forecast = models.ForeignKey('Forecast', related_name='choices')
     choice = models.CharField(max_length=150)
 
     def __unicode__(self):
@@ -221,11 +229,3 @@ class Membership(models.Model):
 
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name
-
-
-class ForecastVoteChoice(models.Model):
-    forecast = models.ForeignKey('Forecast', related_name='choices')
-    choice = models.CharField(max_length=150)
-
-    def __unicode__(self):
-        return self.choice

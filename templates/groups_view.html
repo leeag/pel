@@ -4,7 +4,7 @@
         <div class="col-sm-9">
             {% if object_list %}
                 <h4>
-                    You are follow on {{ object_list|length }} group{{ object_list|pluralize }}
+                    You are a member of {{ object_list|length }} group{{ object_list|pluralize }}
                 </h4>
             {% endif %}
         <ul class="groups list-group">
@@ -14,7 +14,7 @@
                     </li>
             {% empty %}
                 <h2>
-                    You are not follow on groups yet
+                    You are not subscribed any group
                 </h2>
             {% endfor %}
         </ul>
