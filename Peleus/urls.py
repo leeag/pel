@@ -20,6 +20,7 @@ urlpatterns = patterns(
     url(r'^group/(?P<id>\d+)/$', views.GroupView.as_view(), name='group'),
     url(r'^my_groups/$', views.MyGroupsView.as_view(), name='my_groups'),
     url(r'^users_groups/$', views.Users_and_Groups.as_view(), name='users_groups'),
+    url(r'^join_group/$', views.JoinToGroup.as_view(), name='join_to_group'),
     url(r'signup/$', views.SignUpView.as_view(), name='signup'),
     url(r'signuplast/$', views.SignUpSecondView.as_view(), name='signup2'),
     url(r'^confirm_email/(?P<token>\w+)$', views.EmailConfirmationView.as_view()),

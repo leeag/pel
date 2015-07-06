@@ -1,4 +1,5 @@
 import json
+import traceback
 from datetime import date, datetime
 
 from django.shortcuts import render, get_object_or_404
@@ -218,8 +219,19 @@ class Users_and_Groups(ListView):
             context['user'] = self.request.user
         return context
 
-    def post(self, request):
-        pass
+
+class JoinToGroup(View):
+
+    def get(self, request):
+        group_id = request.GET.get('group')
+        group = get_object_or_404(Group, pk=group_id)
+        curren_user = request.user
+
+        if curren_user.is_authenticated():
+            Membership(user=curren_user, group=group, admin_rights=False).save()
+            return HttpResponse('You followed')
+        else:
+            return HttpResponse(status=404)
 
 
 class IndexPageView(ForecastFilterMixin, View):

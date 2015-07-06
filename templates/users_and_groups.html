@@ -3,28 +3,34 @@
     <div class="row">
         <div class="col-sm-6">
         <ul class="groups list-group">
-        <h2>Group{{ object_list|pluralize }}</h2>
+        <h2>Group{{ object_list|pluralize }}{% if object_list|length >= 5 %}
+            <span class="badge">{{ object_list|length }}</span>
+        {% endif %}
+        </h2>
             {% for group in object_list %}
-{#                <form action="{% url 'users_groups' %}" method="post">#}
-                    {% csrf_token %}
                     <li class="list-group-item">
                         <a style="text-decoration: none;font-size: large; "
                            href="{% url 'group' id=group.id %}">{{ group.name }}</a>
                         {% if user.is_authenticated %}
-                            <a class="join_to_group pull-right btn btn-sm btn-success">join</a>
+                            <a id="join_{{ group.id }}" class="join_to_group pull-right btn btn-sm btn-success" group-id="{{ group.id }}" >join</a>
+                            <pre style="display: none;" id="joined_group_{{ group.id }}" class="text-center">The joined</pre>
+                            <p/><pre style="display: none; background-color: #b94a48" id="join_error_{{ group.id }}" class="text-center">Sorry, having some problems with join</pre>
                         {% endif %}
                     </li>
                     {% empty %}
                     <h4>
                         List is empty... You can propose new group <a href="{% url 'propose_group' %}">here</a>
                     </h4>
-{#                </form>#}
             {% endfor %}
         </ul>
         </div>
         <div class="col-sm-6">
             <ul class="groups list-group">
-                <h2>User{{ profiles|pluralize }}</h2>
+                <h2>User{{ profiles|pluralize }}
+                    {% if profiles|length >= 5 %}
+                        <span class="badge">{{ profiles|length }}</span>
+                    {% endif %}
+                </h2>
                 {% for profile in profiles %}
                     <li class="list-group-item">
                         <a style="text-decoration: none;font-size: large;" href="{% url 'profile' id=profile.id %}">
@@ -47,4 +53,9 @@
             </ul>
         </div>
     </div>
+{% endblock %}
+
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/join_to_group.js' %}"></script>
 {% endblock %}
