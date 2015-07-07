@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
     <form class="form-horizontal" action="{% url 'propose_forecast' %}" method="post">
         {% csrf_token %}
         <div class="center-block form-center-block">
@@ -16,10 +17,34 @@
             </div>
             {% endfor %}
 
-        <div id="hideable-choices">
+        <div class="table" id="hideable-choices">
         {{ formset.as_p }}
-
         </div>
+
+            <input type="button" value="Add More" id="add_more">
+            <script>
+                $('#add_more').click(function () {
+                    cloneMore('div.table:last', 'service');
+
+                    function cloneMore(selector, type) {
+                        var newElement = $(selector).clone(true);
+                        var total = $('#id_' + type + '-TOTAL_FORMS').val();
+                        newElement.find(':input').each(function () {
+                            var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');
+                            var id = 'id_' + name;
+                            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');
+                        });
+                        newElement.find('label').each(function () {
+                            var newFor = $(this).attr('for').replace('-' + (total - 1) + '-', '-' + total + '-');
+                            $(this).attr('for', newFor);
+                        });
+                        total++;
+                        $('#id_' + type + '-TOTAL_FORMS').val(total);
+                        $(selector).after(newElement);
+                    }
+                });
+            </script>
+
             {% for f in form %}
 
                     <div class="form-group{% if f.choice.error %} error{% endif %}">
