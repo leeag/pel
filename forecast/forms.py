@@ -14,7 +14,7 @@ from django.forms.models import inlineformset_factory
 
 from Peleus.settings import APP_NAME, TOKEN_EXPIRATION_PERIOD, TOKEN_LENGTH, DOMAIN_NAME, GROUP_TYPES
 
-from forecast.models import CustomUserProfile, ForecastPropose, ForecastAnalysis, Forecast, ForecastVoteChoiceInline, Group
+from forecast.models import CustomUserProfile, ForecastPropose, ForecastAnalysis, Forecast, ForecastVoteChoiceFinite, Group
 from forecast.settings import ORGANIZATION_TYPE, AREAS, REGIONS, FORECAST_TYPE, FORECAST_TYPE_FINITE, \
     FORECAST_TYPE_MAGNITUDE, FORECAST_TYPE_PROBABILITY, FORECAST_TYPE_TIME_HORIZON
 from utils.different import generate_activation_key
@@ -95,6 +95,12 @@ class CreateGroupForm(forms.ModelForm):
                    }
 
 
+from django.forms.models import modelformset_factory, inlineformset_factory
+
+ChoiceformSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, can_delete=False, extra=2,
+                                      fields=['choice'],
+                                      widgets={'choice': forms.TextInput(attrs={'class': "form-control input-sm"})})
+
 class ForecastProposeForm(ModelForm):
     forecast_type = forms.ChoiceField(required=True, choices=FORECAST_TYPE,
                                       widget=forms.Select(attrs={'class': 'form-control input-sm'}))
@@ -105,27 +111,29 @@ class ForecastProposeForm(ModelForm):
         fields = ('forecast_type', 'forecast_question', 'tags')
         widgets = {'tags': TagWidget(attrs={'class': "form-control input-sm"})}
 
-    def clean(self):
-        # get forms that actually have valid data
-        forecast_type = self.forms[0].data.get('forecast_type')
-        if forecast_type == FORECAST_TYPE_FINITE:
-            count = 0
-            for form in self.forms:
-                try:
-                    if form.cleaned_data:
-                        count += 1
-                except AttributeError:
-                    pass
-            if count < 2:
-                raise forms.ValidationError('You must have at least two orders')
+    # def clean(self):
+    #     # get forms that actually have valid data
+    #     forecast_type = self.forms[0].data.get('forecast_type')
+    #     if forecast_type == FORECAST_TYPE_FINITE:
+    #         count = 0
+    #         for form in self.forms:
+    #             try:
+    #                 if form.cleaned_data:
+    #                     count += 1
+    #             except AttributeError:
+    #                 pass
+    #         if count < 2:
+    #             raise forms.ValidationError('You must have at least two orders')
 
 
-class ForecastVoteChoiceInlineForm(ModelForm):
+class ForecastVoteChoiceFiniteForm(ModelForm):
     class Meta:
-        model = ForecastVoteChoiceInline
+        model = ForecastVoteChoiceFinite
         fields = ('choice',)
+        widgets = {'choice': forms.TextInput(attrs={'class': "form-control input-sm"})}
 
-ForecastVoteChoiceFormSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceInline, fields={'choice'})
+
+ForecastVoteChoiceFormSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, fields={'choice'})
 
 
 class ForecastVoteForm(forms.Form):

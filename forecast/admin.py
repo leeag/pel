@@ -55,6 +55,11 @@ class IsActiveDisplayFilter(admin.SimpleListFilter):
             return qs
 
 
+class ForecastProposeChoiceFiniteInline(TabularInline):
+    model = models.ForecastVoteChoiceFinite
+    verbose_name = "choice"
+    extra = 2
+
 class ForecastMediaInline(TabularInline):
     model = models.ForecastMedia
     verbose_name = "media"
@@ -165,7 +170,7 @@ class ForecastAnalysisAdmin(ModelAdmin):
 class ForecastProposeAdmin(DjangoObjectActions, ModelAdmin):
     list_display = ('forecast_question', 'forecast_type', 'end_date', 'status')
     list_filter = (PublishedProposeFilter,)
-
+    inlines = (ForecastProposeChoiceFiniteInline,)
     objectactions = ['publish_propose']
 
     exclude = ('status',)
@@ -179,6 +184,7 @@ class ForecastProposeAdmin(DjangoObjectActions, ModelAdmin):
 
         f = models.Forecast(forecast_type=obj.forecast_type,
                             forecast_question=obj.forecast_question,
+                            # choice=,
                             end_date=obj.end_date)
         f.save()
 

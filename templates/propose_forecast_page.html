@@ -15,7 +15,11 @@
                 </div>
             </div>
             {% endfor %}
-        <p>{{ formset }}</p>
+
+        <div id="hideable-choices">
+        {{ formset.as_p }}
+
+        </div>
             {% for f in form %}
 
                     <div class="form-group{% if f.choice.error %} error{% endif %}">
@@ -34,4 +38,8 @@
             <button type="submit" class="btn btn-success">Propose!</button>
         </div>
     </form>
+{% endblock %}
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/forecast_choices_user.js' %}"></script>
 {% endblock %}
