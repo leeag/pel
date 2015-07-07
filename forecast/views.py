@@ -509,12 +509,7 @@ class SignUpSecondView(View):
         form = self.form(user_profile, request.POST)
 
         if form.is_valid():
-            # user_id = request.session.get('uid') or request.user.id
-            # user_profile = CustomUserProfile.objects.get(pk=53)
-            # user_id = user_profile.id
-
             user_profile.conditions_accepted = True
-            # user_profile.save()
             form.save()
             return HttpResponseRedirect(reverse('home'))
 

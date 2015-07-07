@@ -1,7 +1,27 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <div class="col-sm-6">
+
+
+        <div class="col-sm-2 peleus-sidebar pull-right">
+            <ul id="sidebar" class="nav nav-stacked">
+                {% if profiles %}
+
+                    <li class="nav-divider"></li>
+                    {% for area in profiles.forecast_areas %}
+                        <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>
+                    {% endfor %}
+
+                    <li class="nav-divider"></li>
+                    {% for region in profiles.forecast_regions %}
+                        <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
+                    {% endfor %}
+                {% endif %}
+            </ul>
+        </div>
+
+
+        <div class="col-sm-5">
         <ul class="groups list-group">
         <h2>Group{{ object_list|pluralize }}{% if object_list|length >= 5 %}
             <span class="badge">{{ object_list|length }}</span>
@@ -24,7 +44,7 @@
             {% endfor %}
         </ul>
         </div>
-        <div class="col-sm-6">
+        <div class="col-sm-5">
             <ul class="groups list-group">
                 <h2>User{{ profiles|pluralize }}
                     {% if profiles|length >= 5 %}

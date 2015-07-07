@@ -13,21 +13,32 @@ FORECAST_TYPE = ((FORECAST_TYPE_FINITE, 'Finite Event'),
                  (FORECAST_TYPE_MAGNITUDE, 'Magnitude'),
                  (FORECAST_TYPE_TIME_HORIZON, 'Time Horizon Event'))
 
-AREAS = (('1', "Elections"),
-         ('2', "Conflicts/Wars"),
-         ('3', "Social Events/Protests"),
-         ('4', "Fiscal and Monetary Actions"),
-         ('5', "Inter-State Negotiations"),
-         ('6', "Trade Agreements"),
-         ('7', "Private Sector Engagements"))
+AREAS = (('1', "International Security Treaties"),
+         ('2', "Wars/Conflicts/Border Issues"),
+         ('3', "Revolutions/Coups"),
+         ('4', "Nuclear Weapons Issues"),
+         ('5', "Terrorism"),
+         ('6', "Energy"),
+         ('7', "Labor/Industrial Action Issues"),
+         ('8', "International Trade Alliances and Deals"),
+         ('9', "Central Bank Decisions"),
+         ('10', "Sovereign Debt Issues"))
 
-REGIONS = (('1', "Europe"),
-           ('2', "Middle East"),
-           ('3', "Africa"),
-           ('4', "Asia"),
-           ('5', "South Pacific"),
-           ('6', "North America"),
-           ('7', "South America"))
+REGIONS = (('1', "Global"),
+           ('2', "Western Europe"),
+           ('3', "Eastern Europe"),
+           ('4', "North America"),
+           ('5', "Central America"),
+           ('6', "South America"),
+           ('7', "Middle East"),
+           ('8', "North Africa"),
+           ('9', "Central Africa"),
+           ('10', "Sub-Saharan Africa"),
+           ('11', "Russia"),
+           ('12', "Near-East Asia"),
+           ('13', "East Asia"),
+           ('14', "South East Asia"),
+           ('15', "South Pacific"))
 
 STATUS_CHOICES = (('u', "Unpublished"),
                   ('p', "Published"))
