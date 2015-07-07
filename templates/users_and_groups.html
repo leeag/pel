@@ -3,10 +3,10 @@
     <div class="row">
 
 
-        <div class="col-sm-2 peleus-sidebar pull-right">
+        <div class="col-sm-2 peleus-sidebar">
             <ul id="sidebar" class="nav nav-stacked">
+                <pre>filter</pre>
                 {% if profiles %}
-
                     <li class="nav-divider"></li>
                     {% for area in profiles.forecast_areas %}
                         <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>

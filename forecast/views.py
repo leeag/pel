@@ -214,7 +214,7 @@ class Users_and_Groups(ListView):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
         if self.request.user.is_authenticated():
             # context['profiles'] = CustomUserProfile.objects.exclude(user=self.request.user)
-            context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(id=1)
+            context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
         else:
             # context['profiles'] = CustomUserProfile.objects.all()
             context['profiles'] = User.objects.all()
