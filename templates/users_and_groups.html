@@ -5,25 +5,41 @@
 
         <div class="col-sm-2 peleus-sidebar">
             <ul id="sidebar" class="nav nav-stacked">
-                <pre>filter</pre>
-                {% if profiles %}
+{#                {% if user %}#}
+                <div class="all_area nav nav-stacked collapse">
                     <li class="nav-divider"></li>
-                    {% for area in profiles.forecast_areas %}
+                    {% for area in FORECAST_AREAS %}
                         <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>
+                    {% empty %}
+                        <li>Areas is empty</li>
                     {% endfor %}
-
-                    <li class="nav-divider"></li>
-                    {% for region in profiles.forecast_regions %}
+                </div>
+                <button class="form-control btn btn-primary" data-toggle="collapse"
+                        data-target=".all_area"
+                        data-parent="#sidebar">
+                    <span class="glyphicon glyphicon-plus-sign"></span> Filters by interests
+                </button><p/>
+                <div class="all_region nav nav-stacked collapse">
+                    <li class="nav-divider region collapse"></li>
+                    {% for region in FORECAST_REGIONS %}
                         <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
+                        {% empty %}
+                        <li>Regions is empty</li>
                     {% endfor %}
-                {% endif %}
+                </div>
+                <button class="form-control btn btn-primary" data-toggle="collapse"
+                        data-target=".all_region"
+                        data-parent="#sidebar">
+                    <span class="glyphicon glyphicon-plus-sign"></span> Filters by regions
+                </button>
+{#                {% endif %}#}
             </ul>
         </div>
 
 
         <div class="col-sm-5">
         <ul class="groups list-group">
-        <h2>Group{{ object_list|pluralize }}{% if object_list|length >= 5 %}
+        <h2 style="margin-top: 0">Group{{ object_list|pluralize }}{% if object_list|length >= 5 %}
             <span class="badge">{{ object_list|length }}</span>
         {% endif %}
         </h2>
@@ -46,7 +62,7 @@
         </div>
         <div class="col-sm-5">
             <ul class="groups list-group">
-                <h2>User{{ profiles|pluralize }}
+                <h2 style="margin-top: 0">User{{ profiles|pluralize }}
                     {% if profiles|length >= 5 %}
                         <span class="badge">{{ profiles|length }}</span>
                     {% endif %}
