@@ -171,15 +171,21 @@ class ForecastVoteForm(forms.Form):
 
 
 class SignupCompleteForm(forms.Form):
-    forecast_areas = forms.MultipleChoiceField(required=False, widget=forms.CheckboxSelectMultiple, choices=AREAS)
-    forecast_regions = forms.MultipleChoiceField(required=True, widget=forms.CheckboxSelectMultiple, choices=REGIONS)
+    forecast_areas = CSIMultipleChoiceField(required=False, widget=CSICheckboxSelectMultiple, choices=AREAS)
+    forecast_regions = CSIMultipleChoiceField(required=True, widget=CSICheckboxSelectMultiple, choices=REGIONS)
 
-    def save(self, user_id):
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(SignupCompleteForm, self).__init__(*args, **kwargs)
+
+    def save(self):
         data = self.cleaned_data
-        user_profile = CustomUserProfile.objects.get(user=user_id)
-        user_profile.forecast_areas = [int(i) for i in data['forecast_areas']]
-        user_profile.forecast_regions = [int(i) for i in data['forecast_regions']]
-        user_profile.save()
+        # user_profile = CustomUserProfile.objects.get(pk=user_id)
+        # self.user.forecast_areas = [int(i) for i in data['forecast_areas']]
+        # self.user.forecast_regions = [int(i) for i in data['forecast_regions']]
+        self.user.forecast_areas = data['forecast_areas']
+        self.user.forecast_regions = data['forecast_regions']
+        self.user.save()
         return True
 
 

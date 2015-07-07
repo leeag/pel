@@ -1,5 +1,19 @@
 {% extends 'base.html' %}
 {% block content %}
+    {% if success %}
+        <div class="jumbotron">
+            <h2>You have confirmed your email address.</h2>
+
+            <p>{{ success }}</p>
+        </div>
+    {% else %}
+        <div class="jumbotron" style="background-color: #a94442">
+            <h2>Invalid confirmation key.</h2>
+
+            <p>{{ error }}</p>
+        </div>
+    {% endif %}
+
     <div class="well well-lg">Thank you for joining Peleus Forecasting, we are excited for you to join our community of
         politically-minded forecasters, analysts and observers. Your profile is being approved and you should receive an
         email confirmation shortly. In the meantime please consider filling in some optional information about your
@@ -7,7 +21,7 @@
         future. Welcome to the Peleus Forecasting community!
     </div>
     <div class="center-block form-center-block">
-        <form method="post" action="{% url 'signup2' %}">
+        <form method="post" action="{% url 'interests'  token=token %}">
             {% csrf_token %}
 
             Areas of interest

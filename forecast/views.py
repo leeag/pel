@@ -488,18 +488,35 @@ class SignUpSecondView(View):
     template_name = 'sign_up2_page.html'
     form = SignupCompleteForm
 
-    def get(self, request):
-        form = self.form()
-        return render(request, self.template_name, {'form': form})
+    def get(self, request, token):
 
-    def post(self, request):
-        form = self.form(request.POST)
+        res_dict = dict()
+        try:
+            user = CustomUserProfile.objects.get(activation_token=token)
+            form = self.form(user)
+        except User.DoesNotExist as ex:
+            res_dict['error'] = ex
+            return render(request, self.template_name, res_dict)
+    # if token == user.custom.activation_token and datetime.now() <= user.custom.expires_at:
+        if token == user.activation_token:
+            user.email_verified = True
+            res_dict['success'] = _('Email has been verified!')
+            user.save()
+            return render(request, self.template_name, {'form': form, 'success': res_dict['success'], 'token': token})
+
+    def post(self, request, token):
+        user_profile = CustomUserProfile.objects.get(activation_token=token)
+        form = self.form(user_profile, request.POST)
+
         if form.is_valid():
-            user_id = request.session.get('uid') or request.user.id
-            user_profile = CustomUserProfile.objects.get(user=user_id)
+            # user_id = request.session.get('uid') or request.user.id
+            # user_profile = CustomUserProfile.objects.get(pk=53)
+            # user_id = user_profile.id
+
             user_profile.conditions_accepted = True
-            user_profile.save()
-            form.save(user_id)
+            # user_profile.save()
+            form.save()
             return HttpResponseRedirect(reverse('home'))
+
         else:
             return HttpResponseRedirect(reverse('errors'))
