@@ -182,6 +182,10 @@ class ForecastProposeAdmin(DjangoObjectActions, ModelAdmin):
         obj.status = 'p'
         obj.save()
 
+        # my code
+        propose_choices = models.ForecastVoteChoiceFinite.objects.filter(forecast_question_id=obj.id)
+        proposed_choice = models.ForecastVoteChoice()
+        #
         f = models.Forecast(forecast_type=obj.forecast_type,
                             forecast_question=obj.forecast_question,
                             end_date=obj.end_date)
@@ -189,6 +193,16 @@ class ForecastProposeAdmin(DjangoObjectActions, ModelAdmin):
 
         for tag in obj.tags.all():
             f.tags.add(tag)
+        # my code
+        #     for propose_choice in propose_choices.objects.all():
+        #     proposed_choice.add(propose_choice)
+        #
+        for propose_choice in propose_choices:
+            forecast_choice = models.ForecastVoteChoice()
+            forecast_choice.choice = propose_choice.choice
+            f.choices.add(forecast_choice)
+
+
     publish_propose.label = 'Publish'
     publish_propose.attrs = {'class': 'btn btn-primary'}
 
