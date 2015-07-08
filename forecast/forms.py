@@ -97,7 +97,7 @@ class CreateGroupForm(forms.ModelForm):
 
 from django.forms.models import modelformset_factory, inlineformset_factory
 
-ChoiceformSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, can_delete=False, extra=2,
+ChoiceformSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, can_delete=False,
                                       fields=['choice'],
                                       widgets={'choice': forms.TextInput(attrs={'class': "form-control input-sm"})})
 
@@ -131,7 +131,6 @@ class ForecastVoteChoiceFiniteForm(ModelForm):
         model = ForecastVoteChoiceFinite
         fields = ('choice',)
         widgets = {'choice': forms.TextInput(attrs={'class': "form-control input-sm"})}
-
 
 ForecastVoteChoiceFormSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, fields={'choice'})
 
