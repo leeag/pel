@@ -2,27 +2,37 @@
 {% block content %}
     <div class="row">
 
-
+        {% load qstring %}
         <div class="col-sm-2 peleus-sidebar">
             <ul id="sidebar" class="nav nav-stacked">
-{#                {% if user %}#}
-                <div class="all_area nav nav-stacked collapse">
-                    <li class="nav-divider"></li>
-                    {% for area in FORECAST_AREAS %}
-                        <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>
-                    {% empty %}
-                        <li>Areas is empty</li>
-                    {% endfor %}
-                </div>
+{#                {% qstring as qstr %}#}
+                {#                {% if user %}#}
                 <button class="form-control btn btn-primary" data-toggle="collapse"
                         data-target=".all_area"
                         data-parent="#sidebar">
                     <span class="glyphicon glyphicon-plus-sign"></span> Filters by interests
-                </button><p/>
-                <div class="all_region nav nav-stacked collapse">
+                </button>
+                <p/>
+                <div class="all_area nav nav-stacked collapse in">
+                    <li class="nav-divider"></li>
+                    {% for area in FORECAST_AREAS %}
+                    {% with has_tag=qstr|qstring_has:'area' %}
+                        {% ifequal qstr area %}
+                            <li><a style="background-color: rgba(35, 174, 116, 0.55)"
+                                   href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}<span
+                                    class="pull-right">&times;</span></a></li>
+                        {% else %}
+                            <li><a href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}</a></li>
+                        {% endifequal %}
+                    {% endwith %}
+                    {% empty %}
+                        <li>Areas is empty</li>
+                    {% endfor %}
+                </div>
+                <div class="all_region nav nav-stacked collapse in">
                     <li class="nav-divider region collapse"></li>
                     {% for region in FORECAST_REGIONS %}
-                        <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
+                        <li><a href="?regions={{ region }}">{{ FORECAST_REGIONS|get_item:region }}</a></li>
                         {% empty %}
                         <li>Regions is empty</li>
                     {% endfor %}

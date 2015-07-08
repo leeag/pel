@@ -4,6 +4,9 @@ from datetime import date, datetime
 
 from django.shortcuts import render, get_object_or_404, render_to_response
 from django.core.urlresolvers import reverse
+from django.contrib.flatpages.models import FlatPage
+from django.template import loader, Context
+
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -21,7 +24,7 @@ from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, F
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
-    FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED
+    FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS
 # from postman.models import Message
 
 
@@ -166,7 +169,6 @@ class GroupView(DetailView):
         context['forecasts'], context['forecasts_count'] = forecasts, forecasts.count()
         return context
 
-
 class MyGroupsView(ListView):
     template_name = "groups_view.html"
     model = Group
@@ -213,12 +215,20 @@ class Users_and_Groups(ListView):
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
         context['user'] = self.request.user
-        if self.request.user.is_authenticated():
-            # context['profiles'] = CustomUserProfile.objects.exclude(user=self.request.user)
-            context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+        if 'areas' in self.request.GET:
+            get_params = self.request.GET.get('areas')
+            context['qstr'] = get_params
+            # user = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
+            # print user
+            if self.request.user.is_authenticated():
+                context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params).exclude(user=self.request.user)
+            else:
+                context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
         else:
-            # context['profiles'] = CustomUserProfile.objects.all()
-            context['profiles'] = User.objects.all()
+            if self.request.user.is_authenticated():
+                context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+            else:
+                context['profiles'] = User.objects.all().exclude(is_superuser=True)
         return context
 
 
@@ -244,7 +254,6 @@ class IndexPageView(ForecastFilterMixin, View):
             forecasters=Count('votes__user', distinct=True))
         if 'tag' in request.GET:
             forecasts = self._queryset_by_tag(request.GET, forecasts)
-
         return render(request, self.template_name, {'data': forecasts})
 
 
