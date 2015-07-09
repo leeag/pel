@@ -217,6 +217,7 @@ class Users_and_Groups(ListView):
         context['user'] = self.request.user
         if 'areas' in self.request.GET:
             get_params = self.request.GET.get('areas')
+            get_list_params = self.request.GET.getlist('areas')
             context['qstr'] = get_params
             if self.request.user.is_authenticated():
                 context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params).exclude(user=self.request.user)

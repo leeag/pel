@@ -9,7 +9,7 @@
             <li class="active">Analysis</li>
         </ol>
             {% if analysis %}
-                <h1>{{ uname }} analysis</h1>
+                <h1>{{ uname }} analysis: {{ analysis|length|default:"0" }}</h1>
             {% endif %}
             {% for item in analysis %}
                 {% with disable_user_link=True %}
