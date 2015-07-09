@@ -31,7 +31,7 @@
                     {% with has_tag=qstr|qstring_has:'area' %}
                         {% ifequal qstr area %}
                             <li><a style="background-color: rgba(35, 174, 116, 0.55)"
-                                   href="?areas={{  }}">{{ FORECAST_AREAS|get_item:area }}<span
+                                   href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}<span
                                     class="pull-right">&times;</span></a></li>
                         {% else %}
                             <li><a href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}</a></li>
