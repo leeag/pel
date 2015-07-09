@@ -1,21 +1,30 @@
 {% load staticfiles %}
-<div class="col-sm-3 peleus-sidebar">
+<div class="col-sm-3 peleus-sidebar" xmlns="http://www.w3.org/1999/html">
 
     <div class="panel panel-default peleus-scrollable-block">
-        <div class="panel-heading">Community analysis</div>
+        <div class="panel-heading">Community analysis: {{ analysis_set|length|default:"0" }}</div>
         {% for analysis in analysis_set %}
-            <div class="panel-body" id="analysis-{{ analysis.id }}">
+            <div class="panel-body divider" id="analysis-{{ analysis.id }}">
                 <div class="well well-sm">
                     {% if analysis.post_link %}
                         <a href="{{ analysis.post_link }}" target="_blank"
-                           title="Click to see original post">{{ analysis.title }} <span
+                           title="Click to see original post">{{ analysis.title|slice:"30" }} <span
                                 class="glyphicon glyphicon-new-window"></span></a>
                     {% else %}
-                        {{ analysis.title }}
+                        {{ analysis.title|slice:"30" }}
                     {% endif %}
                 </div>
                 <div class="analysis-text">
-                    {{ analysis.body }}
+                    {% if analysis.body|length > 100 %}
+                        <pre>{{ analysis.body|slice:"100" }}...</pre>
+                        <div>
+                            <a href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
+                               target="_blank"
+                               data-toggle="modal" data-target="#id{{ analysis.id }}">show {{ analysis.title|slice:"33" }} more</a>
+                        </div>
+                        {% else %}
+                        <pre>{{ analysis.body }}</pre>
+                    {% endif %}
                 </div>
                 {#            <p class="pull-right">#}
                 by <a href="{% url 'profile' id=analysis.user.id %}">{{ analysis.user }}</a>
@@ -26,6 +35,29 @@
                     </p>
                 {% endif %}
             </div>
+            <hr>
+
+{##}
+            <div class="modal fade" id="id{{ analysis.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title panel-heading" id="myModalLabel"><strong>{{ analysis.title|slice:"60" }}</strong></h4>
+                        </div>
+                        <div class="modal-body">
+                            <pre>{{ analysis.body }}</pre>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{##}
+
         {% endfor %}
         {% if forecast.is_active and user.is_authenticated %}
             <div id="peleus-right-toggle-wrap">
@@ -116,10 +148,10 @@
                 $(location.hash).addClass('highlight-analysis');
             }, 1010);
 
-            $('.analysis-text').jTruncate({
-                length: 100,
-                ellipsisText: ' ...'
-            });
+{#            $('.analysis-text').jTruncate({#}
+{#                length: 100,#}
+{#                ellipsisText: ' ...'#}
+{#            });#}
         })
     </script>
 

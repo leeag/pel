@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="panel-body">
-        {{ item.body }}
+        <pre>{{ item.body }}</pre>
         {% if item.avg_votes %}
             <span class="pull-right">{{ item.avg_votes|floatformat }} / 5</span>
         {% endif %}
