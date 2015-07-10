@@ -1,7 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
+{#<script>#}
+{#$("#add-another").click(function() {#}
+{##}
+{#    var counter = 3;#}
+{#    var element = $("<p><label for='id_forecastvotechoicefinite_set-" + counter + "-choice'>Choice:" + "</label>" +#}
+{#            "<input class='form-control input-sm' id='id_forecastvotechoicefinite_set-" + counter + "-choice' maxlength='150' name='forecastvotechoicefinite_set-" + counter + "choice' type='text' />" +#}
+{#            "<input id='id_forecastvotechoicefinite_set-" + counter + "-id' name='forecastvotechoicefinite_set-" + counter + "-id' type='hidden' />" +#}
+{#            "<input id='id_forecastvotechoicefinite_set-" + counter + "-forecast_question' name='forecastvotechoicefinite_set-" + counter + "-forecast_question' type='hidden' /></p>");#}
+{##}
+{#    $("#hiadeble-choices").append(element);#}
+{#});#}
 
+</script>
     <form class="form-horizontal" action="{% url 'propose_forecast' %}" method="post">
         {% csrf_token %}
         <div class="center-block form-center-block">
@@ -20,6 +32,7 @@
         <div class="table" id="hideable-choices">
         {{ formset.as_p }}
         </div>
+        <input type="button" value="Add More" id="add_another">
 {#        <input type="button" value="Add More" id="add_more">#}
 {##}
 {##}
