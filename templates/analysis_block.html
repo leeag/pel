@@ -11,7 +11,7 @@
         </div>
     </div>
     <div class="panel-body">
-        <pre>{{ item.body }}</pre>
+        <p style="word-wrap:break-word; background-color: InfoBackground">{{ item.body }}</p>
         {% if item.avg_votes %}
             <span class="pull-right">{{ item.avg_votes|floatformat }} / 5</span>
         {% endif %}

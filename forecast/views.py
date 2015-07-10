@@ -223,6 +223,14 @@ class Users_and_Groups(ListView):
                 context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params).exclude(user=self.request.user)
             else:
                 context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
+
+        elif 'region' in self.request.GET:
+            get_params_region = self.request.GET.get('region')
+            context['qstr_region'] = get_params_region
+            if self.request.user.is_authenticated():
+                context['profiles'] = CustomUserProfile.objects.filter(forecast_regions__contains=get_params_region).exclude(user=self.request.user)
+            else:
+                context['profiles'] = CustomUserProfile.objects.filter(forecast_regions__contains=get_params_region)
         else:
             if self.request.user.is_authenticated():
                 context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)

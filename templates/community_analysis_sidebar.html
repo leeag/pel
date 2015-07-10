@@ -15,15 +15,18 @@
                     {% endif %}
                 </div>
                 <div class="analysis-text">
-                    {% if analysis.body|length > 100 %}
-                        <pre>{{ analysis.body|slice:"100" }}...</pre>
-                        <div>
-                            <a href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
-                               target="_blank"
-                               data-toggle="modal" data-target="#id{{ analysis.id }}">show {{ analysis.title|slice:"33" }} more</a>
-                        </div>
+                   {% if analysis.body|length > 100 %}
+                         <div style="word-wrap:break-word; background-color: InfoBackground">{{ analysis.body|slice:"100" }}...</div>
+                       <div>
+                           <a href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
+                              target="_blank"
+                              data-toggle="modal"
+                              data-target="#id{{ analysis.id }}">show {{ analysis.title|slice:"33" }}
+                               more</a>
+                       </div>
                         {% else %}
-                        <pre>{{ analysis.body }}</pre>
+
+                       <p style="word-wrap:break-word; background-color: InfoBackground">{{ analysis.body }}</p>
                     {% endif %}
                 </div>
                 {#            <p class="pull-right">#}
@@ -48,7 +51,7 @@
                             <h4 class="modal-title panel-heading" id="myModalLabel"><strong>{{ analysis.title|slice:"60" }}</strong></h4>
                         </div>
                         <div class="modal-body">
-                            <pre>{{ analysis.body }}</pre>
+                            <p style="word-wrap:break-word; background-color:InfoBackground;">{{ analysis.body }}</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
