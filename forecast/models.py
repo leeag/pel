@@ -181,6 +181,7 @@ class ForecastAnalysis(models.Model):
     post_link = models.URLField(blank=True, null=True)
     title = models.CharField(max_length=100, blank=True, null=True)
     body = models.TextField(max_length=1000, blank=True, null=True)
+    publish_date = models.DateTimeField(auto_now_add=True)
 
     objects = ForecastAnalysisManager()
 

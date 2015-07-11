@@ -13,8 +13,13 @@
         <a href="{% url 'profile_forecast_analysis' id=profile.id %}" class="pull-right">[See Full Set]</a></p>
     {% for element in analysis %}
         <ul class="list-group">
+            <div>
             <a class="list-group-item" style="color: #165ba8" href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}" target="_blank"
-               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title|slice:"60" }}</a>
+               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title|slice:"60" }} <div class="pull-right">{% if element.publish_date.today %}
+                        <p>{{ element.publish_date|time }}</p>{% else %}
+                        <p>{{ element.publish_date }}</p>
+                    {% endif %}</div></a>
+             </div>
         </ul>
 
         <div class="modal fade" id="id{{ element.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
@@ -25,6 +30,9 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel"><strong>{{ element.title|slice:"60" }}</strong></h4>
+                    {% if element.publish_date.today %}
+                        <p>{{ element.publish_date|time }}</p>
+                    {% endif %}
                 </div>
                 <div class="modal-body">
                     <p style="word-wrap:break-word; background-color: InfoBackground">{{ element.body }}</p>

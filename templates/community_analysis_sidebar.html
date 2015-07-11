@@ -4,6 +4,7 @@
     <div class="panel panel-default peleus-scrollable-block">
         <div class="panel-heading">Community analysis: {{ analysis_set|length|default:"0" }}</div>
         {% for analysis in analysis_set %}
+
             <div class="panel-body divider" id="analysis-{{ analysis.id }}">
                 <div class="well well-sm">
                     {% if analysis.post_link %}
@@ -14,6 +15,8 @@
                         {{ analysis.title|slice:"30" }}
                     {% endif %}
                 </div>
+                                               <p>{{ analysis.publish_date }}</p>
+
                 <div class="analysis-text">
                    {% if analysis.body|length > 100 %}
                          <div style="word-wrap:break-word; background-color: InfoBackground">{{ analysis.body|slice:"100" }}...</div>
@@ -29,6 +32,7 @@
                        <p style="word-wrap:break-word; background-color: InfoBackground">{{ analysis.body }}</p>
                     {% endif %}
                 </div>
+
                 {#            <p class="pull-right">#}
                 by <a href="{% url 'profile' id=analysis.user.id %}">{{ analysis.user }}</a>
                 {#            </p>#}
