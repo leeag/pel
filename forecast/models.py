@@ -116,12 +116,15 @@ class Forecast(models.Model):
             'forecastQuestion': self.forecast_question,
             'startDate': self.start_date.strftime('%Y-%m-%d'),
             'endDate': self.end_date.strftime('%Y-%m-%d'),
-            'votes': _votes_by_forecast_type(self)}
+            'votes': _votes_by_forecast_type(self)
+        }
         try:
             response['forecastersCount'] = self.votes.values('forecast') \
                 .annotate(forecasters=Count('user', distinct=True)).get()['forecasters']
         except ForecastVotes.DoesNotExist:
             response['forecastersCount'] = 0
+        if self.forecast_type == settings.FORECAST_TYPE_FINITE:
+            response['min'], response['max'] = self.min, self.max
         return response
 
 

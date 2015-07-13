@@ -15,10 +15,8 @@
         <ul class="list-group">
             <div>
             <a class="list-group-item" style="color: #165ba8" href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}" target="_blank"
-               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title|slice:"60" }} <div class="pull-right">{% if element.publish_date.today %}
-                        <p>{{ element.publish_date|time }}</p>{% else %}
-                        <p>{{ element.publish_date }}</p>
-                    {% endif %}</div></a>
+               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title|slice:"60" }} <div class="pull-right">
+                        <p>{{ element.publish_date }}</p></div></a>
              </div>
         </ul>
 
@@ -30,9 +28,7 @@
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
                             aria-hidden="true">&times;</span></button>
                     <h4 class="modal-title" id="myModalLabel"><strong>{{ element.title|slice:"60" }}</strong></h4>
-                    {% if element.publish_date.today %}
-                        <p>{{ element.publish_date|time }}</p>
-                    {% endif %}
+                        <p>{{ element.publish_date }}</p>
                 </div>
                 <div class="modal-body">
                     <p style="word-wrap:break-word; background-color: InfoBackground">{{ element.body }}</p>

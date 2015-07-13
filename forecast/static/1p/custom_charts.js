@@ -101,15 +101,19 @@ function drawFiniteEventChart(selector, data) {
             //    x: 'choice',
             //    value: ['votesCount']
             //},
-            type: 'bar'
+            type: 'pie'
         },
 
         axis: {
             x: {
                 show: false
         //        type: 'category'
+            },
+            y: {
+                min: 0,
+                max: 100
             }
-        }
+        },
     });
 }
 

@@ -15,7 +15,7 @@
                         {{ analysis.title|slice:"30" }}
                     {% endif %}
                 </div>
-                                               <p>{{ analysis.publish_date }}</p>
+                <p>{{ analysis.publish_date }}</p>
 
                 <div class="analysis-text">
                    {% if analysis.body|length > 100 %}
@@ -24,8 +24,7 @@
                            <a href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
                               target="_blank"
                               data-toggle="modal"
-                              data-target="#id{{ analysis.id }}">show {{ analysis.title|slice:"33" }}
-                               more</a>
+                              data-target="#id{{ analysis.id }}">show more</a>
                        </div>
                         {% else %}
 
