@@ -12,8 +12,8 @@
 {##}
 {#    $("#hiadeble-choices").append(element);#}
 {#});#}
-
-</script>
+{##}
+{#</script>#}
     <form class="form-horizontal" action="{% url 'propose_forecast' %}" method="post">
         {% csrf_token %}
         <div class="center-block form-center-block">
@@ -32,7 +32,7 @@
         <div class="table" id="hideable-choices">
         {{ formset.as_p }}
         </div>
-        <input type="button" value="Add More" id="add_another">
+{#        <input type="button" value="Add More" id="add_another">#}
 {#        <input type="button" value="Add More" id="add_more">#}
 {##}
 {##}
