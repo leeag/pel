@@ -8,17 +8,17 @@
             <li class="active">Groups</li>
         </ol>
 
-        {% if object_list %}
+        {% if groups %}
                 <h4>
                     {% if owner %}
-                    You are a member of {{ object_list|length }} group{{ object_list|pluralize }}
+                    You are a member of {{ groups|length }} group{{ groups|pluralize }}
                         {% else %}
-                    This user is a member of {{ object_list|length }} group{{ object_list|pluralize }}
+                    This user is a member of {{ groups|length }} group{{ groups|pluralize }}
                     {% endif %}
                 </h4>
             {% endif %}
         <ul class="groups list-group">
-            {% for group in object_list %}
+            {% for group in groups %}
                     <li class="list-group-item">
                         <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
                     </li>

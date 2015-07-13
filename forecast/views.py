@@ -413,10 +413,11 @@ class ProfileView(ProfileViewMixin, DetailView):
         profile = context.get('profile')
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
-        groups = Group.objects.filter(membership__user=profile).count()
+        groups_count = Group.objects.filter(membership__user=profile).count()
         analysis = profile.forecastanalysis_set.all()[:5]
 
-        context['groups'], context['forecasts'], context['forecasts_archived'], context['analysis'] = groups, forecasts, forecasts_archived, analysis
+        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'] = \
+            groups_count, forecasts, forecasts_archived, analysis
 
         return context
 
@@ -434,6 +435,22 @@ class ProfileForecastView(View):
 
         return render(request, self.template_name,
                       {'is_active': True, 'data': forecasts, 'disable_tags': True})
+
+
+class ProfilePageGroupsView(ProfileViewMixin, DetailView):
+    template_name = "profile_page_groups.html"
+    model = User
+    pk_url_kwarg = 'id'
+    context_object_name = 'profile'
+
+    def get_context_data(self, **kwargs):
+            context = super(ProfilePageGroupsView, self).get_context_data(**kwargs)
+            profile = context.get('profile')
+            analysis = profile.forecastanalysis_set.all()[:5]
+            groups = Group.objects.filter(membership__user=profile)
+            context['groups'], context['analysis'] = groups, analysis
+            return context
+
 
 from forms import ChoiceformSet
 class ProposeForecastView(View):
@@ -465,14 +482,14 @@ class ProposeForecastView(View):
             return render(request, self.template_name, {"formset": formset})
 
 
-class ProfilePageGroupsView(ProfileViewMixin, ListView):
-    template_name = "profile_page_groups.html"
-    model = Group
-
-    def get_queryset(self):
-        profile = get_object_or_404(User, pk=self.kwargs.get('id'))
-        self.profile = profile
-        return Group.objects.filter(membership__user=profile)
+# class ProfilePageGroupsView(ProfileViewMixin, ListView):
+#     template_name = "profile_page_groups.html"
+#     model = Group
+#
+#     def get_queryset(self):
+#         profile = get_object_or_404(User, pk=self.kwargs.get('id'))
+#         self.profile = profile
+#         return Group.objects.filter(membership__user=profile)
 
 
 class SignUpView(View):
