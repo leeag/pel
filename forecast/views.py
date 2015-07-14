@@ -21,7 +21,7 @@ from django.forms.models import inlineformset_factory
 
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastProposeForm, CommunityAnalysisForm, \
-    ForecastVoteForm, CreateGroupForm, CustomInlineFormSet
+    ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS
@@ -219,18 +219,20 @@ class Users_and_Groups(ListView):
             get_params = self.request.GET.get('areas')
             get_list_params = self.request.GET.getlist('areas')
             context['qstr'] = get_params
+            users_by_areas = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
             if self.request.user.is_authenticated():
-                context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params).exclude(user=self.request.user)
+                context['profiles'] = User.objects.filter(custom=users_by_areas.exclude(user=self.request.user))
             else:
-                context['profiles'] = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
+                context['profiles'] = User.objects.filter(custom=users_by_areas)
 
         elif 'region' in self.request.GET:
             get_params_region = self.request.GET.get('region')
             context['qstr_region'] = get_params_region
+            users_by_regions = CustomUserProfile.objects.filter(forecast_regions__contains=get_params_region)
             if self.request.user.is_authenticated():
-                context['profiles'] = CustomUserProfile.objects.filter(forecast_regions__contains=get_params_region).exclude(user=self.request.user)
+                context['profiles'] = User.objects.filter(custom=users_by_regions.exclude(user=self.request.user))
             else:
-                context['profiles'] = CustomUserProfile.objects.filter(forecast_regions__contains=get_params_region)
+                context['profiles'] = User.objects.filter(custom=users_by_regions)
         else:
             if self.request.user.is_authenticated():
                 context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
@@ -392,10 +394,12 @@ class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
 
 
 class ProfileView(ProfileViewMixin, DetailView):
+    Form = AboutUserForm
     template_name = 'profile_page.html'
     model = User
     pk_url_kwarg = 'id'
     context_object_name = 'profile'
+
 
     # def get(self, request, id):
     #     owner = request.user.id == int(id)

@@ -195,6 +195,13 @@ class SignupCompleteForm(forms.Form):
         self.user.save()
         return True
 
+class AboutUserForm(ModelForm):
+    about_user = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input"}), required=False)
+
+    class Meta:
+        model = CustomUserProfile
+        fields = ("about_user",)
+        widgets = {'About user': forms.TextInput(attrs={'class': "form-control input"})}
 
 class UserRegistrationForm(ModelForm):
     error_messages = {
