@@ -97,7 +97,7 @@ class CreateGroupForm(forms.ModelForm):
 
 from django.forms.models import modelformset_factory, inlineformset_factory
 
-ChoiceformSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, can_delete=False,
+ChoiceformSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, can_delete=False, extra=2,
                                       fields=['choice'],
                                       widgets={'choice': forms.TextInput(attrs={'class': "form-control input-sm"})})
 
@@ -111,28 +111,12 @@ class ForecastProposeForm(ModelForm):
         fields = ('forecast_type', 'forecast_question', 'tags')
         widgets = {'tags': TagWidget(attrs={'class': "form-control input-sm"})}
 
-    # def clean(self):
-    #     # get forms that actually have valid data
-    #     forecast_type = self.forms[0].data.get('forecast_type')
-    #     if forecast_type == FORECAST_TYPE_FINITE:
-    #         count = 0
-    #         for form in self.forms:
-    #             try:
-    #                 if form.cleaned_data:
-    #                     count += 1
-    #             except AttributeError:
-    #                 pass
-    #         if count < 2:
-    #             raise forms.ValidationError('You must have at least two orders')
-
 
 class ForecastVoteChoiceFiniteForm(ModelForm):
     class Meta:
         model = ForecastVoteChoiceFinite
         fields = ('choice',)
         widgets = {'choice': forms.TextInput(attrs={'class': "form-control input-sm"})}
-
-ForecastVoteChoiceFormSet = inlineformset_factory(ForecastPropose, ForecastVoteChoiceFinite, fields={'choice'})
 
 
 class ForecastVoteForm(forms.Form):

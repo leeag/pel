@@ -1,20 +1,6 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
-{#<script>#}
-{#$("#add-another").click(function() {#}
-{##}
-{#    var counter = 3;#}
-{#    var element = $("<p><label for='id_forecastvotechoicefinite_set-" + counter + "-choice'>Choice:" + "</label>" +#}
-{#            "<input class='form-control input-sm' id='id_forecastvotechoicefinite_set-" + counter + "-choice' maxlength='150' name='forecastvotechoicefinite_set-" + counter + "choice' type='text' />" +#}
-{#            "<input id='id_forecastvotechoicefinite_set-" + counter + "-id' name='forecastvotechoicefinite_set-" + counter + "-id' type='hidden' />" +#}
-{#            "<input id='id_forecastvotechoicefinite_set-" + counter + "-forecast_question' name='forecastvotechoicefinite_set-" + counter + "-forecast_question' type='hidden' /></p>");#}
-{##}
-{#    $("#hiadeble-choices").append(element);#}
-{#});#}
-{##}
-{#</script>#}
     <form id="propose" class="form-horizontal" action="{% url 'propose_forecast' %}" method="post">
         {% csrf_token %}
         <div class="center-block form-center-block">
@@ -33,47 +19,8 @@
         <div class="table" id="hideable-choices">
         {{ formset.as_p }}
         </div>
-{#        <input type="button" value="Add More" id="add_another">#}
-{#        <input type="button" value="Add More" id="add_more">#}
-{##}
-{##}
-{#            <script>#}
-{#                $('#add_more').click(function () {#}
-{#                    cloneMore('div.table:last', 'service');#}
-{##}
-{#                    function cloneMore(selector, type) {#}
-{#                        var newElement = $(selector).clone(true);#}
-{#                        var total = $('#id_' + type + '-TOTAL_FORMS').val();#}
-{#                        newElement.find(':input').each(function () {#}
-{#                            var name = $(this).attr('name').replace('-' + (total - 1) + '-', '-' + total + '-');#}
-{#                            var id = 'id_' + name;#}
-{#                            $(this).attr({'name': name, 'id': id}).val('').removeAttr('checked');#}
-{#                        });#}
-{#                        newElement.find('label').each(function () {#}
-{#                            var newFor = $(this).attr('for').replace('-' + (total - 1) + '-', '-' + total + '-');#}
-{#                            $(this).attr('for', newFor);#}
-{#                        });#}
-{#                        total++;#}
-{#                        $('#id_' + type + '-TOTAL_FORMS').val(total);#}
-{#                        $(selector).after(newElement);#}
-{#                    }#}
-{#                });#}
-{#            </script>#}
-
-{#            {% for f in form %}#}
-{##}
-{#                    <div class="form-group{% if f.choice.error %} error{% endif %}">#}
-{#                        <label for="{{ f.choice.name }}" class="col-sm-4">{{ f.choice.label }}</label>#}
-{##}
-{#                        <div class="col-sm-8">#}
-{#                            <p>{{ f.choice }}</p>#}
-{#                            {% if f.choice.error %}#}
-{#                                <label>{{ f.choice.error }}</label>#}
-{#                            {% endif %}#}
-{#                        </div>#}
-{#                    </div>#}
-{##}
-{#        {% endfor %}#}
+        <input type="button" value="Add More" id="add_another">
+         <input type="button" value="Remove" id="delete_last" style="display:none">
 
             <button type="submit" class="pull-right btn btn-success">Propose!</button>
         </div>
