@@ -1,5 +1,6 @@
 $(document).ready(function () {
     var choices = $('#hideable-choices');
+    var buttons = $('#hideable-button');
     var forecastType = $('#id_forecast_type');
 
     function triggerChoices() {
@@ -11,7 +12,19 @@ $(document).ready(function () {
     }
     triggerChoices();
 
+    function triggerButtons() {
+        if($(forecastType).val() == '1') {
+            buttons.show()
+        } else {
+            buttons.hide()
+        }
+    }
+    triggerButtons();
+
     $(forecastType).change(triggerChoices)
+        .on('keyup keydown', function () { $(this).trigger('change') });
+
+    $(forecastType).change(triggerButtons)
         .on('keyup keydown', function () { $(this).trigger('change') });
 
 });

@@ -17,14 +17,16 @@
             {% endfor %}
 
         <div class="table" id="hideable-choices">
-        {{ formset.as_p }}
+                {{ formset.as_p }}
         </div>
-        <button type="button" value="Add More" id="add_another">
-            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-        </button>
-         <button type="button" value="Remove" id="delete_last" style="display:none">
-            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
-         </button>
+        <div id="hideable-button">
+            <button type="button" value="Add More" id="add_another">
+                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+            </button>
+            <button type="button" value="Remove" id="delete_last" style="display:none">
+                <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+            </button>
+        </div>
 
 
             <button type="submit" class="pull-right btn btn-success">Propose!</button>
