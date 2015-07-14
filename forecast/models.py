@@ -64,7 +64,7 @@ class CustomUserProfile(models.Model):
     organization_name = models.TextField(blank=True)
     forecast_areas = models.CommaSeparatedIntegerField(max_length=100, blank=True)
     forecast_regions = models.CommaSeparatedIntegerField(max_length=100, blank=True)
-    # about_user = models.TextField(max_length=1000, blank=True)
+    about_user = models.TextField(max_length=1000, blank=True)
 
     activation_token = models.TextField(blank=True, max_length=256)
     expires_at = models.DateTimeField(blank=True, null=True)
