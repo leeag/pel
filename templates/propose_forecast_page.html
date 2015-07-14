@@ -19,8 +19,13 @@
         <div class="table" id="hideable-choices">
         {{ formset.as_p }}
         </div>
-        <input type="button" value="Add More" id="add_another">
-         <input type="button" value="Remove" id="delete_last" style="display:none">
+        <button type="button" value="Add More" id="add_another">
+            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+        </button>
+         <button type="button" value="Remove" id="delete_last" style="display:none">
+            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+         </button>
+
 
             <button type="submit" class="pull-right btn btn-success">Propose!</button>
         </div>
