@@ -79,6 +79,7 @@
                         {% if user.is_authenticated %}
                             <a id="join_{{ group.id }}" class="join_to_group pull-right btn btn-sm btn-success" group-id="{{ group.id }}" >join</a>
                             <pre style="display: none;" id="joined_group_{{ group.id }}" class="text-center">Joined</pre>
+                            <pre style="display: none; background-color: rgba(45, 174, 47, 0.55)" id="request_to_group_{{ group.id }}" class="text-center"> Your request is sent</pre>
                             <p/><pre style="display: none; background-color: #b94a48" id="join_error_{{ group.id }}" class="text-center">Sorry, having some problems with join</pre>
                         {% endif %}
                     </li>

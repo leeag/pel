@@ -11,7 +11,7 @@
                         {{ uname }} Performance
                     </strong></h4>
 
-                    <p>{{ group.name|capfirst }}'s number of Forecasts: {% if forecasts_group_count %} {{ forecasts_group_count }}{% else %}0{% endif %}</p>
+                    <p>{{ group.name|capfirst }}'s number of Forecasts: {{ forecasts|length|default:"0" }}</p>
 
                 </div>
 
@@ -23,14 +23,14 @@
                             {% endif %} Analysis
                         </strong></h4>
 
-                        <p><strong>Published Analysis:</strong>
+                        <p>Published Analysis: {{ analysis|length|default:"0" }}
                             {#                            <a href="{% url 'profile_forecast_analysis' id=profile.id %}"#}
                             {#                                class="pull-right">[See Full Set]</a></p>#}
                             <a href="#"
                                class="pull-right">[See Full Set]</a></p>
                         {% for element in analysis %}
                             <div>
-                                <a href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}"
+                                <a class="list-group-item" href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}"
                                    target="_blank"
                                    data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title }}</a>
                             </div>
@@ -56,12 +56,14 @@
                                     </div>
                                 </div>
                             </div>
+                            {% empty %}
+                            <div class="well well-sm">There are no posted analysis</div>
                         {% endfor %}
                     </div>
                 {% endif %}
 
                 <div class="panel">
-                    <p>Weekly Profile Views:</p>
+                    <p>Weekly Views:</p>
 
                     <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                          aria-hidden="true">
@@ -108,6 +110,50 @@
                             <p>Empty</p>
                         {% endif %}
                     </div>
+
+{# Followers and  Requests#}
+
+                    <div id="req_to_group" style="margin-top: 10px">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Followers: {{ followers|length|default:"0" }}</div>
+                            <div id="peleus-right-toggle-wrap ">
+                                <div class="followers-scrollable-block">
+                                    {% for follow in followers %}
+                                        <div>
+                                            <a href="{% url 'profile' id=follow.id %}" target="_blank" class="list-group-item">{{ follow }}
+                                            </a>
+                                            <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>
+                                        </div>
+                                    {% empty %}
+                                        <pre>No followers...</pre>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <div id="req_to_group" style="margin-top: 10px">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Requests: {{ requests|default:"0" }}</div>
+                            <div id="peleus-right-toggle-wrap">
+                                <div class="peleus-right-toggle collapse in">
+                                    {% for request in requests %}
+                                        <div>
+{#                                            <a href="{{ }}" target="_blank" class="thumbnail">#}
+{#                                                <img src="{{ media.image.url }}" alt="{{ media.name }}">#}
+{#                                            </a>#}
+{#                                            <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>#}
+                                        </div>
+                                    {% empty %}
+                                        <pre>No requests...</pre>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+{# Followers and  Requests#}
 
                 </div>
             </div>
@@ -171,6 +217,8 @@
                     {% endfor %}
                 </table>
             </div>
+
+
 
             <div class="modal fade" id="archived_forecasts" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">

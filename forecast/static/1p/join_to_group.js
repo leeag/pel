@@ -9,9 +9,15 @@ $(document).ready(function (e) {
                     data:{
                         group: group_id
                     },
-                    success: function () {
-                        $('#join_'+group_id).hide("slow");
-                        $('#joined_group_'+group_id).show("slow");
+                    success: function (data) {
+                        //console.log("DATA", data);
+                        if(data == 'request'){
+                            $('#join_'+group_id).hide("slow");
+                            $('#request_to_group_'+group_id).show("slow");
+                        }else if(data == 'followed'){
+                            $('#join_'+group_id).hide("slow");
+                            $('#joined_group_'+group_id).show("slow");
+                        }
                     },
                     error: function() {
                         $('#join_error_' + group_id).show("slow");

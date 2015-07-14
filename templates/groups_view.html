@@ -9,9 +9,7 @@
             {% endif %}
         <ul class="groups list-group">
             {% for group in object_list %}
-                    <li class="list-group-item">
-                        <a style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
-                    </li>
+                        <a class="list-group-item" style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
             {% empty %}
                 <h2>
                     You are not subscribed any group
@@ -19,7 +17,7 @@
             {% endfor %}
         </ul>
         </div>
-        <div class="col-sm-3">
+        <div id="actions_group" class="col-sm-3">
             <div class="panel panel-default">
                 <div class="panel-heading">Actions</div>
                 <div id="peleus-right-toggle-wrap">
@@ -34,5 +32,6 @@
 
             </div>
         </div>
+
     </div>
 {% endblock %}

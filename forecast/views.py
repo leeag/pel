@@ -24,7 +24,7 @@ from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, F
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
-    FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS
+    FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
 # from postman.models import Message
 
 
@@ -166,7 +166,11 @@ class GroupView(DetailView):
         context = super(GroupView, self).get_context_data(**kwargs)
         group = context['group']
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
-        context['forecasts'], context['forecasts_count'] = forecasts, forecasts.count()
+        followers = User.objects.filter(membership__group=group)
+        analysis = ForecastAnalysis.objects.filter(user__membership__group=group)
+
+        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'] =\
+                                                    forecasts, forecasts.count(), followers, analysis
         return context
 
 class MyGroupsView(ListView):
@@ -247,10 +251,13 @@ class JoinToGroup(View):
         group_id = request.GET.get('group')
         group = get_object_or_404(Group, pk=group_id)
         curren_user = request.user
-
+        group_type = group.type
         if curren_user.is_authenticated():
-            Membership(user=curren_user, group=group, admin_rights=False).save()
-            return HttpResponse('You followed')
+            if int(group_type) == 1:
+                Membership(user=curren_user, group=group, admin_rights=False).save()
+                return HttpResponse('followed')
+            else:
+                return HttpResponse('request')
         else:
             return HttpResponse(status=404)
 
