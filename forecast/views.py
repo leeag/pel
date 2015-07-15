@@ -219,6 +219,7 @@ class Users_and_Groups(ListView):
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
         context['user'] = self.request.user
+
         if 'areas' in self.request.GET:
             get_params = self.request.GET.get('areas')
             get_list_params = self.request.GET.getlist('areas')
@@ -239,9 +240,9 @@ class Users_and_Groups(ListView):
                 context['profiles'] = User.objects.filter(custom=users_by_regions)
         else:
             if self.request.user.is_authenticated():
-                context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+                context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True).order_by('last_name')
             else:
-                context['profiles'] = User.objects.all().exclude(is_superuser=True)
+                context['profiles'] = User.objects.all().exclude(is_superuser=True).order_by('last_name')
         return context
 
 
