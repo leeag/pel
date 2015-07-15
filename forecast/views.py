@@ -212,9 +212,9 @@ class Users_and_Groups(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
-            return Group.objects.exclude(membership__user=self.request.user)
+            return Group.objects.exclude(membership__user=self.request.user).order_by('name')
         else:
-            return Group.objects.all()
+            return Group.objects.all().order_by('name')
 
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
