@@ -1,4 +1,3 @@
-# from distutils.msvc9compiler import MacroExpander
 import json
 import traceback
 from datetime import date, datetime
@@ -28,27 +27,8 @@ from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, F
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership, CustomUserProfile
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
-# from postman.models import Message
-from django.core.context_processors import csrf
 
 
-# def user_profile(request):
-#     if request.method == 'POST':
-#         form = AboutUserForm(request.POST, instance=request.user.profile)
-#         if form.is_valid():
-#             form.save()
-#             return HttpResponseRedirect('/')
-#     else:
-#         user = request.user
-#         profile = user.profile
-#         form = AboutUserForm(instance=profile)
-#
-#     args = {}
-#     args.update(csrf(request))
-#
-#     args['form'] = form
-#
-#     return render_to_response('profile_page.html', args)
 
 class ForecastFilterMixin(object):
     def _queryset_by_tag(self, querydict, qs=None):
@@ -468,38 +448,15 @@ class ProfileView(ProfileViewMixin, DetailView):
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
         groups_count = Group.objects.filter(membership__user=profile).count()
         analysis = profile.forecastanalysis_set.all()[:5]
-        # pk = self.kwargs.get('id')
-        # user = CustomUserProfile(User)
         about = CustomUserProfile.objects.get(user_id=profile.id)
-        #about.about_user = "ssdasd"
-        #about.save()
 
         context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], context['about'] = \
             groups_count, forecasts, forecasts_archived, analysis, about
 
         return context
 
-    # def update_profile(request):
-    #     args = {}
-    #     userinfo = get_object_or_404(CustomUserProfile)
-    #
-    #     if request.method == 'POST':
-    #         form = AboutUserForm(request.POST, request.FILES, instance=userinfo)
-    #         if form.is_valid():
-    #             form.save()
-    #             if request.is_ajax():
-    #                 return HttpResponse("success")
-    #             else:
-    #                 return redirect(reverse('profile'))
-    #     else:
-    #         form = AboutUserForm(instance=userinfo)
-    #
-    #     args['form'] = form
-    #     return render(request, 'profile_page.html', args)
-
     def post(self, request, **kwargs):
 
-    #     print 'edit cleed ------ - - - - - - - '
         profile = CustomUserProfile.objects.get(pk=3)
         print profile.about_user
         print request.POST.get("about_user")
@@ -512,37 +469,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         data['success'] = True
         data['about_user'] = about_user
         return HttpResponse(json.dumps(data), content_type ='application/json')
-        #return JsonResponse({"sucess":1, "about_user":about_user})
 
-
-        #if request.POST:  # If the form has been submitted...
-
-            #form = AboutUserForm(request.POST, instance=profile)
-            #if form.is_valid():  # All validation rules pass
-            #    print 'valid-------------------------------------'
-            #    print form.as_p
-            #    profile.about_user = form.about_user
-            #    profile.save()
-                #form.save()
-            #    if not request.is_ajax():
-            #        return redirect('profile')
-            #else:
-            #    print 'not valid=============='
-
-
-
-        #else:
-
-        #    form = AboutUserForm(
-        #        instance=profile,
-        #        initial={
-        #            'about_user': profile.user.about_user
-        #        })
-
-        #    return render_to_response(self.template_name, {
-        #        'form': form,
-        #        'profile': profile},
-        #        context_instance=RequestContext(request))
 
 
 class ProfileForecastView(View):
