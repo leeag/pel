@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-    <script src="{% static '1p/profile.js' %}"></script>
+    <script src="{% static '1p/profile.js' %}" xmlns="http://www.w3.org/1999/html"></script>
 
     <div class="row">
         <div class="panel col-md-8">
@@ -74,6 +74,32 @@
                 </div>
             </div>
             <script type="text/javascript">
+                $(function(){
+
+                    $("#update_about_info").on("click", function(){
+
+                    $.ajax({
+                        url: "",
+                        method: 'POST',
+                        data: {
+                            about_user: $("#about_user_field").val(),
+                            csrfmiddlewaretoken: '{{csrf_token}}'
+                        },
+                        complete:function(data){
+
+                         console.log(data)
+
+
+                            $('#tablo').html(data.responseJSON.about_user);
+                        }
+                    })
+                });
+
+
+
+                });
+
+
                 $('#active_forecasts').on('shown.bs.modal', function () {
                     $.ajax({
                         url: "/profile_forecasts/{{ profile.id }}/",
@@ -189,7 +215,40 @@
                     </table>
                 </div>
             </div>
+        <div class="row">
+                <div class="col-md-8">
+                    {% if owner %}
+                        <p><strong>About Me:</strong></p>
+
+
+{#                        <form action="" method="POST">{% csrf_token %}#}
+{#                      #}
+{#                              {% for field in form %}#}
+{#                        {{ field.label_tag }}#}
+{#                        {{ field }}#}
+{#                                {% endfor %}#}
+{#                        </form>#}
+{#                        <input type="submit" value="Update" />#}
+{#                        #}
+                                                <div id='tablo'>{{ about.about_user }}</div>
+<p></p>
+                    <form action="" method="POST">{% csrf_token %}
+                      <input type="text" class="form-control" name = 'about_user' id="about_user_field"/>
+                            <input type="button" value="Update"  id="update_about_info"/>
+
+                    {% else %}
+
+
+
+                        <p><strong>About {{ profile.full_name }}:</strong></p>
+                        <p>{{ about.about_user }}</p>
+                    {% endif %}
+                </div>
+
         </div>
+
+        </div>
+
         {% include 'profile_page_sidebar.html' %}
     </div>
 {% endblock %}

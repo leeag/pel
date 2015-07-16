@@ -180,12 +180,28 @@ class SignupCompleteForm(forms.Form):
         return True
 
 class AboutUserForm(ModelForm):
-    about_user = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input"}), required=False)
+    #about_user = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input"}), required=False)
+    #name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Name'))
 
     class Meta:
         model = CustomUserProfile
         fields = ("about_user",)
         widgets = {'About user': forms.TextInput(attrs={'class': "form-control input"})}
+
+    def save(self, *args, **kw):
+        super(AboutUserForm, self).save(*args, **kw)
+        #self.instance.user.about_user = self.cleaned_data.get('about_user')
+        self.instance.user.save()
+
+    # def save(self, commit=True):
+    #         user = super(AboutUserForm, self).save(commit=False)
+    #         user.about_user = self.cleaned_data['about_user']
+    #
+    #         if commit:
+    #             user.save()
+    #
+    #         return user
+
 
 class UserRegistrationForm(ModelForm):
     error_messages = {
