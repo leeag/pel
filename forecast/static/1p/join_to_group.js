@@ -27,3 +27,28 @@ $(document).ready(function (e) {
                 });
         });
 });
+
+$(document).ready(function (e){
+        $('.access_join').click(function () {
+            var user_join = $(this).attr('join-user');
+            var group_join = document.getElementById('join_group').value;
+            $.ajax(
+                {
+                    url: "/access_join_group/",
+                    method: 'GET',
+                    data: {
+                        group_join: group_join,
+                        user_join: user_join
+                    },
+                    success:function(data){
+                        if(data) {
+                            $('.join_to_group_' + user_join).hide("slow");
+                        }
+                    }
+                });
+        });
+        $('.cancel_join').click(function () {
+
+        });
+    }
+);

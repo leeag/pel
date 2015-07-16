@@ -3,7 +3,7 @@
 {% block content %}
     <h3 class="well well">{{ group.name }}</h3>
     <div class="row">
-
+{#        #}
         <div id="profile_sidebar" class="col-md-4">
             <div>
                 <div class="panel" id="performance">
@@ -132,19 +132,18 @@
 
                         </div>
                     </div>
-
+                    {% if has_admin_rights %}
                     <div id="req_to_group" style="margin-top: 10px">
                         <div class="panel panel-default">
-                            <div class="panel-heading">Requests: {{ requests|default:"0" }}</div>
+                            <div class="panel-heading">Requests: {{ requests|length|default:"0" }}</div>
                             <div id="peleus-right-toggle-wrap">
                                 <div class="peleus-right-toggle collapse in">
                                     {% for request in requests %}
-                                        <div>
-{#                                            <a href="{{ }}" target="_blank" class="thumbnail">#}
-{#                                                <img src="{{ media.image.url }}" alt="{{ media.name }}">#}
-{#                                            </a>#}
-{#                                            <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>#}
-                                        </div>
+                                        <li id="join_group" class="join_to_group_{{ request.id }} list-group-item" value="{{ group.id }}">{{ request }}
+                                            <a href="#" class="cancel_join_{{ request.id }} glyphicon glyphicon-minus pull-right"></a>
+                                            <a href="#" class="access_join  pull-right glyphicon glyphicon-plus" join-user="{{ request.id }}">
+                                            </a>
+                                        </li>
                                     {% empty %}
                                         <pre>No requests...</pre>
                                     {% endfor %}
@@ -153,6 +152,7 @@
 
                         </div>
                     </div>
+                {% endif %}
 {# Followers and  Requests#}
 
                 </div>
@@ -259,6 +259,7 @@
             </div>
         </div>
 
+{#    #}
     </div>
 
 {% endblock %}
@@ -267,4 +268,5 @@
     {% load staticfiles %}
     <script src="{% static '1p/home_page_charts.js' %}"></script>
     <script src="{% static '1p/forecasts_for_groups.js' %}"></script>
+    <script src="{% static '1p/join_to_group.js' %}"></script>
 {% endblock %}

@@ -231,6 +231,7 @@ class Membership(models.Model):
     date_joined = models.DateTimeField(auto_now_add=True)
     admin_rights = models.BooleanField(default=False)
     track_forecasts = models.BooleanField(default=False)
+    admin_group_approved = models.BooleanField(default=True)
 
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name

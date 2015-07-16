@@ -1,8 +1,9 @@
+# from distutils.msvc9compiler import MacroExpander
 import json
 import traceback
 from datetime import date, datetime
 
-from django.shortcuts import render, get_object_or_404, render_to_response
+from django.shortcuts import render, get_object_or_404, render_to_response, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.flatpages.models import FlatPage
 from django.template import loader, Context
@@ -165,13 +166,26 @@ class GroupView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GroupView, self).get_context_data(**kwargs)
         group = context['group']
+        has_admin_rights = False
+
+        if self.request.user.is_authenticated():
+            try:
+                has_admin_rights = Membership.objects.get(user=self.request.user, group=group).admin_rights
+            except:
+                has_admin_rights = False
+
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
-        followers = User.objects.filter(membership__group=group)
+        followers = User.objects.filter(membership__group=group).exclude(membership__admin_group_approved=False)
         analysis = ForecastAnalysis.objects.filter(user__membership__group=group)
 
-        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'] =\
-                                                    forecasts, forecasts.count(), followers, analysis
+        if has_admin_rights:
+            context['requests'] = User.objects.filter(membership__group=group, membership__admin_group_approved=False)
+            context['has_admin_rights'] = has_admin_rights
+
+        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'] = \
+            forecasts, forecasts.count(), followers, analysis
         return context
+
 
 class MyGroupsView(ListView):
     template_name = "groups_view.html"
@@ -258,10 +272,28 @@ class JoinToGroup(View):
                 Membership(user=curren_user, group=group, admin_rights=False).save()
                 return HttpResponse('followed')
             else:
+                member = Membership.objects.get(user=self.request.user, group=group)
+                member.admin_group_approved = False
+                member.save()
                 return HttpResponse('request')
         else:
             return HttpResponse(status=404)
 
+
+class AccessJoinGroup(View):
+
+    def get(self, request):
+        user_join = request.GET.get('user_join')
+        group_join_id = request.GET.get('group_join')
+
+        group = Group.objects.get(pk=group_join_id)
+        user = User.objects.get(pk=user_join)
+
+        membership = Membership.objects.get(user=user, group=group)
+        membership.admin_group_approved = True
+        membership.save()
+
+        return HttpResponse('joined')
 
 class IndexPageView(ForecastFilterMixin, View):
     template_name = 'index_page.html'
