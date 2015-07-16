@@ -272,9 +272,7 @@ class JoinToGroup(View):
                 Membership(user=curren_user, group=group, admin_rights=False).save()
                 return HttpResponse('followed')
             else:
-                member = Membership.objects.get(user=self.request.user, group=group)
-                member.admin_group_approved = False
-                member.save()
+                Membership(user=curren_user, group=group, admin_rights=False, admin_group_approved=False).save()
                 return HttpResponse('request')
         else:
             return HttpResponse(status=404)
