@@ -1,3 +1,12 @@
+/* profile_page BEGIN */
+
+.edit_button_color {
+    color:orange;
+    cursor: pointer;
+}
+
+/* profile_page END */
+
 .form-center-block{
     width: 50%;
 }

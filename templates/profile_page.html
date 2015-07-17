@@ -75,9 +75,15 @@
             </div>
             <script type="text/javascript">
                 $(function(){
+                    $("#edit").on("click", function(){
+                        $("#about_user_form").toggle(300);
+                    })
+
+                });
+
+                $(function(){
 
                     $("#update_about_info").on("click", function(){
-
                     $.ajax({
                         url: "",
                         method: 'POST',
@@ -217,25 +223,16 @@
             </div>
         <div class="row">
                 <div class="col-md-8">
+
                     {% if owner %}
-                        <p><strong>About Me:</strong></p>
-
-
-{#                        <form action="" method="POST">{% csrf_token %}#}
-{#                      #}
-{#                              {% for field in form %}#}
-{#                        {{ field.label_tag }}#}
-{#                        {{ field }}#}
-{#                                {% endfor %}#}
-{#                        </form>#}
-{#                        <input type="submit" value="Update" />#}
-{#                        #}
-                                                <div id='tablo'>{{ about.about_user }}</div>
-<p></p>
+                        <p><strong>About Me:<span class="edit_button_color" id="edit">(Edit)</span></strong></p>
+                        <div id='tablo'>{{ about.about_user }}</div>
+                <div id="about_user_form" style="display: none">
                     <form action="" method="POST">{% csrf_token %}
                       <input type="text" class="form-control" name = 'about_user' id="about_user_field"/>
-                            <input type="button" value="Update"  id="update_about_info"/>
-
+                      <input type="button" class="btn btn-default" value="Update"  id="update_about_info"/>
+                    </form>
+                </div>
                     {% else %}
 
 

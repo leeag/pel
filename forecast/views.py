@@ -451,14 +451,15 @@ class ProfileView(ProfileViewMixin, DetailView):
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
-        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], = \
+        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'] = \
             groups_count, forecasts, forecasts_archived, analysis
 
         return context
 
     def post(self, request, **kwargs):
 
-        profile = CustomUserProfile.objects.get(pk=3)
+        profile_id = kwargs.get('id')
+        profile = CustomUserProfile.objects.get(user_id=profile_id)
         # print profile.about_user
         # print request.POST.get("about_user")
 
