@@ -168,12 +168,16 @@ class GroupView(DetailView):
         context = super(GroupView, self).get_context_data(**kwargs)
         group = context['group']
         has_admin_rights = False
-
+        public_group = False
         if self.request.user.is_authenticated():
             try:
                 has_admin_rights = Membership.objects.get(user=self.request.user, group=group).admin_rights
+                public_group = Membership.objects.get(user=self.request.user, group=group).admin_group_approved
             except:
                 has_admin_rights = False
+            finally:
+                if int(group.type) == 1:
+                    public_group = True
 
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
         followers = User.objects.filter(membership__group=group).exclude(membership__admin_group_approved=False)
@@ -183,8 +187,8 @@ class GroupView(DetailView):
             context['requests'] = User.objects.filter(membership__group=group, membership__admin_group_approved=False)
             context['has_admin_rights'] = has_admin_rights
 
-        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'] = \
-            forecasts, forecasts.count(), followers, analysis
+        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'], context['public_group'] =\
+            forecasts, forecasts.count(), followers, analysis, public_group
         return context
 
 

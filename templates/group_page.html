@@ -4,6 +4,7 @@
     <h3 class="well well">{{ group.name }}</h3>
     <div class="row">
 {#        #}
+    {% if public_group %}
         <div id="profile_sidebar" class="col-md-4">
             <div>
                 <div class="panel" id="performance">
@@ -260,6 +261,7 @@
         </div>
 
 {#    #}
+    {% endif %}
     </div>
 
 {% endblock %}
