@@ -178,9 +178,12 @@ class GroupView(DetailView):
             finally:
                 if int(group.type) == 1:
                     public_group = True
+        else:
+            if int(group.type) == 1:
+                public_group = True
 
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
-        followers = User.objects.filter(membership__group=group).exclude(membership__admin_group_approved=False)
+        followers = User.objects.filter(membership__group=group, membership__admin_group_approved=True)
         analysis = ForecastAnalysis.objects.filter(user__membership__group=group)
 
         if has_admin_rights:
