@@ -42,7 +42,7 @@ $(document).ready(function (e){
                     },
                     success:function(data){
                         if(data) {
-                            $('.join_to_group_' + user_join).hide("slow");
+                            $('.join_to_group_' + user_join).slideUp("slow");
                         }
                     }
                 });

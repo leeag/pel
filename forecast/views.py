@@ -227,6 +227,7 @@ class Users_and_Groups(ListView):
 
     def get_queryset(self):
         if self.request.user.is_authenticated():
+
             return Group.objects.exclude(membership__user=self.request.user).order_by('name')
         else:
             return Group.objects.all().order_by('name')
@@ -441,25 +442,25 @@ class ProfileView(ProfileViewMixin, DetailView):
     context_object_name = 'profile'
 
     def get_context_data(self, **kwargs):
-        print 'called get oontext'
         context = super(ProfileView, self).get_context_data(**kwargs)
         profile = context.get('profile')
         forecasts = Forecast.objects.distinct().filter(votes__user=profile, end_date__gte=date.today())[:5]
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
         groups_count = Group.objects.filter(membership__user=profile).count()
         analysis = profile.forecastanalysis_set.all()[:5]
-        about = CustomUserProfile.objects.get(user_id=profile.id)
+        if not profile.is_superuser:
+            context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
-        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], context['about'] = \
-            groups_count, forecasts, forecasts_archived, analysis, about
+        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], = \
+            groups_count, forecasts, forecasts_archived, analysis
 
         return context
 
     def post(self, request, **kwargs):
 
         profile = CustomUserProfile.objects.get(pk=3)
-        print profile.about_user
-        print request.POST.get("about_user")
+        # print profile.about_user
+        # print request.POST.get("about_user")
 
         about_user = request.POST.get("about_user")
         profile.about_user = about_user
@@ -468,7 +469,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         data = {}
         data['success'] = True
         data['about_user'] = about_user
-        return HttpResponse(json.dumps(data), content_type ='application/json')
+        return HttpResponse(json.dumps(data), content_type='application/json')
 
 
 
