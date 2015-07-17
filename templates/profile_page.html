@@ -222,10 +222,10 @@
                 </div>
             </div>
         <div class="row">
-                <div class="col-md-8">
+                <div class="col-md-12">
 
                     {% if owner %}
-                        <p><strong>About Me:<span class="edit_button_color" id="edit">(Edit)</span></strong></p>
+                        <p><strong>About Me: <span class="glyphicon glyphicon-pencil" id="edit"></span></strong></p>
                         <div id='tablo'>{{ about.about_user }}</div>
                 <div id="about_user_form" style="display: none">
                     <form action="" method="POST">{% csrf_token %}

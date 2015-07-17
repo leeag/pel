@@ -1,8 +1,14 @@
 /* profile_page BEGIN */
 
-.edit_button_color {
-    color:orange;
+#edit {
+    color:dodgerblue;
     cursor: pointer;
+
+}
+#tablo {
+    background: rgb(170, 187, 97); /* Fallback */
+    background: rgba(170, 187, 97, 0.5);
+    padding: 20px;
 }
 
 /* profile_page END */
