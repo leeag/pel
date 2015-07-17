@@ -234,11 +234,10 @@
                     </form>
                 </div>
                     {% else %}
-
-
-
+                        {% if not about.about_user|length_is:"0"  %}
                         <p><strong>About {{ profile.full_name }}:</strong></p>
                         <p>{{ about.about_user }}</p>
+                         {% endif %}
                     {% endif %}
                 </div>
 
