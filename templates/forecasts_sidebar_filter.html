@@ -17,12 +17,14 @@
         {% if forecast_user %}
 
             <li class="nav-divider"></li>
-            {% for area in forecast_user.forecast_areas %}
+{#            {% for area in forecast_user.forecast_areas %}#}
+            {% for area in FORECAST_AREAS %}
             <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>
             {% endfor %}
 
             <li class="nav-divider"></li>
-            {% for region in forecast_user.forecast_regions %}
+{#            {% for region in forecast_user.forecast_regions %}#}
+            {% for region in FORECAST_REGIONS %}
             <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
             {% endfor %}
         {% endif %}
