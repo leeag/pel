@@ -1,7 +1,12 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <h3 class="well well">{{ group.name }}</h3>
+    <div class="well well">
+        {% if is_member %}
+            <button id="leave" class="leave_group btn btn-danger pull-right" group-id="{{ group.id }}" value="{{ csrf_token }}">Leave a group</button>
+        {% endif%}
+        <h4>{{ group.name }}</h4>
+    </div>
     <div class="row">
 {#        #}
     {% if public_group %}

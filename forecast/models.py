@@ -224,6 +224,10 @@ class Group(models.Model):
     def __unicode__(self):
         return self.name
 
+    def is_public_group(self):
+        if self.type == "1":
+            return True
+
 
 class Membership(models.Model):
     user = models.ForeignKey(User)

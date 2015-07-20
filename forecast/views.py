@@ -169,18 +169,20 @@ class GroupView(DetailView):
         group = context['group']
         has_admin_rights = False
         public_group = False
+        is_member = False
         if self.request.user.is_authenticated():
+            is_member = Membership.objects.filter(user=self.request.user, group=group).exists()
             try:
                 has_admin_rights = Membership.objects.get(user=self.request.user, group=group).admin_rights
                 public_group = Membership.objects.get(user=self.request.user, group=group).admin_group_approved
             except:
                 has_admin_rights = False
             finally:
-                if int(group.type) == 1:
-                    public_group = True
+                if group.is_public_group():
+                    public_group = group.is_public_group()
         else:
-            if int(group.type) == 1:
-                public_group = True
+            if group.is_public_group():
+                public_group = group.is_public_group()
 
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
         followers = User.objects.filter(membership__group=group, membership__admin_group_approved=True)
@@ -190,8 +192,8 @@ class GroupView(DetailView):
             context['requests'] = User.objects.filter(membership__group=group, membership__admin_group_approved=False)
             context['has_admin_rights'] = has_admin_rights
 
-        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'], context['public_group'] =\
-            forecasts, forecasts.count(), followers, analysis, public_group
+        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'], context['public_group'], context['is_member'] =\
+            forecasts, forecasts.count(), followers, analysis, public_group, is_member
         return context
 
 
@@ -285,6 +287,13 @@ class JoinToGroup(View):
                 return HttpResponse('request')
         else:
             return HttpResponse(status=404)
+
+    def delete(self, request):
+        group_id = request.DELETE['group_id']
+        if group_id:
+            Membership(user=self.request.user, group=Group.objects.get(pk=group_id)).delete()
+            return HttpResponse('leaved')
+
 
 
 class AccessJoinGroup(View):

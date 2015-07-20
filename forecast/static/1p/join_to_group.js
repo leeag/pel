@@ -50,5 +50,21 @@ $(document).ready(function (e){
         $('.cancel_join').click(function () {
 
         });
+        $('.leave_group').click(function () {
+            var group_id = $(this).attr('group-id');
+            $.ajax(
+                {
+                    url: "/join_group/",
+                    method: 'DELETE',
+                    data: {
+                        group_id: group_id
+                    },
+                    success: function (data) {
+                        if (data) {
+                            $('.leave_group').hidePopup();
+                        }
+                    }
+                });
+        });
     }
 );
