@@ -266,9 +266,11 @@ class Users_and_Groups(ListView):
                 context['profiles'] = User.objects.filter(custom=users_by_regions)
         else:
             if self.request.user.is_authenticated():
-                context['profiles'] = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True).order_by('last_name')
+                exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
+                context['profiles'] = exclude_superuser.order_by('last_name').order_by('username')
             else:
-                context['profiles'] = User.objects.all().exclude(is_superuser=True).order_by('last_name')
+                exclude_superuser = User.objects.all().exclude(is_superuser=True)
+                context['profiles'] = exclude_superuser.order_by('last_name').order_by('username')
         return context
 
 
