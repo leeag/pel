@@ -76,6 +76,10 @@
             <script type="text/javascript">
                 $(function(){
                     $("#edit").on("click", function(){
+                        var about_value = document.getElementById('about_user_field').value;
+                        if (about_value){
+                            $("#tablo").hide();
+                        }
                         $("#about_user_form").toggle(300);
                     })
 
@@ -96,7 +100,8 @@
                          console.log(data)
 
 
-                            $('#tablo').html(data.responseJSON.about_user);
+                            $('#tablo').show().html(data.responseJSON.about_user);
+                            $('#about_user_form').hide();
                         }
                     })
                 });
@@ -229,7 +234,7 @@
                         <div id='tablo'>{{ about.about_user }}</div>
                 <div id="about_user_form" style="display: none">
                     <form action="" method="POST">{% csrf_token %}
-                      <input type="text" class="form-control" name = 'about_user' id="about_user_field"/>
+                      <input type="text" class="form-control form-control-inline" name = 'about_user' value="{{ about.about_user }}" id="about_user_field"/>
                       <input type="button" class="btn btn-default" value="Update"  id="update_about_info"/>
                     </form>
                 </div>
