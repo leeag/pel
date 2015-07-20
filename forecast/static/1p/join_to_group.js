@@ -54,14 +54,21 @@ $(document).ready(function (e){
             var group_id = $(this).attr('group-id');
             $.ajax(
                 {
-                    url: "/join_group/",
-                    method: 'DELETE',
+                    url: "/leave_group/",
+                    method: 'GET',
                     data: {
-                        group_id: group_id
+                        group_id: group_id,
                     },
+                    //beforeSend: function (xhr) {
+                    //    xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
+                    //},
                     success: function (data) {
-                        if (data) {
-                            $('.leave_group').hidePopup();
+                        if (data == "Leaved") {
+                            $('#leave_'+group_id).hide("slow");
+                            $('#leave_mess_'+group_id).show("slow");
+                            setTimeout(function(){
+                                window.location.reload();
+                            },1000)
                         }
                     }
                 });

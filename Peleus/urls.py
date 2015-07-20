@@ -21,6 +21,7 @@ urlpatterns = patterns(
     url(r'^my_groups/$', views.MyGroupsView.as_view(), name='my_groups'),
     url(r'^users_groups/$', views.Users_and_Groups.as_view(), name='users_groups'),
     url(r'^join_group/$', views.JoinToGroup.as_view(), name='join_to_group'),
+    url(r'^leave_group/$', views.LeaveGroup.as_view()),
     url(r'^access_join_group/$', views.AccessJoinGroup.as_view()),
     url(r'signup/$', views.SignUpView.as_view(), name='signup'),
     url(r'signuplast/(?P<token>\w+)$', views.SignUpSecondView.as_view(), name='interests'),

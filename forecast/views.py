@@ -7,6 +7,7 @@ from django.shortcuts import render, get_object_or_404, render_to_response, Requ
 from django.core.urlresolvers import reverse
 from django.contrib.flatpages.models import FlatPage
 from django.template import loader, Context
+from django.views.decorators.csrf import csrf_exempt, requires_csrf_token
 
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
@@ -288,13 +289,16 @@ class JoinToGroup(View):
         else:
             return HttpResponse(status=404)
 
-    def delete(self, request):
-        group_id = request.DELETE['group_id']
-        if group_id:
-            Membership(user=self.request.user, group=Group.objects.get(pk=group_id)).delete()
-            return HttpResponse('leaved')
 
+class LeaveGroup(View):
 
+    def get(self, request):
+        group_id = request.GET.get('group_id')
+        Membership.objects.filter(user=self.request.user, group__id=group_id).delete()
+
+        is_ok = Membership.objects.filter(user=self.request.user, group__id=group_id).exists()
+        if not is_ok:
+            return HttpResponse('Leaved')
 
 class AccessJoinGroup(View):
 

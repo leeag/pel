@@ -3,7 +3,8 @@
 {% block content %}
     <div class="well well">
         {% if is_member %}
-            <button id="leave" class="leave_group btn btn-danger pull-right" group-id="{{ group.id }}" value="{{ csrf_token }}">Leave a group</button>
+            <button id="leave_{{ group.id }}" class="leave_group btn btn-danger pull-right" group-id="{{ group.id }}" value="{{ csrf_token }}">Leave a group</button>
+            <pre id="leave_mess_{{ group.id }}" class="leave_mess pull-right" style="display: none">Leaved</pre>
         {% endif%}
         <h4>{{ group.name }}</h4>
     </div>

@@ -9,7 +9,13 @@
             {% endif %}
         <ul class="groups list-group">
             {% for group in object_list %}
-                        <a class="list-group-item" style="text-decoration: none;font-size: large; " href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                <div class="list-group-item" style="text-decoration: none;font-size: x-large; ">
+                <a href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                    <button id="leave_{{ group.id }}" class="leave_group btn btn-sm btn-danger pull-right" group-id="{{ group.id }}">
+                        Leave a group
+                    </button>
+                <pre id="leave_mess_{{ group.id }}" class="leave_mess pull-right" style="display: none">Leaved</pre>
+                </div>
             {% empty %}
                 <h2>
                     You are not subscribed any group
@@ -34,4 +40,9 @@
         </div>
 
     </div>
+{% endblock %}
+
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/join_to_group.js' %}"></script>
 {% endblock %}
