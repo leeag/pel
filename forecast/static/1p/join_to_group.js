@@ -48,7 +48,24 @@ $(document).ready(function (e){
                 });
         });
         $('.cancel_join').click(function () {
-
+            var group_id = document.getElementById('join_group').value;
+            var user_id = $(this).attr('leave-user');
+            $.ajax(
+                {
+                    url: "/leave_group/",
+                    method: 'GET',
+                    data: {
+                        group_id: group_id,
+                        user_id: user_id
+                    },
+                    success: function (data) {
+                        if (data == "Leaved") {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000)
+                        }
+                    }
+                });
         });
         $('.leave_group').click(function () {
             var group_id = $(this).attr('group-id');

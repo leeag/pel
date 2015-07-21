@@ -296,9 +296,12 @@ class LeaveGroup(View):
 
     def get(self, request):
         group_id = request.GET.get('group_id')
-        Membership.objects.filter(user=self.request.user, group__id=group_id).delete()
+        current_user = self.request.user
+        if request.GET.get('user_id'):
+            current_user = User.objects.get(pk=request.GET.get('user_id'))
+        Membership.objects.filter(user=current_user, group__id=group_id).delete()
 
-        is_ok = Membership.objects.filter(user=self.request.user, group__id=group_id).exists()
+        is_ok = Membership.objects.filter(user=current_user, group__id=group_id).exists()
         if not is_ok:
             return HttpResponse('Leaved')
 

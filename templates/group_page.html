@@ -147,8 +147,8 @@
                                 <div class="peleus-right-toggle collapse in">
                                     {% for request in requests %}
                                         <li id="join_group" class="join_to_group_{{ request.id }} list-group-item" value="{{ group.id }}">{{ request }}
-                                            <a href="#" class="cancel_join_{{ request.id }} glyphicon glyphicon-minus pull-right"></a>
-                                            <a href="#" class="access_join  pull-right glyphicon glyphicon-plus" join-user="{{ request.id }}">
+                                            <a href="" class="cancel_join glyphicon glyphicon-minus pull-right" leave-user="{{ request.id }}"></a>
+                                            <a href="" class="access_join  pull-right glyphicon glyphicon-plus" join-user="{{ request.id }}">
                                             </a>
                                         </li>
                                     {% empty %}
