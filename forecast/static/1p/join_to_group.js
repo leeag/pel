@@ -60,9 +60,7 @@ $(document).ready(function (e){
                     },
                     success: function (data) {
                         if (data == "Leaved") {
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1000)
+                            window.location.reload();
                         }
                     }
                 });
@@ -81,9 +79,7 @@ $(document).ready(function (e){
                     },
                     success: function (data) {
                         if (data == "Leaved") {
-                            setTimeout(function () {
-                                window.location.reload();
-                            }, 1000)
+                            window.location.reload();
                         }
                     }
                 });
@@ -98,16 +94,9 @@ $(document).ready(function (e){
                     data: {
                         group_id: group_id,
                     },
-                    //beforeSend: function (xhr) {
-                    //    xhr.setRequestHeader("X-CSRFToken", CSRF_TOKEN);
-                    //},
                     success: function (data) {
                         if (data == "Leaved") {
-                            $('#leave_'+group_id).hide("slow");
-                            $('#leave_mess_'+group_id).show("slow");
-                            setTimeout(function(){
-                                window.location.reload();
-                            },1000)
+                            window.location.reload();
                         }
                     }
                 });

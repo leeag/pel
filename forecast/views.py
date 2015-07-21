@@ -282,9 +282,10 @@ class JoinToGroup(View):
         group_id = request.GET.get('group')
         group = get_object_or_404(Group, pk=group_id)
         curren_user = request.user
-        group_type = group.type
-        if curren_user.is_authenticated():
-            if int(group_type) == 1:
+        is_exists_group = Membership.objects.filter(user=curren_user, group=group).exists()
+
+        if curren_user.is_authenticated() and not is_exists_group:
+            if group.is_public_group():
                 Membership(user=curren_user, group=group, admin_rights=False).save()
                 return HttpResponse('followed')
             else:

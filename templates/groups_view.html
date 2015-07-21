@@ -11,13 +11,14 @@
             {% for group in object_list %}
                 <div class="list-group-item" style="text-decoration: none;font-size: large; ">
                     {% if not group.is_public_group %}
-                        <div class="glyphicon glyphicon-lock"></div>
+                        <div class="group_lock glyphicon glyphicon-lock"></div>
                     {% endif %}
-                <a href="{% url 'group' id=group.id %}">{{ group.name }}</a>
-                    <button id="leave_{{ group.id }}" class="leave_group btn btn-sm btn-danger pull-right" group-id="{{ group.id }}">
+                    <button id="leave_{{ group.id }}" class="leave_group btn btn-sm btn-danger pull-right"
+                            group-id="{{ group.id }}">
                         Leave a group
                     </button>
-                <pre id="leave_mess_{{ group.id }}" class="leave_mess pull-right" style="display: none">Leaved</pre>
+{#                <pre id="leave_mess_{{ group.id }}" class="leave_mess pull-right" style="display: none">Leaved</pre>#}
+                <a href="{% url 'group' id=group.id %}">{{ group.name }}</a>
                 </div>
             {% empty %}
                 <h2>
