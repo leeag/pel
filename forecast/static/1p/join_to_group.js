@@ -67,6 +67,28 @@ $(document).ready(function (e){
                     }
                 });
         });
+
+        $('.delete_follower').click(function () {
+            var group_id = document.getElementById('followers_items').value;
+            var user_id = $(this).attr('delete-user');
+            $.ajax(
+                {
+                    url: "/leave_group/",
+                    method: 'GET',
+                    data: {
+                        group_id: group_id,
+                        user_id: user_id
+                    },
+                    success: function (data) {
+                        if (data == "Leaved") {
+                            setTimeout(function () {
+                                window.location.reload();
+                            }, 1000)
+                        }
+                    }
+                });
+        });
+
         $('.leave_group').click(function () {
             var group_id = $(this).attr('group-id');
             $.ajax(

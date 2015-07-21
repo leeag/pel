@@ -120,17 +120,39 @@
 
 {# Followers and  Requests#}
 
+                    <div id="admin_of_group" style="margin-top: 10px">
+                        <div class="panel panel-default">
+                            <div class="panel-heading">Admins: {{ admins_group|length|default:"0" }}</div>
+                            <div id="peleus-right-toggle-wrap ">
+                                <div class="followers-scrollable-block">
+                                    {% for admin in admins_group %}
+                                        <li class="list-group-item">
+                                            <a href="{% url 'profile' id=admin.id %}" target="_blank">{{ admin }}
+                                            </a>
+                                        </li>
+                                    {% empty %}
+                                        <pre>No admins, you can be first</pre>
+                                    {% endfor %}
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+
                     <div id="req_to_group" style="margin-top: 10px">
                         <div class="panel panel-default">
                             <div class="panel-heading">Followers: {{ followers|length|default:"0" }}</div>
                             <div id="peleus-right-toggle-wrap ">
                                 <div class="followers-scrollable-block">
                                     {% for follow in followers %}
-                                        <div>
-                                            <a href="{% url 'profile' id=follow.id %}" target="_blank" class="list-group-item">{{ follow }}
+                                        <li id="followers_items" class="list-group-item" value="{{ group.id }}">
+                                            <a href="{% url 'profile' id=follow.id %}" target="_blank">{{ follow }}
                                             </a>
-                                            <h4><a href="{{ media.url }}" target="_blank"> {{ media.name }}</a></h4>
-                                        </div>
+                                            {% if has_admin_rights %}
+                                                <a href="" class="delete_follower glyphicon glyphicon-minus pull-right" delete-user="{{ follow.id }}"></a>
+                                             {% endif %}
+                                        </li>
                                     {% empty %}
                                         <pre>No followers...</pre>
                                     {% endfor %}

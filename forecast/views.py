@@ -186,15 +186,17 @@ class GroupView(DetailView):
                 public_group = group.is_public_group()
 
         forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
-        followers = User.objects.filter(membership__group=group, membership__admin_group_approved=True)
+        followers = User.objects.filter(membership__group=group,\
+                membership__admin_group_approved=True).exclude(membership__group=group, membership__admin_rights=True)
         analysis = ForecastAnalysis.objects.filter(user__membership__group=group)
+        admins_group = User.objects.filter(membership__group=group, membership__admin_rights=True)
 
         if has_admin_rights:
             context['requests'] = User.objects.filter(membership__group=group, membership__admin_group_approved=False)
             context['has_admin_rights'] = has_admin_rights
 
-        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'], context['public_group'], context['is_member'] =\
-            forecasts, forecasts.count(), followers, analysis, public_group, is_member
+        context['forecasts'], context['forecasts_count'], context['followers'], context['analysis'], context['public_group'], context['is_member'], context['admins_group'] =\
+            forecasts, forecasts.count(), followers, analysis, public_group, is_member, admins_group
         return context
 
 
