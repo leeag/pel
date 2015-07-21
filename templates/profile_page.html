@@ -190,7 +190,9 @@
                         <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
                         {#            {% endif %}#}
                     </strong></p>
-                </div>
+
+
+            {% if forecasts %}
                 <table class="table">
                     {% for forecast in forecasts %}
                         <tr>
@@ -201,6 +203,12 @@
 
                     {% endfor %}
                 </table>
+            {% elif owner %}
+                <p class="noforecasts">There no active forecasts, you can propose <a href="{% url 'propose_forecast' %}">here</a></p>
+            {% else %}
+                <p class="noforecasts">There no forecasts</p>
+            {% endif %}
+                </div>
             </div>
 
             <div class="col-md-6">
@@ -216,6 +224,7 @@
                         <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
                         {#            {% endif %}#}
                     </strong></p>
+                {% if forecasts_archived %}
                     <table class="table">
                         {% for forecast in forecasts_archived %}
                             <tr>
@@ -225,6 +234,11 @@
                             </tr>
                         {% endfor %}
                     </table>
+                {% else %}
+                    <p class="noforecasts">There no forecasts</p>
+
+                {% endif %}
+
                 </div>
             </div>
         <div class="row">
