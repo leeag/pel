@@ -2,7 +2,7 @@
 {% load staticfiles %}
 
 {% block content %}
-    <script src="{% static '1p/profile.js' %}" xmlns="http://www.w3.org/1999/html"></script>
+    <script src="{% static '1p/profile.js' %}" xmlns="http://www.w3.org/1999/html" xmlns="http://www.w3.org/1999/html"></script>
 
     <div class="row">
         <div class="panel col-md-8">
@@ -80,7 +80,8 @@
                         if (about_value){
                             $("#tablo").hide();
                         }
-                        $("#about_user_form").toggle(300);
+
+                        $("#about_user_form").show(300);
                     })
 
                 });
@@ -232,9 +233,12 @@
                     {% if owner %}
                         <p><strong>About Me: <span class="glyphicon glyphicon-pencil" id="edit"></span></strong></p>
                         <div id='tablo'>{{ about.about_user }}</div>
+
                 <div id="about_user_form" style="display: none">
                     <form action="" method="POST">{% csrf_token %}
-                      <input type="text" class="form-control form-control-inline" name = 'about_user' value="{{ about.about_user }}" id="about_user_field"/>
+{#                      <input type="text" class="form-control form-control-inline" name = 'about_user' value="{{ about.about_user }}" id="about_user_field"/>#}
+                    <textarea maxlength="1000" class="form-control" name = 'about_user'  id="about_user_field">{{ about.about_user }}</textarea>
+
                       <input type="button" class="btn btn-default" value="Update"  id="update_about_info"/>
                     </form>
                 </div>

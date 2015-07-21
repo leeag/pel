@@ -186,7 +186,7 @@ class AboutUserForm(ModelForm):
     class Meta:
         model = CustomUserProfile
         fields = ("about_user",)
-        widgets = {'About user': forms.TextInput(attrs={'class': "form-control input"})}
+        widgets = {'About user': forms.Textarea(attrs={'class': "form-control input"})}
 
     def save(self, *args, **kw):
         super(AboutUserForm, self).save(*args, **kw)

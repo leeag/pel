@@ -10,7 +10,14 @@
     background: rgba(170, 187, 97, 0.5);
     padding: 20px;
 }
-
+#about_user_field {
+    height: 150px;
+}
+/*#about_text_readonly {*/
+    /*border: 0;*/
+    /*padding: 0;*/
+    /*overflow: hidden;*/
+/*}*/
 /* profile_page END */
 
 .form-center-block{
