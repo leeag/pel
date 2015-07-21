@@ -204,7 +204,7 @@
                     {% endfor %}
                 </table>
             {% elif owner %}
-                <p class="noforecasts">There no active forecasts, you can propose <a href="{% url 'propose_forecast' %}">here</a></p>
+                <p class="noforecasts">There no active forecasts, you can participate <a href="{% url 'home' %}">here</a></p>
             {% else %}
                 <p class="noforecasts">There no forecasts</p>
             {% endif %}
