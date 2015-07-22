@@ -47,6 +47,7 @@
         </ul>
 
             <p>Weekly Profile Views:</p>
+       {% if about.forecast_areas %}
  <div class="row">
  <div class="col-md-2">
      <strong>Interests:</strong>
@@ -57,16 +58,19 @@
         {% endfor %}
 </div>
  </div>
+        {% endif %}
+        {% if about.forecast_regions %}
  <div class="row">
  <div class="col-md-2">
      <strong>Regions:</strong>
  </div>
       <div class="col-md-10">
-        {% for region in about.forecast_areas %}
+        {% for region in about.forecast_regions %}
                  <p>{{ FORECAST_REGIONS|get_item:region|default_if_none:"" }}</p>
         {% endfor %}
  </div>
 </div>
+        {% endif %}
             <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
