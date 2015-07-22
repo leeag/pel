@@ -28,7 +28,7 @@ from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, F
 from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership, CustomUserProfile
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
-
+from context_processors import FORECAST_AREAS
 
 
 class ForecastFilterMixin(object):
@@ -439,7 +439,7 @@ class ProfileViewMixin(object):
             profile = context['profile']
         owner = self.request.user.id == profile.id
         context['owner'] = owner
-        context['uname'] = 'My' if owner else profile.full_name() + "'s"
+        # context['uname'] = 'My' if owner else str(name_user) + "'s"
         context['predictions_count'] = ForecastVotes.objects.filter(user=profile).count()
 
         return context
@@ -479,8 +479,8 @@ class ProfileView(ProfileViewMixin, DetailView):
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
-        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'] = \
-            groups_count, forecasts, forecasts_archived, analysis
+        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'],\
+          = groups_count, forecasts, forecasts_archived, analysis
 
         return context
 

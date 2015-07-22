@@ -1,9 +1,11 @@
 {% load staticfiles %}
-<div id="profile_sidebar" class="col-md-4">
+<div id="profile_sidebar" style="overflow: hidden" class="col-md-4">
     <div class="row">
         <div class="panel" id="performance">
             <h4><strong>
-                {{ uname }} Performance
+                {% if owner %} My Performance
+                {% else %} {{ profile.get_full_name|default:profile }}'s Performance {% endif %}
+
             </strong></h4>
 
             <p>Number of Forecasts: {{ predictions_count }}</p>
@@ -31,19 +33,40 @@
             <a class="list-group-item" href="#" data-toggle="modal" data-target="#Fol">Followers <span class="badge">0</span></a>
 
             <a class="list-group-item" href="#" data-toggle="modal" data-target="#FolUsers">
-                {{ uname }} Followed Users
+                {% if owner %} My Followed Users
+                {% else %} {{ profile.get_full_name|default:profile }}'s Followed Users {% endif %}
                 <span class="badge">0</span>
             </a>
 
             <a class="list-group-item" href="{% url 'profile_page_groups' id=profile.id %}">
-                {{ uname }} Groups
+                {% if owner %} My Groups
+                {% else %} {{ profile.get_full_name|default:profile }}'s Groups {% endif %}
                 <span class="badge">{{ groups_count }}</span>
             </a>
             </p>
         </ul>
 
             <p>Weekly Profile Views:</p>
-
+ <div class="row">
+ <div class="col-md-2">
+     <strong>Interests:</strong>
+ </div>
+ <div class="col-md-10">
+        {% for area in about.forecast_areas %}
+                 <p>{{ FORECAST_AREAS|get_item:area|default_if_none:"" }}</p>
+        {% endfor %}
+</div>
+ </div>
+ <div class="row">
+ <div class="col-md-2">
+     <strong>Regions:</strong>
+ </div>
+      <div class="col-md-10">
+        {% for region in about.forecast_areas %}
+                 <p>{{ FORECAST_REGIONS|get_item:region|default_if_none:"" }}</p>
+        {% endfor %}
+ </div>
+</div>
             <div class="modal fade" id="Fol" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
                  aria-hidden="true">
                 <div class="modal-dialog">
@@ -83,7 +106,8 @@
             </div>
 
             <div class="panel" id="info">
-                <h4><strong>{{ uname }} Info</strong></h4>
+                <h4><strong>{% if owner %} My Info
+                {% else %} {{ profile.get_full_name|default:profile }}'s Info {% endif %} </strong></h4>
 
                 {% if profile.custom.profession %}
                     <p>Profession: {{ profile.custom.profession }}</p>
