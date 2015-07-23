@@ -12,21 +12,18 @@
                            title="Click to see original post">{{ analysis.title|slice:"30" }} <span
                                 class="glyphicon glyphicon-new-window"></span></a>
                     {% else %}
-                        <div class="analysis-text">
-                             {{ analysis.title|slice:"30" }}
+                       {{ analysis.title|slice:"30" }}
 
-                       {% if analysis.body|length > 100 %}
-                       <a class="pull-right"
-                              href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
-                              target="_blank"
-                              data-toggle="modal"
-                              data-target="#id{{ analysis.id }}">
-                       <span class="glyphicon glyphicon-plus"></span>
-                       </a>
-                       </div>
+                        {% if analysis.body|length > 100 %}
+                            <a class="pull-right"
+                               href="{% url 'individual_forecast' id=analysis.forecast.id %}#analysis-{{ analysis.id }}"
+                               target="_blank"
+                               data-toggle="modal"
+                               data-target="#id{{ analysis.id }}">
+                                <span class="glyphicon glyphicon-plus"></span>
+                            </a>
+                        {% endif %}
 
-                    {% endif %}
-                </div>
                     {% endif %}
                 </div>
                 <p>{{ analysis.publish_date }}</p>
