@@ -14,7 +14,7 @@
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_MOST_ACTIVE }}">Most Active</a></li>
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_NEWEST }}">Newest</a></li>
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_CLOSING }}">Imminently Closing</a></li>
-        {% if forecast_user %}
+{#        {% if forecast_user %}#}
 
             <li class="nav-divider"></li>
 {#            {% for area in forecast_user.forecast_areas %}#}
@@ -27,6 +27,6 @@
             {% for region in FORECAST_REGIONS %}
             <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
             {% endfor %}
-        {% endif %}
+{#        {% endif %}#}
     </ul>
 </div>

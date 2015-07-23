@@ -239,3 +239,8 @@ class Membership(models.Model):
 
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name
+
+# class Followers(models.Model):
+#     user = models.ForeignKey(User, related_name='first_user')
+#     second_user = models.ForeignKey(User, related_name='second_user')
+#     date_join = models.DateField(auto_now=True)
