@@ -264,3 +264,8 @@ class MembershipAdmin(ModelAdmin):
 class AnalysisVoteAdmin(ModelAdmin):
     list_display = ('vote', 'user', 'analysis')
     list_filter = ('vote',)
+
+
+@admin.register(models.Visitors)
+class VisitorsAdmin(ModelAdmin):
+    list_display = ('visited', 'visitor', 'datetime')

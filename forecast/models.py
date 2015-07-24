@@ -244,3 +244,12 @@ class Membership(models.Model):
 #     user = models.ForeignKey(User, related_name='first_user')
 #     second_user = models.ForeignKey(User, related_name='second_user')
 #     date_join = models.DateField(auto_now=True)
+
+
+class Visitors(models.Model):
+    visited = models.ForeignKey(User, related_name='visited')
+    visitor = models.ForeignKey(User, related_name='visitor')
+    datetime = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = 'Visitors'

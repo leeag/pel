@@ -10,7 +10,6 @@
 
             <p>Number of Forecasts: {{ predictions_count }}</p>
 
-            <p>
 
         </div>
 
@@ -45,8 +44,9 @@
             </a>
             </p>
         </ul>
-
-            <p>Weekly Profile Views:</p>
+            {% if owner %}
+            <p>Weekly Profile Views: {{ counts }}</p>
+            {% endif %}
        {% if about.forecast_areas %}
  <div class="row">
  <div class="col-md-2">

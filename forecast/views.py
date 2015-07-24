@@ -1,6 +1,6 @@
 import json
 import traceback
-from datetime import date, datetime
+from datetime import date, timedelta
 
 
 from django.shortcuts import render, get_object_or_404, render_to_response, RequestContext
@@ -25,7 +25,7 @@ from django.http import JsonResponse
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastProposeForm, CommunityAnalysisForm, \
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm
-from models import Forecast, ForecastPropose, ForecastVotes, ForecastVoteChoiceFinite, ForecastAnalysis, Group, Membership, CustomUserProfile
+from models import Forecast, ForecastVotes, ForecastAnalysis, Group, Membership, CustomUserProfile, Visitors
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
 from context_processors import FORECAST_AREAS
@@ -479,8 +479,23 @@ class ProfileView(ProfileViewMixin, DetailView):
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
-        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'],\
-          = groups_count, forecasts, forecasts_archived, analysis
+        startdate = date.today()
+        enddate = startdate + timedelta(days=6)
+        counts = Visitors.objects.filter(datetime__range=[startdate, enddate]). \
+            order_by('visited').filter(visited_id=self.request.user.id).count()
+        if not profile.is_superuser:
+            context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
+
+        context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], \
+            context['counts'] = groups_count, forecasts, forecasts_archived, analysis, counts
+
+        if not profile.id == self.request.user.id:
+            visit = Visitors()
+            visit.visited = User.objects.get(pk=profile.id)
+            visit.visitor = User.objects.get(pk=self.request.user.id)
+            visit.save()
+        else:
+            pass
 
         return context
 
