@@ -28,15 +28,15 @@
                 <div class="all_area nav nav-stacked collapse in">
                     <li class="nav-divider"></li>
                     {% for area in FORECAST_AREAS %}
-                    {% with has_tag=qstr|qstring_has:'area' %}
-                        {% ifequal area qstr %}
+{#                    {% with has_tag=qstr|qstring_has:'area' %}#}
+                        {% if area in qstr %}
                             <li><a style="background-color: rgba(35, 174, 116, 0.55)"
-                                   href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}<span
+                                   href="?{{ qstring|qstring_del:'areas'}}">{{ FORECAST_AREAS|get_item:area }}<span
                                     class="pull-right">&times;</span></a></li>
                         {% else %}
-                            <li><a href="?areas={{ area }}">{{ FORECAST_AREAS|get_item:area }}</a></li>
-                        {% endifequal %}
-                    {% endwith %}
+                            <li><a href="{{ qstring|qstring_set:'areas' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}</a></li>
+                        {% endif %}
+{#                    {% endwith %}#}
                     {% empty %}
                         <li>Areas is empty</li>
                     {% endfor %}

@@ -139,3 +139,8 @@
     max-height: 350px;
     overflow-y: auto;
 }
+
+#profiles_views{
+    max-height: 90%;
+    overflow-y: auto;
+}

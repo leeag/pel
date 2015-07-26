@@ -45,7 +45,10 @@
             </p>
         </ul>
             {% if owner %}
-            <p>Weekly Profile Views: {{ counts }}</p>
+                <a class="list-group-item" href="#" data-toggle="modal" data-target="#profiles_views">
+                    Weekly Profile Views
+                    <span class="badge">{{ visitors|length }}</span>
+                </a>
             {% endif %}
        {% if about.forecast_areas %}
  <div class="row">
@@ -100,6 +103,34 @@
                         </div>
                         <div class="modal-body">
                             ...
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="profiles_views" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Weekly Profile Views</h4>
+                        </div>
+                        <div class="modal-body">
+                            {% for visitor in visitors %}
+                                <a href="{% url 'profile' id=visitor.visitor.id %}" class="list-group-item">{{ visitor.visitor }}
+                                    <div class="pull-right">
+                                 was on profile in {{ visitor.datetime }}
+                                        </div>
+                                </a>
+                                {% empty %}
+                                <pre>No visitors yet...</pre>
+                            {% endfor %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

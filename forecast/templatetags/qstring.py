@@ -100,6 +100,7 @@ def qstring_has(qstring, key):
     qd = QueryDict(qstring)
     return key in qd
 
+
 register = template.Library()
 register.tag(qstring)
 register.filter('qstring_del', qstring_del)

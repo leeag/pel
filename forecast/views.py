@@ -249,10 +249,11 @@ class Users_and_Groups(ListView):
         context['user'] = self.request.user
 
         if 'areas' in self.request.GET:
-            get_params = self.request.GET.get('areas')
+            # get_params = self.request.GET.get('areas')
             get_list_params = self.request.GET.getlist('areas')
-            context['qstr'] = get_params
-            users_by_areas = CustomUserProfile.objects.filter(forecast_areas__contains=get_params)
+            # get_list_params.update({'areas':get_params})
+            context['qstr'] = get_list_params
+            users_by_areas = CustomUserProfile.objects.filter(forecast_areas__in=get_list_params)
             if self.request.user.is_authenticated():
                 context['profiles'] = User.objects.filter(custom=users_by_areas.exclude(user=self.request.user))
             else:
@@ -481,21 +482,20 @@ class ProfileView(ProfileViewMixin, DetailView):
 
         startdate = date.today()
         enddate = startdate + timedelta(days=6)
-        counts = Visitors.objects.filter(datetime__range=[startdate, enddate]). \
-            order_by('visited').filter(visited_id=self.request.user.id).count()
+        # counts = Visitors.objects.filter(datetime__range=[startdate, enddate]). \
+        #     order_by('visited').filter(visited_id=self.request.user.id).count()
+        visitors = Visitors.objects.filter(datetime__range=[startdate, enddate], visited_id=self.request.user.id).order_by('-datetime')
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
         context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], \
-            context['counts'] = groups_count, forecasts, forecasts_archived, analysis, counts
+        context['visitors'] = groups_count, forecasts, forecasts_archived, analysis, visitors
 
         if not profile.id == self.request.user.id:
             visit = Visitors()
             visit.visited = User.objects.get(pk=profile.id)
             visit.visitor = User.objects.get(pk=self.request.user.id)
             visit.save()
-        else:
-            pass
 
         return context
 
