@@ -270,10 +270,10 @@ class Users_and_Groups(ListView):
         else:
             if self.request.user.is_authenticated():
                 exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('last_name').order_by('username')
+                context['profiles'] = exclude_superuser.order_by('username')
             else:
                 exclude_superuser = User.objects.all().exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('last_name').order_by('username')
+                context['profiles'] = exclude_superuser.order_by('username')
         return context
 
 

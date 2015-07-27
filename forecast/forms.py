@@ -208,8 +208,8 @@ class UserRegistrationForm(ModelForm):
         'password_mismatch': _("The two password fields didn't match."),
     }
 
-    name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Name'))
-    surname = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Surname'))
+    name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Name'), required=True)
+    surname = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('Surname'), required=True)
     display_only_username = forms.BooleanField(widget=forms.CheckboxInput(),
                                                label=_("Please only display my Username on {}").format(APP_NAME),
                                                required=False)
