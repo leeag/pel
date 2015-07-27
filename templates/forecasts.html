@@ -61,7 +61,10 @@
                 </div>
             </div>
         </div>
+    {% empty %}
+        <pre>No forecasts ...</pre>
     {% endfor %}
+
 
     <script type="text/javascript">
         $('.chart-view-collapse').each(function (i, el) {

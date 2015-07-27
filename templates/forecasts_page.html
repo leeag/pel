@@ -8,6 +8,7 @@
             </div>
         </div>
     {% else %}
+        {% include 'forecasts_sidebar_filter.html' %}
         {% include 'forecasts.html' %}
     {% endif %}
 {% endblock %}

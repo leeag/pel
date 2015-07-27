@@ -491,7 +491,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         context['groups_count'], context['forecasts'], context['forecasts_archived'], context['analysis'], \
         context['visitors'] = groups_count, forecasts, forecasts_archived, analysis, visitors
 
-        if not profile.id == self.request.user.id:
+        if not profile.id == self.request.user.id and self.request.user.is_authenticated():
             visit = Visitors()
             visit.visited = User.objects.get(pk=profile.id)
             visit.visitor = User.objects.get(pk=self.request.user.id)
