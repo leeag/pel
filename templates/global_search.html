@@ -18,13 +18,18 @@
                     <p>About {{ users|length }} result{{ users|pluralize }} of users:</p>
                 {% endif %}
             {% for user in users %}
-                <a class="col-sm-8 list-group-item" href="{% url 'profile' id=user.id %}">{{ user }}</a>
+                <div class="col-sm-8 list-group-item">
+                    <a href="{% url 'profile' id=user.id %}">{{ user }}</a>
+                    <a class="pull-right btn btn-sm btn-default" href="{% url 'postman_write' recipients=user %}">Send
+                        Message</a>
+                </div>
             {% empty %}
                 <h3>
                     No result of users...
                 </h3>
             {% endfor %}
         </div>
+        <div>
             <div class="col-sm-8 pull-left">
                 {% if own_groups %}
                     <p>About {{ own_groups|length }} result{{ own_groups|pluralize }} of your groups:</p>
@@ -69,6 +74,7 @@
                     No result of groups...
                 </h3>
             {% endfor %}
+        </div>
         </div>
 
 
