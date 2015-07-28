@@ -144,3 +144,6 @@
     max-height: 90%;
     overflow-y: auto;
 }
+.result-group{
+    margin-top: 1ch;
+}

@@ -521,15 +521,22 @@ class GlobalSearchView(View):
 
     def get(self, request):
         params = request.GET.get('q')
-        groups = Group.objects.filter(name__icontains=params)
-        users = User.objects.filter(username__contains=params)
-        forecasts = Forecast.objects.filter(forecast_question__icontains=params)
-
-        value = {
-            'groups': groups,
-            'users': users,
-            'forecasts': forecasts
-        }
+        value = {}
+        own_groups = []
+        if params:
+            if self.request.user.is_authenticated():
+                groups = Group.objects.filter(name__icontains=params).exclude(membership__user=self.request.user)
+                own_groups = Group.objects.filter(name__icontains=params, membership__user=self.request.user)
+            else:
+                groups = Group.objects.filter(name__icontains=params)
+            users = User.objects.filter(username__contains=params)
+            forecasts = Forecast.objects.filter(forecast_question__icontains=params)
+            value = {
+                'groups': groups,
+                'users': users,
+                'forecasts': forecasts,
+                'own_groups': own_groups
+            }
         return render(request, self.template_name, value)
 
 

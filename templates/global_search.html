@@ -1,9 +1,9 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="row">
+    <div class="row" xmlns="http://www.w3.org/1999/html">
         <div class="col-sm-12">
             {% if forecasts %}
-                <p>About {{ forecasts|length }} results of forecasts: </p>
+                <p>About {{ forecasts|length }} result{{ forecasts|pluralize }} of forecasts: </p>
             {% endif %}
             {% for forecast in forecasts %}
                 <a class="col-sm-8 list-group-item" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
@@ -15,7 +15,7 @@
         </div>
             <div class="col-sm-12">
                 {% if users %}
-                    <p>About {{ users|length }} results of users:</p>
+                    <p>About {{ users|length }} result{{ users|pluralize }} of users:</p>
                 {% endif %}
             {% for user in users %}
                 <a class="col-sm-8 list-group-item" href="{% url 'profile' id=user.id %}">{{ user }}</a>
@@ -25,16 +25,47 @@
                 </h3>
             {% endfor %}
         </div>
-            <div class="col-sm-12">
-            {% if groups %}
-                <p>About {{ groups|length }} results of groups:</p>
+            <div class="col-sm-8 pull-left">
+                {% if own_groups %}
+                    <p>About {{ own_groups|length }} result{{ own_groups|pluralize }} of your groups:</p>
+                {% for own_group in own_groups %}
+                    <div class="list-group-item" style="text-decoration: none;font-size: large; ">
+                        <button id="leave_{{ own_group.id }}" class="leave_group btn btn-sm btn-danger pull-right"
+                                group-id="{{ own_group.id }}">
+                            Leave a group
+                        </button>
+                        <a href="{% url 'group' id=own_group.id %}">{{ own_group.name }}</a>
+                    </div>
+                {% endfor %}
             {% endif %}
+            </div>
+            <div class="col-sm-8">
+                {% if groups %}
+                    <p class="result-group">About {{ groups|length }} result{{ groups|pluralize }} of groups:</p>
+                {% endif %}
             {% for group in groups %}
-                <p>
-                    <a class="col-sm-8 list-group-item" href="{% url 'group' id=group.id %}">{{ group.name }}</a>
-                </p>
+                <div class="list-group-item" style="text-decoration: none;font-size: large;">
+                    <a href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                    {% if user.is_authenticated %}
+                        <a id="join_{{ group.id }}"
+                           class="join_to_group pull-right btn btn-sm btn-success"
+                           group-id="{{ group.id }}">
+                            {% if group.is_public_group %}
+                                join
+                            {% else %}
+                                <div class="group_lock glyphicon glyphicon-lock"></div> request
+                            {% endif %}
+                        </a>
+
+                        <pre style="display: none;" id="joined_group_{{ group.id }}" class="text-center">Joined</pre>
+                        <pre style="display: none; background-color: rgba(45, 174, 47, 0.55)"
+                             id="request_to_group_{{ group.id }}" class="text-center">Your request has been sent successfully</pre>
+                        <pre style="display: none; background-color: #b94a48" id="join_error_{{ group.id }}"
+                             class="text-center">Sorry, having some problems with join</pre>
+                    {% endif %}
+                </div>
             {% empty %}
-                <h3>
+                <h3 class="pull pull-left">
                     No result of groups...
                 </h3>
             {% endfor %}
@@ -42,4 +73,8 @@
 
 
     </div>
+{% endblock %}
+{% block postbodyscripts %}
+    {% load staticfiles %}
+    <script src="{% static '1p/join_to_group.js' %}"></script>
 {% endblock %}
