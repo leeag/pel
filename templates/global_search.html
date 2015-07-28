@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block content %}
+    <div class="row">
+        <div class="col-sm-12">
+            {% if forecasts %}
+                <p>About {{ forecasts|length }} results of forecasts: </p>
+            {% endif %}
+            {% for forecast in forecasts %}
+                <a class="col-sm-8 list-group-item" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+            {% empty %}
+                <h3>
+                    No result of forecasts...
+                </h3>
+            {% endfor %}
+        </div>
+            <div class="col-sm-12">
+                {% if users %}
+                    <p>About {{ users|length }} results of users:</p>
+                {% endif %}
+            {% for user in users %}
+                <a class="col-sm-8 list-group-item" href="{% url 'profile' id=user.id %}">{{ user }}</a>
+            {% empty %}
+                <h3>
+                    No result of users...
+                </h3>
+            {% endfor %}
+        </div>
+            <div class="col-sm-12">
+            {% if groups %}
+                <p>About {{ groups|length }} results of groups:</p>
+            {% endif %}
+            {% for group in groups %}
+                <p>
+                    <a class="col-sm-8 list-group-item" href="{% url 'group' id=group.id %}">{{ group.name }}</a>
+                </p>
+            {% empty %}
+                <h3>
+                    No result of groups...
+                </h3>
+            {% endfor %}
+        </div>
+
+
+    </div>
+{% endblock %}

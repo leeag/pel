@@ -270,10 +270,10 @@ class Users_and_Groups(ListView):
         else:
             if self.request.user.is_authenticated():
                 exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('username')
+                context['profiles'] = exclude_superuser.order_by('last_name')
             else:
                 exclude_superuser = User.objects.all().exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('username')
+                context['profiles'] = exclude_superuser.order_by('last_name')
         return context
 
 
@@ -515,6 +515,22 @@ class ProfileView(ProfileViewMixin, DetailView):
         data['about_user'] = about_user
         return HttpResponse(json.dumps(data), content_type='application/json')
 
+
+class GlobalSearchView(View):
+    template_name = 'global_search.html'
+
+    def get(self, request):
+        params = request.GET.get('q')
+        groups = Group.objects.filter(name__icontains=params)
+        users = User.objects.filter(username__contains=params)
+        forecasts = Forecast.objects.filter(forecast_question__icontains=params)
+
+        value = {
+            'groups': groups,
+            'users': users,
+            'forecasts': forecasts
+        }
+        return render(request, self.template_name, value)
 
 
 class ProfileForecastView(View):
