@@ -8,8 +8,12 @@
             </div>
         </div>
     {% else %}
+        <div class="row">
         {% include 'forecasts_sidebar_filter.html' %}
-        {% include 'forecasts.html' %}
+        <div class="col-sm-10">
+            {% include 'forecasts.html' %}
+        </div>
+        </div>
     {% endif %}
 {% endblock %}
 
