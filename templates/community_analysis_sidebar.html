@@ -2,8 +2,9 @@
 <div class="col-sm-3 peleus-sidebar" xmlns="http://www.w3.org/1999/html">
 
     <div class="panel panel-default peleus-scrollable-block">
-        <div class="panel-heading"><p>Community analysis: {{ analysis_set|length|default:"0" }}
-            <a href="{% url 'community_analysis_see_full_set' id=forecast.id %}" class="pull-right">[See Full Set]</a></p>
+        <div class="panel-heading">
+            <p>Community analysis: {{ analysis_set|length|default:"0" }}</p>
+            <p><a href="{% url 'community_analysis_see_full_set' id=forecast.id %}" class="pull-center">[See Full Set]</a></p>
 
         </div>
         {% for analysis in analysis_set %}
