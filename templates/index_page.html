@@ -20,11 +20,16 @@
                             </h4>
                         </div>
                         <div>
-                            <span class="label label-default">Tags:</span>
-                            {% for tag in el.tags.all %}
-                                <a href="{{ request.path }}?tag={{ tag.slug }}"><span class="label label-success">{{ tag }}</span></a>
+                            <span class="label label-default">Tags(areas):</span>
+                            {% for tag in el.forecast_areas %}
+                                <a href="{{ request.path }}?tag={{ tag }}"><span class="label label-success">{{ FORECAST_AREAS|get_item:tag|default_if_none:"" }}</span></a>
                             {% endfor %}
                             <div class="pull-right">{{ el.forecasters }} forecaster{{ el.forecasters|pluralize }}</div>
+                            <span class="label label-default">Tags(regions):</span>
+                            {% for tag in el.forecast_regions %}
+                                <a href="{{ request.path }}?tag={{ tag }}"><span
+                                        class="label label-success">{{ FORECAST_REGIONS|get_item:tag|default_if_none:""}}</span></a>
+                            {% endfor %}
                         </div>
                     </div>
                     <div class="panel-body">

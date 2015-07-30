@@ -83,9 +83,9 @@ class Forecast(models.Model):
     max = models.IntegerField(blank=True, default=100)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
-    tags = TaggableManager()
-    # forecast_areas = models.CommaSeparatedIntegerField(max_length=100, blank=True)
-    # forecast_regions = models.CommaSeparatedIntegerField(max_length=100, blank=True)
+    # tags = TaggableManager()
+    forecast_areas = models.CommaSeparatedIntegerField(max_length=100, blank=True)
+    forecast_regions = models.CommaSeparatedIntegerField(max_length=100, blank=True)
 
     objects = models.Manager()
     active = ForecastsManager(forecasts_type=ForecastsManager.TYPE_ACTIVE)

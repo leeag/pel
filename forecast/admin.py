@@ -142,6 +142,13 @@ class ForecastAdmin(ModelAdmin):
     def save_model(self, request, obj, form, change):
         obj.save()
 
+    def formfield_for_dbfield(self, db_field, **kwargs):
+        if db_field.name == 'forecast_areas':
+            kwargs['widget'] = CSICheckboxSelectMultiple(choices=settings.AREAS)
+        if db_field.name == 'forecast_regions':
+            kwargs['widget'] = CSICheckboxSelectMultiple(choices=settings.REGIONS)
+        return super(ForecastAdmin, self).formfield_for_dbfield(db_field, **kwargs)
+
     # def render_change_form(self, request, context, *args, **kwargs):
     #     """
     #     Refrain from prolonged exposure.

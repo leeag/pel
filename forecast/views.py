@@ -528,6 +528,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         data['about_user'] = about_user
         return HttpResponse(json.dumps(data), content_type='application/json')
 
+
 class ProfileUpdateView(UpdateView):
     model = User
     form_class = EditUserForm
@@ -537,9 +538,6 @@ class ProfileUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('profile', kwargs={'id': self.request.user.id})
-
-    # def get_object(self):
-    #     return CustomUserProfile.objects.get(username=self.request.user)
 
 
 class GlobalSearchView(View):

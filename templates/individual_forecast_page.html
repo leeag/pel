@@ -23,9 +23,14 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Tags:
-                    {% for tag in forecast.tags.all %}
-                        <span class="label label-success">{{ tag }}</span>
+                    <span class="label label-default">Tags(areas):</span>
+                    {% for tag in forecast.forecast_areas %}
+                        <span class="label label-success">{{ FORECAST_AREAS|get_item:tag|default_if_none:"" }}</span>
+                    {% endfor %}
+                    <div class="pull-right">{{ el.forecasters }} forecaster{{ el.forecasters|pluralize }}</div>
+                    <span class="label label-default">Tags(regions):</span>
+                    {% for tag in forecast.forecast_regions %}
+                        <span class="label label-success">{{ FORECAST_REGIONS|get_item:tag|default_if_none:"" }}</span>
                     {% endfor %}
                 </div>
                 <div class="panel-body">
