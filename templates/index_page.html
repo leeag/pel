@@ -20,6 +20,7 @@
                             </h4>
                         </div>
                         <div>
+                            {% if el.forecast_areas or el.forecast_regions %}
                             <span class="label label-default">Tags(areas):</span>
                             {% for tag in el.forecast_areas %}
                                 <a href="{{ request.path }}?tag={{ tag }}"><span class="label label-success">{{ FORECAST_AREAS|get_item:tag|default_if_none:"" }}</span></a>
@@ -30,6 +31,7 @@
                                 <a href="{{ request.path }}?tag={{ tag }}"><span
                                         class="label label-success">{{ FORECAST_REGIONS|get_item:tag|default_if_none:""}}</span></a>
                             {% endfor %}
+                        {% endif %}
                         </div>
                     </div>
                     <div class="panel-body">

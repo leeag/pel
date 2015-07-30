@@ -33,8 +33,7 @@
                         <p>Published Analysis: {{ analysis|length|default:"0" }}
                             {#                            <a href="{% url 'profile_forecast_analysis' id=profile.id %}"#}
                             {#                                class="pull-right">[See Full Set]</a></p>#}
-                            <a href="#"
-                               class="pull-right">[See Full Set]</a></p>
+                            <a href="#">[See Full Set]</a></p>
                         {% for element in analysis %}
                             <div>
                                 <a class="list-group-item" href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}"
@@ -196,9 +195,9 @@
                         {{ group.name }}'s
                     {% endif %}
                     Active Forecasts
-{#                    {% if forecasts.count >= 5 %}#}
-                        <a href="#" data-toggle="modal" data-target="#active_forecasts">[See Full Set]</a>
-{#                    {% endif %}#}
+                    {% if forecasts|length >= 5 %}
+                        <a href="#" data-toggle="modal" data-target="#active_group_forecasts">[See Full Set]</a>
+                    {% endif %}
                 </strong>
                 </p>
             </div>
@@ -207,6 +206,7 @@
                     <tr>
                         <td>
                             <a style="text-decoration: none;" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
+                            <div> the Forecast Period End Date - {{ forecast.end_date }}</div>
                         </td>
                     </tr>
                 {% empty %}
@@ -226,9 +226,9 @@
                         {{ group.name }}'s
                     {% endif %}
                     Archived Forecasts
-{#                    {% if forecasts_archived >= 5 %}#}
-                        <a href="#" data-toggle="modal" data-target="#archived_forecasts">[See Full Set]</a>
-{#                    {% endif %}#}
+                    {% if forecasts_archived|length >= 5 %}
+                        <a href="#" data-toggle="modal" data-target="#">[See Full Set]</a>
+                    {% endif %}
                 </strong></p>
                 <table class="table">
                     {% for forecast in forecasts_archived %}
@@ -268,7 +268,7 @@
                 </div>
             </div>
 
-            <div class="modal fade bs-example-modal-lg" id="active_forecasts" tabindex="-1" role="dialog"
+            <div class="modal fade bs-example-modal-lg" id="active_group_forecasts" tabindex="-1" role="dialog"
                  aria-labelledby="myModalLabel" aria-hidden="true">
                 <div class="modal-dialog modal-lg">
                     <div class="modal-content">
@@ -278,7 +278,12 @@
                             <h4 class="modal-title" id="myModaLabel">Active Forecasts</h4>
                         </div>
                         <div class="modal-body" id="active-set-modal">
-                            ...
+                            {% for forecast in forecasts %}
+                                <div class="list-group-item">
+                                    <a href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast|slice:"60" }}</a>
+                                <label class="pull-right">  the Forecast Period End Date - {{ forecast.end_date }}</label>
+                                </div>
+                            {% endfor %}
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

@@ -185,7 +185,7 @@ class GroupView(DetailView):
             if group.is_public_group():
                 public_group = group.is_public_group()
 
-        forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
+        forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())[:7]
         followers = User.objects.filter(membership__group=group,\
                 membership__admin_group_approved=True).exclude(membership__group=group, membership__admin_rights=True)
         analysis = ForecastAnalysis.objects.filter(user__membership__group=group)
@@ -464,6 +464,7 @@ class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
 
 class CommunityAnalysisView(View):
     template_name = 'community_analysis_see_full_set.html'
+
 
     def get(self, request, id):
         forecast = get_object_or_404(Forecast, pk=id)
