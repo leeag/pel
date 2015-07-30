@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+    {% load staticfiles %}
+
+{% block content %}
+    <div class="btn btn-default" style="position: fixed; top: 10%; right: 10px">
+        <a href="{% url 'individual_forecast' id=forecast.id %}">
+        <span class="glyphicon glyphicon-arrow-left" aria-hidden="true"></span></a>
+
+
+    </div>
+
+<div class="col-sm-12 peleus-sidebar" xmlns="http://www.w3.org/1999/html">
+
+    <div class="panel panel-default" >
+
+        {% for analysis in analysis_set %}
+
+            <div class="panel-body divider" id="analysis-{{ analysis.id }}">
+                <div class="well well-sm">
+                    {% if analysis.post_link %}
+                        <a href="{{ analysis.post_link }}" target="_blank"
+                           title="Click to see original post">{{ analysis.title|slice:"30" }} <span
+                                class="glyphicon glyphicon-new-window"></span></a>
+                    {% else %}
+                       {{ analysis.title|slice:"30" }}
+
+
+
+                    {% endif %}
+                </div>
+                <p>{{ analysis.publish_date }}</p>
+
+                <div class="analysis-text">
+                         <p style="word-wrap:break-word; background-color: InfoBackground">{{ analysis.body }}</p>
+                </div>
+
+                by <a href="{% url 'profile' id=analysis.user.id %}">{{ analysis.user }}</a>
+
+
+            </div>
+            <hr>
+
+{##}
+            <div class="modal fade" id="id{{ analysis.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                 aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+                                    aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title panel-heading" id="myModalLabel"><strong>{{ analysis.title|slice:"60" }}</strong></h4>
+                        </div>
+                        <div class="modal-body">
+                            <p style="word-wrap:break-word; background-color:InfoBackground;">{{ analysis.body }}</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+{##}
+
+        {% endfor %}
+
+    <script type="text/javascript" src="{% static '3p/jquery.jtruncate.min.js' %}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(location.hash).addClass('selected-analysis');
+            setTimeout(function () {
+                $(location.hash).addClass('highlight-analysis');
+            }, 1010);
+
+
+        })
+    </script>
+
+
+
+</div>
+{% endblock %}

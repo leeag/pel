@@ -461,6 +461,19 @@ class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
         context['hide_analysis_box'] = True
         return context
 
+
+class CommunityAnalysisView(View):
+    template_name = 'community_analysis_see_full_set.html'
+
+    def get(self, request, id):
+        forecast = get_object_or_404(Forecast, pk=id)
+        analysis_set = forecast.forecastanalysis_set.all()
+
+        return render(request, self.template_name,
+                      {'forecast': forecast,
+                       'analysis_set': analysis_set})
+
+
 import json
 from django.http import HttpResponse
 class ProfileView(ProfileViewMixin, DetailView):
