@@ -41,6 +41,7 @@ urlpatterns = patterns(
     url(r'^forecast_analysis/(?P<id>\d+)/$', views.CommunityAnalysisPostView.as_view(), name='forecast_analysis'),
     url(r'^messages/', include('postman.urls')),
     url(r'^search/$', views.GlobalSearchView.as_view(), name='global_search'),
+    url(r'^edit_profile/(?P<id>\d+)/$', views.ProfileUpdateView.as_view(), name='edit_profile'),
     # url(r'^messages/inbox/', views.ProfilePageSidebarView.as_view()),
 
     # TODO remove

@@ -2,6 +2,7 @@ from datetime import date
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.urlresolvers import reverse
 from django.db import models
 from django.db.models import Count, Avg
 from taggit.managers import TaggableManager
@@ -83,6 +84,8 @@ class Forecast(models.Model):
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
     tags = TaggableManager()
+    # forecast_areas = models.CommaSeparatedIntegerField(max_length=100, blank=True)
+    # forecast_regions = models.CommaSeparatedIntegerField(max_length=100, blank=True)
 
     objects = models.Manager()
     active = ForecastsManager(forecasts_type=ForecastsManager.TYPE_ACTIVE)

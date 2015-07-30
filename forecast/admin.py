@@ -202,7 +202,6 @@ class ForecastProposeAdmin(DjangoObjectActions, ModelAdmin):
             forecast_choice.choice = propose_choice.choice
             f.choices.add(forecast_choice)
 
-
     publish_propose.label = 'Publish'
     publish_propose.attrs = {'class': 'btn btn-primary'}
 

@@ -17,14 +17,14 @@ from django.db.models import Count, Avg
 from django.http import HttpResponse, HttpResponseRedirect
 from django.http.request import QueryDict
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic import View, DetailView, ListView
+from django.views.generic import View, DetailView, ListView, UpdateView
 from django.views.defaults import page_not_found
 from django.forms.models import inlineformset_factory
 from django.http import JsonResponse
 
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastProposeForm, CommunityAnalysisForm, \
-    ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm
+    ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm, EditProfileForm, EditUserForm
 from models import Forecast, ForecastVotes, ForecastAnalysis, Group, Membership, CustomUserProfile, Visitors
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
@@ -514,6 +514,19 @@ class ProfileView(ProfileViewMixin, DetailView):
         data['success'] = True
         data['about_user'] = about_user
         return HttpResponse(json.dumps(data), content_type='application/json')
+
+class ProfileUpdateView(UpdateView):
+    model = User
+    form_class = EditUserForm
+    second_form_class = EditProfileForm
+    template_name = 'edit_profile.html'
+    pk_url_kwarg = 'id'
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'id': self.request.user.id})
+
+    # def get_object(self):
+    #     return CustomUserProfile.objects.get(username=self.request.user)
 
 
 class GlobalSearchView(View):

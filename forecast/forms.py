@@ -202,6 +202,46 @@ class AboutUserForm(ModelForm):
     #
     #         return user
 
+class EditUserForm(ModelForm):
+    first_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}),
+                                        label=_('First name'), required=True)
+    last_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}),
+                                        label=_('Last name'), required=True)
+    display_only_username = forms.BooleanField(widget=forms.CheckboxInput(),
+                                               label=_("Please only display my Username on {}").format(APP_NAME),
+                                               required=False)
+    email = forms.EmailField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), required=False)
+    organization = forms.ChoiceField(widget=forms.RadioSelect(),
+                                     choices=ORGANIZATION_TYPE,
+                                     label=_('Organization'), required=False)
+    organization_name = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}),
+                                        label=_('Name of organisation'), required=False)
+    username = forms.CharField(widget=forms.TextInput(attrs={'class': "form-control input-sm"}), label=_('User name'), required=True)
+
+    class Meta:
+        model = User
+        fields = ("first_name", "last_name", "username",
+                  "email")
+
+        widgets = {
+                   'first_name': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   'last_name': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   'country': CountrySelectWidget(attrs={'class': "form-control input-sm"}),
+                   'name': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   'city': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   'profession': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   'position': forms.TextInput(attrs={'class': "form-control input-sm"}),
+                   }
+
+
+class EditProfileForm(ModelForm):
+
+    class Meta:
+        model = CustomUserProfile
+        exclude = ['user', 'activation_token', 'expires_at', 'email_verified']
+        fields = ("country", "profession", "position",
+                  "city")
+
 
 class UserRegistrationForm(ModelForm):
     error_messages = {

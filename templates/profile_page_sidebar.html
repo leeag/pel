@@ -4,7 +4,12 @@
         <div class="panel" id="performance">
             <h4><strong>
                 {% if owner %} My Performance
-                {% else %} {{ profile.get_full_name|default:profile }}'s Performance {% endif %}
+                    <div>
+                    <a href="{% url 'edit_profile' id=profile.id %}" class="pull-right">Edit</a>
+                    </div>
+                {% else %} {{ profile.get_full_name|default:profile }}'s Performance
+                {% endif %}
+
 
             </strong></h4>
 
