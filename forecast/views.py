@@ -494,11 +494,12 @@ class ProfileView(ProfileViewMixin, DetailView):
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
-        startdate = date.today()
-        enddate = startdate + timedelta(days=6)
+        today = date.today()
+        find_monday = today - timedelta(days=-today.weekday(), weeks=1)
+        find_sunday = find_monday + timedelta(days=6)
         # counts = Visitors.objects.filter(datetime__range=[startdate, enddate]). \
         #     order_by('visited').filter(visited_id=self.request.user.id).count()
-        visitors = Visitors.objects.filter(datetime__range=[startdate, enddate], visited_id=self.request.user.id).order_by('-datetime')
+        visitors = Visitors.objects.filter(datetime__range=[find_monday, find_sunday], visited_id=self.request.user.id).order_by('-datetime')
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
