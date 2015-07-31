@@ -1,16 +1,13 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row" xmlns="http://www.w3.org/1999/html">
+        {% if forecasts or users or own_groups or groups%}
         <div class="col-sm-12">
             {% if forecasts %}
                 <p>About {{ forecasts|length }} result{{ forecasts|pluralize }} of forecasts: </p>
             {% endif %}
             {% for forecast in forecasts %}
                 <a class="col-sm-8 list-group-item" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
-            {% empty %}
-                <h3>
-                    No result of forecasts...
-                </h3>
             {% endfor %}
         </div>
             <div class="col-sm-12">
@@ -23,10 +20,6 @@
                     <a class="pull-right btn btn-sm btn-default" href="{% url 'postman_write' recipients=user %}">Send
                         Message</a>
                 </div>
-            {% empty %}
-                <h3>
-                    No result of users...
-                </h3>
             {% endfor %}
         </div>
         <div>
@@ -69,15 +62,12 @@
                              class="text-center">Sorry, having some problems with join</pre>
                     {% endif %}
                 </div>
-            {% empty %}
-                <h3 class="pull pull-left">
-                    No result of groups...
-                </h3>
             {% endfor %}
         </div>
         </div>
-
-
+{% else %}
+            <h2 class="col-sm-6">No results... </h2>
+{% endif %}
     </div>
 {% endblock %}
 {% block postbodyscripts %}
