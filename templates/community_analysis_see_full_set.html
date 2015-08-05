@@ -10,7 +10,9 @@ href='#' id='Go_Top'> <span class="glyphicon glyphicon-arrow-up" aria-hidden="tr
 
 
 <div class="col-sm-8 col-sm-offset-2 peleus-sidebar" xmlns="http://www.w3.org/1999/html">
-
+    {% if analysis_set %}
+        <h3> analysis: {{ analysis_set|length }}</h3>
+    {% endif %}
     <div class="panel panel-default" >
 
         {% for analysis in analysis_set %}
@@ -23,8 +25,6 @@ href='#' id='Go_Top'> <span class="glyphicon glyphicon-arrow-up" aria-hidden="tr
                                 class="glyphicon glyphicon-new-window"></span></a>
                     {% else %}
                        {{ analysis.title|slice:"30" }}
-
-
 
                     {% endif %}
                 </div>
