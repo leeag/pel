@@ -3,13 +3,31 @@
 {% block content %}
     <div class="well well">
         {% if is_member %}
-            <button id="leave_{{ group.id }}" class="leave_group btn btn-danger pull-right" group-id="{{ group.id }}" value="{{ csrf_token }}">Leave a group</button>
+            <button class="btn btn-danger pull-right" data-toggle="modal" data-target=".bs-example-modal-sm">Leave a group</button>
+{#            <button id="leave_{{ group.id }}" class="leave_group btn btn-danger pull-right" group-id="{{ group.id }}" value="{{ csrf_token }}">Leave a group</button>#}
             <pre id="leave_mess_{{ group.id }}" class="leave_mess pull-right" style="display: none">Leaved</pre>
         {% endif%}
         <h4>{{ group.name }}</h4>
     </div>
     <div class="row">
 {#        #}
+
+        <div class="modal bs-example-modal-sm" tabindex="-1" role="dialog" aria-hidden="true">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header"><h4>Leave</h4></div>
+                    <div class="modal-body"><i class="fa fa-question-circle"></i> Are you sure you want to leave a group?
+                    </div>
+                    <div class="modal-footer">
+                        <button id="leave_{{ group.id }}"
+                                class="btn btn-primary btn-block leave_group"
+                                group-id="{{ group.id }}" value="{{ csrf_token }}">
+                            leave
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     {% if public_group %}
         <div id="profile_sidebar" class="col-md-4">
             <div>
