@@ -187,7 +187,7 @@ class GroupView(DetailView):
             if group.is_public_group():
                 public_group = group.is_public_group()
 
-        forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())[:7]
+        forecasts = Forecast.objects.distinct().filter(votes__user__membership__group=group, end_date__gte=date.today())
         followers = User.objects.filter(membership__group=group,\
                 membership__admin_group_approved=True).exclude(membership__group=group, membership__admin_rights=True)
         analysis = ForecastAnalysis.objects.filter(user__membership__group=group)

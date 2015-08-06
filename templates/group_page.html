@@ -218,7 +218,7 @@
                 </p>
             </div>
             <table class="table">
-                {% for forecast in forecasts %}
+                {% for forecast in forecasts|slice:":5" %}
                     <tr>
                         <td>
                             <a style="text-decoration: none;" href="{% url 'individual_forecast' id=forecast.id %}">{{ forecast.forecast_question }}</a>
