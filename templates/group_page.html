@@ -126,14 +126,12 @@
                             </div>
                         </div>
                     </div>
+                    {% if group.description %}
                     <div class="panel" id="info">
                         <h4><strong>{{ uname }} Description</strong></h4>
-                        {% if group.description %}
                             <p>About group: {{ group.description }}</p>
-                        {% else %}
-                            <p>Empty</p>
-                        {% endif %}
                     </div>
+                    {% endif %}
 
 {# Followers and  Requests#}
 
