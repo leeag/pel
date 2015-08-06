@@ -1,7 +1,7 @@
 import json
 import traceback
 from datetime import date, timedelta
-
+from django.db.models.expressions import F
 
 from django.shortcuts import render, get_object_or_404, render_to_response, RequestContext
 from django.core.urlresolvers import reverse
@@ -35,8 +35,10 @@ class ForecastFilterMixin(object):
     def _queryset_by_tag(self, querydict, qs=None):
         forecasts = qs or Forecast.objects.all()
         tags = querydict.getlist('tag', [])
+        # tag = querydict.get('tag')
         for tag in tags:
-            forecasts = forecasts.filter(tags__slug=tag)
+            # forecasts = forecasts.filter(tags__slug=tag)
+            forecasts = forecasts.filter(forecast_areas__contains=tag)
 
         return forecasts
 

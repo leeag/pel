@@ -5,7 +5,7 @@
     <li>
         {% with has_tag=qstr|qstring_has:'tag' %}
             {% if has_tag %}
-                <a href="{{ request.path }}{{ qstr|qstring_del:'tag' }}">remove tag <span class="pull-right">&times;</span></a>
+                    <a href="{{ request.path }}{{ qstr|qstring_del:'tag' }}">remove tag<span class="pull-right">&times;</span></a>
                 <li class="nav-divider"></li>
             {% endif %}
         {% endwith %}
@@ -19,7 +19,14 @@
             <li class="nav-divider"></li>
 {#            {% for area in forecast_user.forecast_areas %}#}
             {% for area in FORECAST_AREAS %}
-            <li><a href="#">{{ FORECAST_AREAS|get_item:area }}</a></li>
+                {% if area in qstr %}
+                    <li><a style="background-color: rgba(35, 174, 116, 0.55)" href="{{ qstring|qstring_set:'tag' }}{{ area }}">
+                        {{ FORECAST_AREAS|get_item:area }}
+                    </a>
+                    </li>
+                    {% else %}
+                    <li><a href="{{ qstring|qstring_set:'tag' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}
+                {% endif %}
             {% endfor %}
 
             <li class="nav-divider"></li>

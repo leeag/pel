@@ -3,9 +3,9 @@
 {% block content %}
     <div class="row">
         <form class="propose form-horizontal" action="{% url 'propose_group' %}" method="post" role="form">
-            <h3>
+            <h1 class="jumbotron">
                 Propose new group
-            </h3>
+            </h1>
             {% csrf_token %}
             <div class="center-block form-center-block">
                 <div class="form-group">
