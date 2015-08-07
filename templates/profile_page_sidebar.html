@@ -4,10 +4,9 @@
         <div class="panel" id="performance">
             <h4><strong>
                 {% if owner %} My Performance
-                    <div>
-                    <a style="text-decoration: none;" href="{% url 'edit_profile' id=profile.id %}"
-                       class="pull-right">Edit</a>
-                    </div>
+                    <a style="text-decoration: none;" href="{% url 'edit_profile' id=profile.id %}">
+                        <span class="glyphicon glyphicon-edit"></span>
+                    </a>
                 {% else %} {{ profile.get_full_name|default:profile }}'s Performance
                 {% endif %}
             </strong></h4>
