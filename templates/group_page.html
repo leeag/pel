@@ -165,7 +165,7 @@
                                             <a href="{% url 'profile' id=follow.id %}" target="_blank">{{ follow }}
                                             </a>
                                             {% if has_admin_rights %}
-                                                <a href="" class="delete_follower glyphicon glyphicon-minus pull-right" delete-user="{{ follow.id }}"></a>
+                                                <a href="" class="delete_follower fa fa-user-times pull-right" delete-user="{{ follow.id }}"></a>
                                              {% endif %}
                                         </li>
                                     {% empty %}
@@ -185,7 +185,7 @@
                                     {% for request in requests %}
                                         <li id="join_group" class="join_to_group_{{ request.id }} list-group-item" value="{{ group.id }}">{{ request }}
                                             <a href="" class="cancel_join glyphicon glyphicon-minus pull-right" leave-user="{{ request.id }}"></a>
-                                            <a href="" class="access_join  pull-right glyphicon glyphicon-plus" join-user="{{ request.id }}">
+                                            <a href="" class="access_join  pull-right fa fa-user-plus" join-user="{{ request.id }}">
                                             </a>
                                         </li>
                                     {% empty %}

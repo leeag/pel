@@ -40,13 +40,15 @@
                 Followers <span class="badge">0</span></a>
 
             <a class="list-group-item" href="#" data-toggle="modal" data-target="#FolUsers">
+            <span class="fa fa-users"></span>
                 {% if owner %} My Followed Users
                 {% else %} {{ profile.get_full_name|default:profile }}'s Followed Users {% endif %}
+
                 <span class="badge">0</span>
             </a>
 
             <a class="list-group-item" href="{% url 'profile_page_groups' id=profile.id %}">
-            <span class="glyphicon glyphicon-group"></span>
+            <span class="fa fa-users"></span>
                 {% if owner %} My Groups
                 {% else %} {{ profile.get_full_name|default:profile }}'s Groups {% endif %}
                 <span class="badge">{{ groups_count }}</span>

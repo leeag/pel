@@ -25,7 +25,7 @@
                             <div class="pull-right">{{ el.forecasters }} forecaster{{ el.forecasters|pluralize }}</div>
                             <span class="label label-default">Tags(regions):</span>
                             {% for tag in el.forecast_regions %}
-                                <a href="{{ request.path }}?tag={{ tag }}"><span
+                                    <a href="{{ request.path }}?tag={{ tag }}"><span
                                         class="label label-success">{{ FORECAST_REGIONS|get_item:tag|default_if_none:""}}</span></a>
                             {% endfor %}
                         {% endif %}
