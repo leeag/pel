@@ -12,13 +12,14 @@
         {% endifequal %}
         <a href="{% url 'profile_forecast_analysis' id=profile.id %}" class="pull-right">[See Full Set]</a></p>
     {% for element in analysis %}
-        <ul class="list-group">
-            <div>
+        <div class="list-group">
             <a class="list-group-item" style="color: #165ba8" href="{% url 'individual_forecast' id=element.forecast.id %}#analysis-{{ element.id }}" target="_blank"
-               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title|slice:"60" }} <div class="pull-right">
-                        <p>{{ element.publish_date }}</p></div></a>
-             </div>
-        </ul>
+               data-toggle="modal" data-target="#id{{ element.id }}">{{ element.title }}
+                            <span class="pull-right inline">
+                {{ element.publish_date }}
+            </span>
+            </a>
+        </div>
 
         <div class="modal fade" id="id{{ element.id }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
              aria-hidden="true">
