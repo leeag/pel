@@ -25,7 +25,7 @@ from django.http import JsonResponse
 
 from forms import UserRegistrationForm, SignupCompleteForm, CustomUserProfile, ForecastProposeForm, CommunityAnalysisForm, \
     ForecastVoteForm, CreateGroupForm, CustomInlineFormSet, AboutUserForm, EditProfileForm, EditUserForm
-from models import Forecast, ForecastVotes, ForecastAnalysis, Group, Membership, CustomUserProfile, Visitors
+from models import Forecast, ForecastVotes, ForecastAnalysis, Group, Membership, CustomUserProfile, Visitors, Followers
 from Peleus.settings import APP_NAME, FORECAST_FILTER, \
     FORECAST_FILTER_MOST_ACTIVE, FORECAST_FILTER_NEWEST, FORECAST_FILTER_CLOSING, FORECAST_FILTER_ARCHIVED, AREAS, REGIONS,GROUP_TYPES
 from context_processors import FORECAST_AREAS
@@ -34,13 +34,20 @@ from context_processors import FORECAST_AREAS
 class ForecastFilterMixin(object):
     def _queryset_by_tag(self, querydict, qs=None):
         forecasts = qs or Forecast.objects.all()
-        tags = querydict.getlist('tag', [])
+        tags = querydict.getlist('tag_area', [])
         # tag = querydict.get('tag')
         for tag in tags:
             # forecasts = forecasts.filter(tags__slug=tag)
             forecasts = forecasts.filter(forecast_areas__contains=tag)
-
         return forecasts
+
+    def _queryset_by_tag_regions(self, querydict):
+        tags_regions = querydict.getlist('tag_region', [])
+        for tag in tags_regions:
+            forecasts = Forecast.objects.filter(forecast_regions__contains=tag)
+        return forecasts
+
+
 
     def _queryset_by_forecast_filter(self, querydict, qs=None):
         """
@@ -330,11 +337,18 @@ class IndexPageView(ForecastFilterMixin, View):
     template_name = 'index_page.html'
 
     def get(self, request):
+        qstr_region = None
+        qstr_area = None
         forecasts = self._queryset_by_forecast_filter(request.GET).annotate(
             forecasters=Count('votes__user', distinct=True))
-        if 'tag' in request.GET:
+        if 'tag_area' in request.GET:
             forecasts = self._queryset_by_tag(request.GET, forecasts)
-        return render(request, self.template_name, {'data': forecasts})
+            qstr_area = request.GET.get('tag_area')
+        elif 'tag_region' in request.GET:
+            forecasts = self._queryset_by_tag_regions(request.GET)
+            qstr_region = request.GET.get('tag_region')
+        return render(request, self.template_name, {'data': forecasts, 'qstr_region': qstr_region, 'qstr_area': qstr_area})
+
 
 
 class IndividualForecastView(View):
@@ -444,7 +458,6 @@ class ProfileViewMixin(object):
         context['owner'] = owner
         # context['uname'] = 'My' if owner else str(name_user) + "'s"
         context['predictions_count'] = ForecastVotes.objects.filter(user=profile).count()
-
         return context
 
 
@@ -466,7 +479,6 @@ class ProfileForecastAnalysisView(ProfileViewMixin, ListView):
 
 class CommunityAnalysisView(View):
     template_name = 'community_analysis_see_full_set.html'
-
 
     def get(self, request, id):
         forecast = get_object_or_404(Forecast, pk=id)
@@ -493,6 +505,7 @@ class ProfileView(ProfileViewMixin, DetailView):
         forecasts_archived = Forecast.objects.distinct().filter(votes__user=profile, end_date__lt=date.today())[:5]
         groups_count = Group.objects.filter(membership__user=profile).count()
         analysis = profile.forecastanalysis_set.all()[:5]
+
         if not profile.is_superuser:
             context['about'] = CustomUserProfile.objects.get(user_id=profile.id)
 
@@ -520,8 +533,6 @@ class ProfileView(ProfileViewMixin, DetailView):
 
         profile_id = kwargs.get('id')
         profile = CustomUserProfile.objects.get(user_id=profile_id)
-        # print profile.about_user
-        # print request.POST.get("about_user")
 
         about_user = request.POST.get("about_user")
         profile.about_user = about_user
@@ -680,3 +691,5 @@ class SignUpSecondView(View):
 
         else:
             return HttpResponseRedirect(reverse('errors'))
+
+

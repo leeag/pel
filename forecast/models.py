@@ -243,10 +243,10 @@ class Membership(models.Model):
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name
 
-# class Followers(models.Model):
-#     user = models.ForeignKey(User, related_name='first_user')
-#     second_user = models.ForeignKey(User, related_name='second_user')
-#     date_join = models.DateField(auto_now=True)
+class Followers(models.Model):
+    follower = models.ForeignKey(User, related_name='follower')
+    followed = models.ForeignKey(User, related_name='followed')
+    date_join = models.DateField(auto_now_add=True)
 
 
 class Visitors(models.Model):

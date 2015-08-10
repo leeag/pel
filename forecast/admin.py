@@ -275,3 +275,7 @@ class AnalysisVoteAdmin(ModelAdmin):
 @admin.register(models.Visitors)
 class VisitorsAdmin(ModelAdmin):
     list_display = ('visited', 'visitor', 'datetime')
+
+@admin.register(models.Followers)
+class FollowersAdmin(ModelAdmin):
+    list_display = ('follower', 'followed', 'date_join')

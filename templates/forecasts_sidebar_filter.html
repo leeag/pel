@@ -1,39 +1,54 @@
 {% load qstring %}
 <div class="col-sm-2 peleus-sidebar">
     <ul id="sidebar" class="nav nav-stacked">
-        {% qstring as qstr %}
-    <li>
-        {% with has_tag=qstr|qstring_has:'tag' %}
-            {% if has_tag %}
-                    <a href="{{ request.path }}{{ qstr|qstring_del:'tag' }}">remove tag<span class="pull-right">&times;</span></a>
-                <li class="nav-divider"></li>
-            {% endif %}
-        {% endwith %}
-    </li>
+{#        {% qstring as qstr_area %}#}
+{#        <li>#}
+{#            {% with has_tag=qstr_area|qstring_has:'tag_area' %}#}
+{#                {% if has_tag %}#}
+{#                    <a href="{{ request.path }}{{ qstr|qstring_del:'tag_area' }}">remove tag<span#}
+{#                            class="pull-right">&times;</span></a>#}
+{#                    <li class="nav-divider"></li>#}
+{#                {% endif %}#}
+{#            {% endwith %}#}
+{#        </li>#}
 
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_MOST_ACTIVE }}">Most Active</a></li>
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_NEWEST }}">Newest</a></li>
         <li><a href="{{ request.path }}?{{ FORECAST_FILTER }}={{ FORECAST_FILTER_CLOSING }}">Imminently Closing</a></li>
-{#        {% if forecast_user %}#}
+        {#        {% if forecast_user %}#}
 
-            <li class="nav-divider"></li>
-{#            {% for area in forecast_user.forecast_areas %}#}
-            {% for area in FORECAST_AREAS %}
-                {% if area in qstr %}
-                    <li><a style="background-color: rgba(35, 174, 116, 0.55)" href="{{ qstring|qstring_set:'tag' }}{{ area }}">
-                        {{ FORECAST_AREAS|get_item:area }}
-                    </a>
-                    </li>
-                    {% else %}
-                    <li><a href="{{ qstring|qstring_set:'tag' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}
-                {% endif %}
-            {% endfor %}
+        <li class="nav-divider"></li>
+        {#            {% for area in forecast_user.forecast_areas %}#}
+        {% for area in FORECAST_AREAS %}
+            {% ifequal area qstr_area %}
+                <li><a style="background-color: rgba(35, 174, 116, 0.55)"
+                       href="{{ request.path }}{{ qstr|qstring_del:'tag_area'}}">
+                    {{ FORECAST_AREAS|get_item:area }}
+                    <span
+                            class="pull-right">&times;
+                    </span>
+                </a>
+                </li>
+            {% else %}
+                <li><a href="{{ qstring|qstring_set:'tag_area' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}
+            {% endifequal %}
+        {% endfor %}
 
-            <li class="nav-divider"></li>
-{#            {% for region in forecast_user.forecast_regions %}#}
-            {% for region in FORECAST_REGIONS %}
-            <li><a href="#">{{ FORECAST_REGIONS|get_item:region }}</a></li>
-            {% endfor %}
-{#        {% endif %}#}
+        <li class="nav-divider"></li>
+        {#            {% for region in forecast_user.forecast_regions %}#}
+        {% for region in FORECAST_REGIONS %}
+            {% ifequal region qstr_region %}
+                <li><a style="background-color: rgba(35, 174, 116, 0.55)" href="
+                {{ request.path }}{{ qstr|qstring_del:'tag_region' }}">{{ FORECAST_REGIONS|get_item:region }}
+                <span
+                        class="pull-right">&times;
+                </span>
+                </a>
+                </li>
+            {% else %}
+                <li><a href="{{ qstring|qstring_set:'tag_region' }}{{ region }}">{{ FORECAST_REGIONS|get_item:region }}
+            {% endifequal %}
+        {% endfor %}
+        {#        {% endif %}#}
     </ul>
 </div>
