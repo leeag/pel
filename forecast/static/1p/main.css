@@ -145,3 +145,7 @@
 .result-group{
     margin-top: 1ch;
 }
+
+.success_update{
+    background-color: rgba(11, 116, 19, 0.71);
+}

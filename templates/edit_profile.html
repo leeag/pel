@@ -1,14 +1,25 @@
 {% extends 'base.html' %}
 {% block content %}
     <div class="row">
-        <div class="jumbotron">
-            <h1>Try edit information about yourself</h1>
+        <div class="jumbotron col-sm-6 pull-right">
+            {% if messages %}
+                {% for message in messages %}
+                    <h1>
+                        {{ message }}
+                    </h1>
+                {% endfor %}
+            {% elif form.errors %}
+                <h1>
+                    Please correct the error.
+                <p>
+                    If you do not specify the requirements, data will not be saved
+                </p>
+                </h1>
+            {% else %}
+                <h1>Try edit information about yourself</h1>
+            {% endif %}
         </div>
-        {% if form.errors %}
-            <div class="alert alert-danger">
-                 Please correct the error below.
-            </div>
-        {% endif %}
+
 
         <form action="" class="col-sm-4" method="post">{% csrf_token %}
             <p>{{ form.as_table }}</p>

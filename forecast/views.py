@@ -18,6 +18,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.http.request import QueryDict
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic import View, DetailView, ListView, UpdateView
+from django.contrib.messages.views import SuccessMessageMixin
 from django.views.defaults import page_not_found
 from django.forms.models import inlineformset_factory
 from django.http import JsonResponse
@@ -544,15 +545,16 @@ class ProfileView(ProfileViewMixin, DetailView):
         return HttpResponse(json.dumps(data), content_type='application/json')
 
 
-class ProfileUpdateView(UpdateView):
+class ProfileUpdateView(SuccessMessageMixin, UpdateView):
+    template_name = 'edit_profile.html'
     model = User
     form_class = EditUserForm
     second_form_class = EditProfileForm
-    template_name = 'edit_profile.html'
     pk_url_kwarg = 'id'
+    success_message = 'Profile updated'
 
     def get_success_url(self):
-        return reverse('profile', kwargs={'id': self.request.user.id})
+        return reverse('edit_profile', kwargs={'id': self.request.user.id})
 
 
 class GlobalSearchView(View):
