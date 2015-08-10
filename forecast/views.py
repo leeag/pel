@@ -2,6 +2,7 @@ import json
 import traceback
 from datetime import date, timedelta
 from django.db.models.expressions import F
+from django.db.transaction import commit
 
 from django.shortcuts import render, get_object_or_404, render_to_response, RequestContext
 from django.core.urlresolvers import reverse

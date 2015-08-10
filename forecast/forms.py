@@ -233,6 +233,11 @@ class EditUserForm(ModelForm):
                    'position': forms.TextInput(attrs={'class': "form-control input-sm"}),
                    }
 
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.save()
+        return super(EditUserForm, self).form_valid(form)
+
 
 class EditProfileForm(ModelForm):
 
