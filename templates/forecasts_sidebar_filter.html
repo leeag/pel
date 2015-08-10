@@ -30,7 +30,7 @@
                 </a>
                 </li>
             {% else %}
-                <li><a href="{{ qstring|qstring_set:'tag_area' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}
+                <li><a href="{{ qstring|qstring_set:'tag_area' }}{{ area }}">{{ FORECAST_AREAS|get_item:area }}</a></li>
             {% endifequal %}
         {% endfor %}
 
@@ -46,7 +46,7 @@
                 </a>
                 </li>
             {% else %}
-                <li><a href="{{ qstring|qstring_set:'tag_region' }}{{ region }}">{{ FORECAST_REGIONS|get_item:region }}
+                <li><a href="{{ qstring|qstring_set:'tag_region' }}{{ region }}">{{ FORECAST_REGIONS|get_item:region }}</a></li>
             {% endifequal %}
         {% endfor %}
         {#        {% endif %}#}
