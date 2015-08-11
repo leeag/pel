@@ -69,6 +69,27 @@ class ForecastFilterMixin(object):
             forecasts = Forecast.archived.all()
         return forecasts
 
+class UsersFilterMixin(object):
+
+    def _get_profiles_contains(self, param_users=None):
+        profiles_by_username = User.objects.filter(username__contains=param_users)
+        profiles_by_first_name = User.objects.filter(first_name__contains=param_users)
+        profiles_by_last_name = User.objects.filter(last_name__contains=param_users)
+        profiles = profiles_by_first_name or profiles_by_last_name or profiles_by_username
+        return profiles
+
+    def _get_profiles_in(self, param_users=None):
+        param_users = param_users.split()
+        profiles_by_username = User.objects.filter(username__in=param_users)
+        profiles_by_first_name = User.objects.filter(first_name__in=param_users)
+        profiles_by_last_name = User.objects.filter(last_name__in=param_users)
+        profiles = profiles_by_first_name or profiles_by_last_name or profiles_by_username
+        return profiles
+
+    def _get_users_by_params(self, param_users=None):
+        profiles = self._get_profiles_in(param_users) or self._get_profiles_contains(param_users)
+        return profiles.exclude(id=self.request.user.id)
+
 
 class LoginRequiredMixin(object):
     @classmethod
@@ -244,15 +265,15 @@ class ProposeNewGroup(View):
             return render(request, self.template_group_access, {'is_admin': current_user.is_superuser})
 
 
-class Users_and_Groups(ListView):
+class Users_and_Groups(UsersFilterMixin, ListView):
     template_name = 'users_and_groups.html'
     model = Group
     paginate_by = 5
 
     def get_queryset(self):
-        if 'q_us_gr' in self.request.GET:
+        if 'q_us_gr' in self.request.GET and self.request.GET.get('q_us_gr'):
             param_groups = self.request.GET.get('q_us_gr')
-            return Group.objects.filter(name__icontains=param_groups).exclude(membership__user=self.request.user)
+            return Group.objects.filter(name__contains=param_groups).exclude(membership__user=self.request.user)
         else:
             if self.request.user.is_authenticated():
                 return Group.objects.exclude(membership__user=self.request.user).order_by('name')
@@ -282,23 +303,17 @@ class Users_and_Groups(ListView):
                 context['profiles'] = User.objects.filter(custom=users_by_regions.exclude(user=self.request.user))
             else:
                 context['profiles'] = User.objects.filter(custom=users_by_regions)
-        elif 'q_us_gr' in self.request.GET:
+        elif 'q_us_gr' in self.request.GET and self.request.GET.get('q_us_gr'):
             param_users = self.request.GET.get('q_us_gr')
-
-            profiles_by_username = User.objects.filter(username__icontains=param_users)
-            profiles_by_first_name = User.objects.filter(first_name__icontains=param_users)
-            profiles_by_last_name = User.objects.filter(last_name__icontains=param_users)
-            profiles = profiles_by_first_name or profiles_by_last_name or profiles_by_username
-
-            context['profiles'] = profiles.exclude(id=self.request.user.id)
+            context['profiles'] = self._get_users_by_params(param_users)
             context['res'] = param_users
         else:
             if self.request.user.is_authenticated():
                 exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('last_name')
+                context['profiles'] = exclude_superuser.order_by('date_joined').order_by('last_name')
             else:
                 exclude_superuser = User.objects.all().exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('last_name')
+                context['profiles'] = exclude_superuser.order_by('date_joined').order_by('last_name')
         return context
 
 
