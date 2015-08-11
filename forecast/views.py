@@ -268,7 +268,7 @@ class ProposeNewGroup(View):
 class Users_and_Groups(UsersFilterMixin, ListView):
     template_name = 'users_and_groups.html'
     model = Group
-    paginate_by = 5
+    paginate_by = 20
 
     def get_queryset(self):
         if 'q_us_gr' in self.request.GET and self.request.GET.get('q_us_gr'):
