@@ -247,13 +247,17 @@ class ProposeNewGroup(View):
 class Users_and_Groups(ListView):
     template_name = 'users_and_groups.html'
     model = Group
+    paginate_by = 5
 
     def get_queryset(self):
-        if self.request.user.is_authenticated():
-
-            return Group.objects.exclude(membership__user=self.request.user).order_by('name')
+        if 'q_us_gr' in self.request.GET:
+            param_groups = self.request.GET.get('q_us_gr')
+            return Group.objects.filter(name__icontains=param_groups).exclude(membership__user=self.request.user)
         else:
-            return Group.objects.all().order_by('name')
+            if self.request.user.is_authenticated():
+                return Group.objects.exclude(membership__user=self.request.user).order_by('name')
+            else:
+                return Group.objects.all().order_by('name')
 
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
@@ -278,6 +282,16 @@ class Users_and_Groups(ListView):
                 context['profiles'] = User.objects.filter(custom=users_by_regions.exclude(user=self.request.user))
             else:
                 context['profiles'] = User.objects.filter(custom=users_by_regions)
+        elif 'q_us_gr' in self.request.GET:
+            param_users = self.request.GET.get('q_us_gr')
+
+            profiles_by_username = User.objects.filter(username__icontains=param_users)
+            profiles_by_first_name = User.objects.filter(first_name__icontains=param_users)
+            profiles_by_last_name = User.objects.filter(last_name__icontains=param_users)
+            profiles = profiles_by_first_name or profiles_by_last_name or profiles_by_username
+
+            context['profiles'] = profiles.exclude(id=self.request.user.id)
+            context['res'] = param_users
         else:
             if self.request.user.is_authenticated():
                 exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)

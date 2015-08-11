@@ -1,20 +1,23 @@
 {% extends 'base.html' %}
 {% block content %}
-    <div class="row">
-
+    <div class="row" xmlns="http://www.w3.org/1999/html">
+            {% load qstring %}
         <div>
-            <form class="navbar-form pl-search-form" role="search" action="{% url 'global_search' %}">
+            <form class="navbar-form pl-search-form" role="q_us_gr" action="{% url 'users_groups' %}">
                 <div class="input-group">
-                    <input type="text" class="form-control" placeholder="Search users & groups" name="q">
-
+                    <input type="text" class="form-control" placeholder="Search users & groups" value="{{ res }}" name="q_us_gr">
                     <div class="input-group-btn">
                         <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i>
                         </button>
                     </div>
                 </div>
+                <div class="pull-right">
+                    {% if res %}
+                        <a style="text-decoration: none;" href="?{{ qstring|qstring_del:'res' }}"><h4>Search result for "{{ res }}" <span>&times;</span></h4></a>
+                    {% endif %}
+                </div>
             </form>
         </div></p>
-        {% load qstring %}
         <div class="col-sm-2 peleus-sidebar">
             <ul id="sidebar" class="nav nav-stacked">
 {#                {% qstring as qstr %}#}
