@@ -273,7 +273,10 @@ class Users_and_Groups(UsersFilterMixin, ListView):
     def get_queryset(self):
         if 'q_us_gr' in self.request.GET and self.request.GET.get('q_us_gr'):
             param_groups = self.request.GET.get('q_us_gr')
-            return Group.objects.filter(name__contains=param_groups).exclude(membership__user=self.request.user)
+            is_auth = self.request.user.is_authenticated()
+            get_groups = Group.objects.filter(name__contains=param_groups)
+            get_groups = get_groups.exclude(membership__user=self.request.user) if is_auth else get_groups
+            return get_groups
         else:
             if self.request.user.is_authenticated():
                 return Group.objects.exclude(membership__user=self.request.user).order_by('name')
