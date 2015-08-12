@@ -244,6 +244,7 @@ class Membership(models.Model):
     def __unicode__(self):
         return self.user.full_name() + ' in ' + self.group.name
 
+
 class Followers(models.Model):
     follower = models.ForeignKey(User, related_name='follower')
     followed = models.ForeignKey(User, related_name='followed')

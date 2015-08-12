@@ -282,9 +282,14 @@ class Users_and_Groups(UsersFilterMixin, ListView):
             return get_groups
         else:
             if self.request.user.is_authenticated():
-                return Group.objects.exclude(membership__user=self.request.user).order_by('name')
+                return Group.objects\
+                    .exclude(membership__user=self.request.user)\
+                    .annotate(num_membership=Count('membership'))\
+                    .order_by('-num_membership')
             else:
-                return Group.objects.all().order_by('name')
+                return Group.objects.all()\
+                    .annotate(num_membership=Count('membership'))\
+                    .order_by('-num_membership')
 
     def get_context_data(self, **kwargs):
         context = super(Users_and_Groups, self).get_context_data(**kwargs)
