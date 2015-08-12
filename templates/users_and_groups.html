@@ -104,7 +104,7 @@
         </div>
         <div class="col-sm-5">
             <ul class="groups list-group">
-                <h2 style="margin-top: 0">User{{ profiles|pluralize }}
+                <h2 style="margin-top: 0">{% if res %}{% else %}New{% endif %} User{{ profiles|pluralize }}
                     {% if profiles|length >= 5 %}
                         <span class="badge">{{ profiles|length }}</span>
                     {% endif %}

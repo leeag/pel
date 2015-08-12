@@ -71,10 +71,10 @@ class ForecastFilterMixin(object):
 
 class UsersFilterMixin(object):
 
-    def _get_profiles_contains(self, param_users=None):
-        profiles_by_username = User.objects.filter(username__contains=param_users)
-        profiles_by_first_name = User.objects.filter(first_name__contains=param_users)
-        profiles_by_last_name = User.objects.filter(last_name__contains=param_users)
+    def _get_profiles_icontains(self, param_users=None):
+        profiles_by_username = User.objects.filter(username__icontains=param_users)
+        profiles_by_first_name = User.objects.filter(first_name__icontains=param_users)
+        profiles_by_last_name = User.objects.filter(last_name__icontains=param_users)
         profiles = profiles_by_first_name or profiles_by_last_name or profiles_by_username
         return profiles
 
@@ -87,8 +87,11 @@ class UsersFilterMixin(object):
         return profiles
 
     def _get_users_by_params(self, param_users=None):
-        profiles = self._get_profiles_in(param_users) or self._get_profiles_contains(param_users)
-        return profiles.exclude(id=self.request.user.id)
+        profiles = self._get_profiles_icontains(param_users) or self._get_profiles_in(param_users)
+        profiles_list = list(profiles.exclude(id=self.request.user.id))
+        param_users_split = param_users.split()
+
+        return profiles_list
 
 
 class LoginRequiredMixin(object):
@@ -313,10 +316,10 @@ class Users_and_Groups(UsersFilterMixin, ListView):
         else:
             if self.request.user.is_authenticated():
                 exclude_superuser = User.objects.exclude(id=self.request.user.id).exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('date_joined').order_by('last_name')
+                context['profiles'] = exclude_superuser.order_by('-date_joined')[:20]
             else:
                 exclude_superuser = User.objects.all().exclude(is_superuser=True)
-                context['profiles'] = exclude_superuser.order_by('date_joined').order_by('last_name')
+                context['profiles'] = exclude_superuser.order_by('-date_joined')[:20]
         return context
 
 
