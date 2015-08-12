@@ -81,6 +81,7 @@ class Forecast(models.Model):
     forecast_question = models.TextField(max_length=1000)
     min = models.IntegerField(blank=True, default=0)
     max = models.IntegerField(blank=True, default=100)
+    units = models.CharField(blank=True, max_length=20)
     start_date = models.DateField(auto_now_add=True)
     end_date = models.DateField()
     # tags = TaggableManager()
