@@ -1,3 +1,5 @@
+# coding=utf-8
+
 from datetime import date
 from django.contrib.auth.models import User
 from django_countries.fields import CountryField
@@ -258,3 +260,68 @@ class Visitors(models.Model):
 
     class Meta:
         verbose_name_plural = 'Visitors'
+
+
+class Country(models.Model):
+    """ Країна """
+    name = models.CharField(
+        verbose_name='name',
+        max_length=50
+    )
+
+    region_name = models.CharField(
+        verbose_name='region name',
+        max_length=50,
+        blank=True, null=True
+    )
+
+    class Meta:
+        verbose_name = 'country'
+        verbose_name_plural = 'countries'
+
+    def __unicode__(self):
+        return self.name
+
+
+class Region(models.Model):
+    """ Область або штат """
+    name = models.CharField(
+        verbose_name='name',
+        max_length=50
+    )
+    country = models.ForeignKey(
+        verbose_name='country',
+        to=Country,
+        related_name="regions"
+    )
+
+    class Meta:
+        verbose_name = 'Country/Region'
+        verbose_name_plural = 'Country/Regions'
+        unique_together = ['name', 'country']
+
+
+class City(models.Model):
+    """ Місто """
+    name = models.CharField(
+        verbose_name='name',
+        max_length=50
+    )
+    country = models.ForeignKey(
+        verbose_name='country',
+        to=Country,
+        related_name="cities"
+    )
+    region = models.ForeignKey(
+        verbose_name='region',
+        to=Region,
+        blank=True, null=True,
+        related_name="cities"
+    )
+
+    class Meta:
+        verbose_name = 'Country/Region/City'
+        verbose_name_plural = 'Country/Region/Cities'
+
+    def __unicode__(self):
+        return self.name

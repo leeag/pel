@@ -15,6 +15,7 @@ from forecast.forms import CSICheckboxSelectMultiple, CSIMultipleChoiceField
 admin.site.site_header = 'Peleus administration'
 admin.site.site_title = 'Peleus site admin'
 
+import forecast.translation
 
 class CustomUserProfileInline(StackedInline):
     model = models.CustomUserProfile
@@ -279,3 +280,17 @@ class VisitorsAdmin(ModelAdmin):
 @admin.register(models.Followers)
 class FollowersAdmin(ModelAdmin):
     list_display = ('follower', 'followed', 'date_join')
+
+from modeltranslation.admin import TranslationAdmin
+
+@admin.register(models.Country)
+class CountryAdmin(TranslationAdmin):
+    list_display = ('name', 'region_name')
+
+@admin.register(models.Region)
+class RegionAdmin(TranslationAdmin):
+    list_display = ('name', 'country')
+
+@admin.register(models.City)
+class CityAdmin(TranslationAdmin):
+    list_display = ('name', 'country', 'region')

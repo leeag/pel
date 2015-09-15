@@ -49,7 +49,8 @@ INSTALLED_APPS = (
     'forecast',
     'taggit',
     'django_object_actions',
-    'postman'
+    'postman',
+    'modeltranslation'
 )
 
 AUTHENTICATION_BACKENDS = (
@@ -91,8 +92,25 @@ DATABASES = {
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
+from django.utils.translation import ugettext_lazy as _
+
 
 LANGUAGE_CODE = 'en-us'
+
+ENGLISH = 'en'
+UKRAINIAN = 'uk'
+RUSSIAN = 'ru'
+LANGUAGES = (
+    (ENGLISH, _('English')),
+    (UKRAINIAN, _('Ukrainian')),
+    (RUSSIAN, _('Russian')),
+)
+
+MODELTRANSLATION_TRANSLATION_FILES = (
+    'forecast.translation',
+)
+
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('en', 'ru', 'uk')
 
 TIME_ZONE = 'UTC'
 
