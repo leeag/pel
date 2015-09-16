@@ -15,21 +15,26 @@ with open('countries_regions_cities.csv') as f:
     content = f.readlines()
 
 
-ci = City()
-
 for row in content:
     cells = row.split(',')
+    country = Country()
+    region = Region()
     if cells[0] != '':
-        co = Country()
-        co.name = cells[0]    #Country name adding (Україна, Polska..)
-        print co.name
-        co.save()
+        country = Country()
+        country.name = cells[0]
+        country.save()
     elif cells[1] != '':
-        re = Region()
-        country = Country.objects.get(name=cells[0])
-        re.name = cells[1]    #Region name adding (Львівська, Małopolskie ..)
-        re.country = country
-        print re.name
-        re.save()
+        region = Region()
+        region.name = cells[1]
+        region.country = country
+        region.save()
     # elif cells[4] != '':
-    #     ci.name = cells[4]    #City name adding (Львів, Paris ..)
+    #     city = City()
+    #     city.name = cells[4]
+    #     city.region = region
+    #     city.country = country
+    # elif cells[6] != '':
+    #     city = City()
+    #     city.name = cells[6]
+    #     city.region = region
+    #     city.country = country
