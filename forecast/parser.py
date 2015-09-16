@@ -15,26 +15,50 @@ with open('countries_regions_cities.csv') as f:
     content = f.readlines()
 
 
+country = 'name'
+region = 'name'
 for row in content:
+
     cells = row.split(',')
-    country = Country()
-    region = Region()
-    if cells[0] != '':
-        country = Country()
-        country.name = cells[0]
-        country.save()
-    elif cells[1] != '':
-        region = Region()
-        region.name = cells[1]
-        region.country = country
-        region.save()
-    # elif cells[4] != '':
-    #     city = City()
-    #     city.name = cells[4]
-    #     city.region = region
-    #     city.country = country
-    # elif cells[6] != '':
-    #     city = City()
-    #     city.name = cells[6]
-    #     city.region = region
-    #     city.country = country
+    print row
+    if cells[0]:
+        print 'country'
+        #print 'adsadsa'
+        global country
+        country = cells[0]
+        c = Country()
+        c.name = cells[0]
+
+        c.save()
+
+
+    if cells[1]:
+        print 'region'
+
+        global region
+        region = cells[1]
+        r = Region()
+        r.name = cells[1]
+        rc = Country.objects.get(name_en=country)
+        r.country = rc
+        r.save()
+
+    if cells[4]:
+        print country
+        print 'city'
+        print cells[4]
+        city = City()
+        city.name = cells[4]
+
+        city.region = Region.objects.get(name_en=region)
+        city.country = Country.objects.get(name_en=country)
+        city.save()
+    if cells[6] and cells[6]!='\n':
+        print 'smt'
+        print country
+        print cells
+        city = City()
+        city.name = cells[6]
+        city.region = Region.objects.get(name_en=region)
+        city.country = Country.objects.get(name_en=country)
+        city.save()
